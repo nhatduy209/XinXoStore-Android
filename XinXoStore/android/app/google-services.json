@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1020094745628",
+    "project_id": "xinxostore-8f1e6",
+    "storage_bucket": "xinxostore-8f1e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020094745628:android:31e01322199b39177e63d9",
+        "android_client_info": {
+          "package_name": "com.xinxostore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020094745628-l6k4731ug31m72vvjv8kd1ksejn441d0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy065LpWf39kgW-zvggMYum9UhPe-m3fQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020094745628-l6k4731ug31m72vvjv8kd1ksejn441d0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
