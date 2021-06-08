@@ -4,6 +4,34 @@ import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class LoginScreen extends React.Component {
+
+  constructor(props){
+    super(props)
+    this.state = {
+      email : "",
+      password : "",
+    }
+  }
+
+  //handle input 
+  handleEmail = (value) => {
+    this.setState({ email : value });
+  }
+  //handle input 
+    handlePassword = (value) => {
+      this.setState({ password : value });
+    }
+  
+
+
+  //handle login 
+  handleLogin = () => {
+    console.log(this.state.email);
+    console.log(this.state.password);
+
+    
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -13,16 +41,19 @@ export default class LoginScreen extends React.Component {
             Sign in
             </Text>
           <TextInput style={styles.InputText}
-            placeholder="Email">
+            placeholder="Email"
+            onChangeText = { value => this.handleEmail(value)}>
           </TextInput>
 
           <TextInput style={styles.InputText}
             placeholder="Password"
-            secureTextEntry={true} >
+            secureTextEntry={true}
+            onChangeText = { value => this.handlePassword(value)} >
           </TextInput>
 
           <TouchableOpacity
-            style={styles.LoginBtn}>
+            style={styles.LoginBtn}
+            onPress = {this.handleLogin}>
             <Text style={styles.loginText}>
               Login
             </Text>
