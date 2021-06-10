@@ -2,8 +2,10 @@ import React from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-export default class LoginScreen extends React.Component {
+import {Login} from '../redux/action/LoginAction/LoginAction'
+import { connect } from 'react-redux';
+import { Status } from '../Config/dataStatus';
+export class LoginScreen extends React.Component {
 
   constructor(props){
     super(props)
@@ -25,11 +27,19 @@ export default class LoginScreen extends React.Component {
 
 
   //handle login 
-  handleLogin = () => {
-    console.log(this.state.email);
-    console.log(this.state.password);
+  handleLogin =() => {
+    this.props.Login(this.state.email , this.state.password);
+  }
+  
+  componentDidMount() {
+    console.log("USER : "  , this.props.user);
+  }
 
-    
+  componentDidUpdate(prevProps) {
+    if(this.props.user.status != prevProps.user.status){
+      console.log("USER UPDATE : "  , this.props.user);
+      
+    }  
   }
 
   render() {
@@ -53,7 +63,7 @@ export default class LoginScreen extends React.Component {
 
           <TouchableOpacity
             style={styles.LoginBtn}
-            onPress = {this.handleLogin}>
+            onPress = {this.handleLogin.bind(this)}>
             <Text style={styles.loginText}>
               Login
             </Text>
@@ -104,6 +114,16 @@ export default class LoginScreen extends React.Component {
     );
   }
 }
+
+
+function mapStateToProps(state) {
+  return {
+    user : state.LoginReducer.user,
+  };
+}
+export default connect(mapStateToProps, {Login})(LoginScreen);
+
+
 
 const styles = StyleSheet.create(
   {
