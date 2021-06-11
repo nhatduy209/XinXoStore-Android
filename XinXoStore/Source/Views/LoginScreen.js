@@ -4,6 +4,7 @@ import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Login} from '../redux/action/LoginAction/LoginAction'
 import { connect } from 'react-redux';
+import { Status } from '../Config/dataStatus';
 export class LoginScreen extends React.Component {
 
   constructor(props){
@@ -25,7 +26,7 @@ export class LoginScreen extends React.Component {
 
   //handle login 
   handleLogin =async () => {
-    this.props.Login(this.state.email , this.state.password);
+    this.props.Login(this.state.email , this.state.password);  
   }
   
   componentDidMount() {
@@ -34,8 +35,8 @@ export class LoginScreen extends React.Component {
 
   componentDidUpdate(prevProps) {
     if(this.props.user.status != prevProps.user.status){
-      console.log("USER UPDATE : "  , this.props.user);
-    }  
+      this.props.navigation.navigate('HomeScreen');
+    }    
   }
 
   render() {
@@ -66,7 +67,6 @@ export class LoginScreen extends React.Component {
           </TouchableOpacity>
 
         <View style = {{ padding : 10 , flexDirection : 'row', justifyContent : 'center'}}>
-
           <View style = {{ marginRight : 50}}> 
           <Icon.Button name="facebook" backgroundColor="#3b5998">
             <Text style={{ fontFamily: 'Arial', fontSize: 15 }}>
@@ -74,14 +74,11 @@ export class LoginScreen extends React.Component {
             </Text>
           </Icon.Button>
           </View>
-     
-
           <Icon.Button name="google" backgroundColor="#bbbb">
             <Text style={{ fontFamily: 'Arial', fontSize: 15 }}>
             Google
             </Text>
           </Icon.Button>
-
         </View>
          
 
@@ -111,15 +108,12 @@ export class LoginScreen extends React.Component {
   }
 }
 
-
 function mapStateToProps(state) {
   return {
     user : state.LoginReducer.user,
   };
 }
 export default connect(mapStateToProps, {Login})(LoginScreen);
-
-
 
 const styles = StyleSheet.create(
   {

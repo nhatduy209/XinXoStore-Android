@@ -35,8 +35,8 @@ const dispatch = (data) => {
     switch (data.actionType) {
         case NAME_ACTIONS.LOGIN_SCREEN.LOGIN_ACTION_SUCCESS:
             return {
-                type: NAME_EPICS.LOGIN_EPICS_SCREEN.LOGIN_EPICS_SCREEN,
-                data: data
+                type: NAME_EPICS.LOGIN_EPICS_SCREEN.LOGIN_EPICS_SUCCESS,
+                data: data.data.data
             };
         default:
             console.error('Error when dispatch User Epic.');
