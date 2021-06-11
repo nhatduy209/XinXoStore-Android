@@ -1,7 +1,7 @@
 
 import { Status } from '../../Config/dataStatus';
 import { NAME_ACTIONS } from '../action/LoginAction/ActionName';
-import { NAME_EPICS } from '../epics /LoginEpics/ActionName';
+import { NAME_EPICS } from '../epics/LoginEpics/ActionName';
 const loginState = {
   user: {
     status: Status.FAIL,
