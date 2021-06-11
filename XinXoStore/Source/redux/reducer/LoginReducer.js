@@ -1,18 +1,17 @@
 
 import { Status } from '../../Config/dataStatus';
 import { NAME_ACTIONS } from '../action/LoginAction/ActionName';
+import { NAME_EPICS } from '../epics /LoginEpics/ActionName';
 const loginState = {
   user: {
     status: Status.FAIL,
-    message: '',
     data: {},
   },
 };
 
-const loginReducer = (state = loginState, action) => {
+const LoginReducer = (state = loginState, action) => {
   switch (action.type) {
-    case NAME_ACTIONS.LOGIN_SCREEN.LOGIN_ACTION_SUCCESS:
-      console.log("OK");
+    case NAME_EPICS.LOGIN_EPICS_SCREEN.LOGIN_EPICS_SUCCESS:
       state = {
         ...state,
         user: {
@@ -26,11 +25,11 @@ const loginReducer = (state = loginState, action) => {
         ...state,
         user: {
           status:  Status.FAIL,
-          data: action.data,
+          data: {},
         }
       }
       break;
   }
   return state;
 };
-export default loginReducer;
+export default LoginReducer;

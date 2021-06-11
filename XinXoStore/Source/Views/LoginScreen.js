@@ -4,7 +4,6 @@ import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Login} from '../redux/action/LoginAction/LoginAction'
 import { connect } from 'react-redux';
-import { Status } from '../Config/dataStatus';
 export class LoginScreen extends React.Component {
 
   constructor(props){
@@ -23,11 +22,9 @@ export class LoginScreen extends React.Component {
     handlePassword = (value) => {
       this.setState({ password : value });
     }
-  
-
 
   //handle login 
-  handleLogin =() => {
+  handleLogin =async () => {
     this.props.Login(this.state.email , this.state.password);
   }
   
@@ -38,7 +35,6 @@ export class LoginScreen extends React.Component {
   componentDidUpdate(prevProps) {
     if(this.props.user.status != prevProps.user.status){
       console.log("USER UPDATE : "  , this.props.user);
-      
     }  
   }
 

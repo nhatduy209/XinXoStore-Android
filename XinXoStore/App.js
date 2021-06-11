@@ -14,8 +14,8 @@ import { Provider } from 'react-redux';
 import Store from './Source/redux/Store';
 // config database
 var config = {
-  databaseURL: 'https://studentmobile-2c327-default-rtdb.firebaseio.com',
-  projectId: 'studentmobile-2c327',
+  databaseURL: 'https://xinxostore-8f1e6-default-rtdb.asia-southeast1.firebasedatabase.app',
+  projectId: 'xinxostore-8f1e6',
 };
 
 if (!firebase.apps.length) {
