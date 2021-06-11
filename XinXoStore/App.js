@@ -5,53 +5,34 @@
  * @format
  * @flow strict-local
  */
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import React from 'react'
+import Root from './Source/Routes/Root'
+import firebase from 'firebase';
+import { Provider } from 'react-redux';
+import Store from './Source/redux/Store';
+// config database
+var config = {
+  databaseURL: 'https://xinxostore-8f1e6-default-rtdb.asia-southeast1.firebasedatabase.app',
+  projectId: 'xinxostore-8f1e6',
+};
 
-import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import SignUpScreen from './src/routes/screens/SignUpScreen';
-import {NavigationContainer} from '@react-navigation/native';
-
-class App extends React.Component {
-  render(){
-    return (
-      <SignUpScreen/>
-    );
-  }
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+class App extends React.Component {
+  render() {
+    return (
+      <Provider store = {Store}>
+        <NavigationContainer>
+          <Root />
+        </NavigationContainer>
+      </Provider>
 
+    )
+  }
+
+}
 export default App;
