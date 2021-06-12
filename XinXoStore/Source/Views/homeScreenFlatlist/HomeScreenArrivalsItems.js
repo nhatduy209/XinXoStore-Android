@@ -9,7 +9,8 @@ export default class NewArrivalItem extends React.Component{
     super(props)
   }
   render(){
-      return(
+      if(this.props.item.img !== ""){
+        return(
           <View style = {{ height : 150 , width : 120 , borderWidth : 1}}>
             <Image
            style = {{ height : 150 , width : 120} }
@@ -17,5 +18,7 @@ export default class NewArrivalItem extends React.Component{
             />
           </View>
       );
+      }
+
   }
 }

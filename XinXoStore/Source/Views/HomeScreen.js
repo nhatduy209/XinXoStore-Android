@@ -93,7 +93,7 @@ export class HomeScreen extends React.Component {
               <FlatList
                 data={this.props.newArrivalsItems.data.listItem}
                 renderItem={this.renderNewArrivalsItem}
-                keyExtractor={item => item.id}
+                keyExtractor={item => item.Name}
                 horizontal 
                 ItemSeparatorComponent={this.itemSeparator}
               />
