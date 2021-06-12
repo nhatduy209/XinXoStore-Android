@@ -37,4 +37,30 @@ export default class ReadService {
   
     }
   }
+
+  getListArrivalsAPI = async () => {
+    var listItem = [];
+    await firebase
+      .database()
+      .ref('NewArrivals/')
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+          var myJson = child.toJSON();
+          console.log('MY JSON -----------' , myJson);
+          listItem.push(myJson);
+        });
+      });
+    if (listItem.length > 0 ) {
+      console.log('listItem-----------------',listItem);
+      return {
+        data : {listItem},
+        status : Status.SUCCESS
+      };
+    } else {
+      return {
+        data : {},
+        status : Status.FAIL,
+      }
+    }
+  }
 }
