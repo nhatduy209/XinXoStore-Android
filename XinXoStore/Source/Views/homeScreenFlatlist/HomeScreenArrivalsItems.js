@@ -1,24 +1,54 @@
 import React from 'react'
-import { View , Image } from 'react-native'
-
+import { View , Image, StyleSheet , Text, TouchableOpacity} from 'react-native'
+import TestAPI from '../TestAPI'
 
 
 export default class NewArrivalItem extends React.Component{
 
   constructor(props){
-    super(props)
+    super(props);
+    this.state = {
+      url : "",
+    }
   }
+
+  componentDidMount(){
+    var testApi = new TestAPI()
+    testApi.myPromise(this.props.item.img).then(res => this.setState({url : res })).catch(err => console.log(err));
+  
+  }
+
+  componentDidUpdate(){
+    console.log("IMG UPDATE  ------------- " , this.props.item.img)
+  }
+
   render(){
-      if(this.props.item.img !== ""){
         return(
-          <View style = {{ height : 150 , width : 120 , borderWidth : 1}}>
-            <Image
-           style = {{ height : 150 , width : 120} }
-              source={{ uri: this.props.item.img }}
-            />
+          <View style = {styles.container}>
+            <View>
+              <TouchableOpacity>
+                <Image
+                  style = {{ height : 150 , width : 120} }
+                  source={{ uri: this.state.url }}
+                />
+                <View style = {{ paddingTop : 5}}>
+                    <Text style = {{ fontSize : 16}}>
+                        {this.props.item.Name}
+                    </Text>
+                    <Text style ={{color : '#bbbbbb'}}>
+                        {this.props.item.prices}VND
+                    </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
       );
-      }
-
   }
 }
+
+
+const styles = StyleSheet.create({
+  container : {
+    flex : 1, 
+  },
+})
