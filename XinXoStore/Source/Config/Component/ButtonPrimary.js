@@ -5,7 +5,7 @@ export default class ButtonPrimary extends React.Component{
     render(){
         return(
             <View style={styles.ButtonSignUp}>
-                <TouchableOpacity  >
+                <TouchableOpacity onPress={this.props.onPressFunction} >
                     <Text
                         style={styles.TextSignUp}>
                         Sign Up
@@ -28,7 +28,5 @@ const styles=StyleSheet.create({
         backgroundColor:'#638adf',
         borderWidth:0,
         borderRadius:30,
-        marginTop:15,
-        marginBottom:15
     }
 });

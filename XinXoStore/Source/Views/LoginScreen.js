@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {Login} from '../redux/action/LoginAction/LoginAction'
 import { connect } from 'react-redux';
 import { Status } from '../Config/dataStatus';
+
 export class LoginScreen extends React.Component {
 
   constructor(props){
@@ -94,8 +95,9 @@ export class LoginScreen extends React.Component {
         <View style={styles.bottom}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
             <Text style={{ fontSize: 18, color: '#bbbbbb' }}> Don't have account ?</Text>
-            <TouchableOpacity>
-              <Text style={{ textDecorationLine: 'underline', textAlign: 'center', fontSize: 18, color: '#bbbbbb' }}> Sign up
+            <TouchableOpacity  onPress={() => this.props.navigation.navigate('SignUp')}>
+              <Text style={{ textDecorationLine: 'underline', textAlign: 'center', fontSize: 18, color: '#bbbbbb' }}> 
+              Sign up
                </Text>
             </TouchableOpacity>
 
