@@ -6,8 +6,8 @@ import LogoGoogle from '../../src/images/logo/facebook.png';
 import LogoFacebook from '../../src/images/logo/facebook.png';
 import { connect } from 'react-redux';
 import {SignUp} from '../redux/action/SignUpAction/SignUpAction';
-import ErrorMessage from '../Config/ErrorMessage';
-import { MessageValidate } from '../Config/MessageValidate';
+import { Formik } from 'formik'
+import validationSchema from '../Config/validattionSchema';
 
 export class SignUpScreen extends React.Component{
     constructor(props){
@@ -18,25 +18,13 @@ export class SignUpScreen extends React.Component{
             email:'',
             age:''
         }
+        this.handleSignUp=this.handleSignUp.bind(this);
     }
-    textChangeHandler(value,type){
-        switch(type){
-            case 'username':
-                this.setState({username:value});
-                break;
-            case 'password':
-                this.setState({password:value});
-                break;
-            case 'email':
-                this.setState({email:value});
-            case 'age':
-                this.setState({age:value});
-        }
-    }
-    handleSignUp=async()=>{
-        //validate
-        const emailError= validate("email",this.state.email);
-
+    handleSignUp=async(values)=>{
+        this.setState({username:values.username,
+                    email:values.email,
+                    password:values.password,
+                    age:values.age});
         this.props.SignUp(this.state.email, this.state.username,this.state.password,this.state.age);
     }
     componentDidMount(){
@@ -44,10 +32,13 @@ export class SignUpScreen extends React.Component{
     }
     componentDidUpdate(prevProps){
         if(this.props.user.status!= prevProps.user.status){
-            // this.props.navigation.navigate('HomeScreen');
+            this.props.navigation.navigate('HomeScreen');
             console.log('prop ' +this.props.user.status);
             console.log('preprop '+prevProps.user.status);
         }
+    }
+    test(values){
+        console.log(values);
     }
     render(){
         return(
@@ -56,37 +47,69 @@ export class SignUpScreen extends React.Component{
                 <View style={styles.Container}>
                     <Text style={styles.HeaderText}>Sign Up</Text>
                     <View >
-                        <TextInput  
-                            style={styles.TextInput}
-                            placeholder="Username"
-                            onChangeText={value=>this.textChangeHandler(value,'username')}/>
-                        <ErrorMessage errorValue={MessageValidate.EMAIL}/>
-                        <TextInput  
-                            style={styles.TextInput}
-                            placeholder="Email"
-                            onChangeText={value=>this.textChangeHandler(value,'email')}
-                            email={true}/>
-                        <TextInput  
-                            style={styles.TextInput}
-                            placeholder="Password"
-                            onChangeText={value=>this.textChangeHandler(value,'password')}
-                            secureTextEntry={true}/>
-                        <TextInput  
-                            style={styles.TextInput}
-                            placeholder="Age"
-                            onChangeText={value=>this.textChangeHandler(value,'age')}/>
-                        
-                        <View style={styles.TextPolicy}>
-                            <Text 
-                                style={{color:'gray'}}>
-                                By clicking this button, you agree with our
-                            </Text>
-                            <Text
-                                style={{color:'#638adf',fontWeight:'bold'}}>
-                                Terms and Conditions
-                            </Text>
-                        </View>
-                        <ButtonPrimary onPressFunction={this.handleSignUp.bind(this)}/>   
+                        <Formik 
+                            validationSchema={validationSchema}
+                            initialValues={{username:this.state.username,
+                                email:this.state.email,
+                                password:this.state.password,
+                                age:this.state.age}}
+                            // onChangeText={value=>console.log('text: ',value)}
+                            onSubmit={values=>this.handleSignUp(values)}
+                            >
+                            {({handleChange, handleSubmit ,handleBlur,errors,touched})=>(
+                                <>
+                                    <TextInput  
+                                        name="username"
+                                        style={styles.TextInput}
+                                        placeholder="Username"
+                                        onBlur={handleBlur('username')}
+                                        onChangeText={handleChange('username')}
+                                        />
+                                    {errors.username && touched.username &&
+                                        <Text style={{ fontSize: 15, color: 'red' }}>{errors.username}</Text>
+                                    }
+                                    <TextInput  
+                                        name="email"
+                                        style={styles.TextInput}
+                                        placeholder="Email"
+                                        onBlur={handleBlur('email')}
+                                        onChangeText={handleChange('email')}
+                                        email={true}/>
+                                    {errors.email && touched.email &&
+                                        <Text style={{ fontSize: 15, color: 'red' }}>{errors.email}</Text>
+                                    }
+                                    <TextInput  
+                                        name="password"
+                                        style={styles.TextInput}
+                                        placeholder="Password"
+                                        onChangeText={handleChange('password')}
+                                        secureTextEntry={true}/>
+                                    {errors.password  && touched.password &&
+                                        <Text style={{ fontSize: 15, color: 'red' }}>{errors.password}</Text>
+                                    }
+                                    <TextInput  
+                                        style={styles.TextInput}
+                                        placeholder="Age"
+                                        keyboardType="numeric"
+                                        onChangeText={handleChange('age')}/>
+                                    {errors.age  && touched.age &&
+                                        <Text style={{ fontSize: 15, color: 'red' }}>{errors.age}</Text>
+                                    }
+                                    <View style={styles.TextPolicy}>
+                                        <Text 
+                                            style={{color:'gray'}}>
+                                            By clicking this button, you agree with our
+                                        </Text>
+                                        <Text
+                                            style={{color:'#638adf',fontWeight:'bold'}}>
+                                            Terms and Conditions
+                                        </Text>
+                                    </View>
+                                    {/* <ButtonPrimary onSubmit={handleSubmit}/>  */}
+                                    <ButtonPrimary onPressFunction={handleSubmit} /> 
+                                </>  
+                            )}
+                        </Formik>
                     </View>
                                   
                 </View>
@@ -125,6 +148,7 @@ const styles=StyleSheet.create({
     },
     Container:{
         display:'flex',
+        position:'relative',
         alignItems:'center',
         borderRadius:30,
         marginHorizontal:10,
