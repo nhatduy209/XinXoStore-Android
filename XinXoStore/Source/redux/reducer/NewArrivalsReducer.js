@@ -9,7 +9,6 @@ const newArrivalsState = {
 };
 
 const NewArrivalsReducer = (state = newArrivalsState, action) => {
-  console.log('REDUCER NewArrivalsReducer -----' , action);
   switch (action.type) {
     case NAME_EPICS.GET_LIST_NEW_ARRIVALS_EPICS.GET_LIST_NEW_ARRIVALS_EPICS_SUCCESS:
       state = {
@@ -21,13 +20,6 @@ const NewArrivalsReducer = (state = newArrivalsState, action) => {
       }
       break;
     default:
-      state = {
-        ...state,
-        items: {
-          status:  Status.FAIL,
-          data: {},
-        }
-      }
       break;
   }
   return state;

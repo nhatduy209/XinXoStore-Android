@@ -7,7 +7,6 @@ export default class NewArrivalsBusiness {
       var readDataService = new ReadService();
       var testApi = new TestAPI();
 
-      console.log('getListNewArrivals--------------')
       let result  = await readDataService.getListArrivalsAPI();
       
       if( result.status  == Status.SUCCESS){

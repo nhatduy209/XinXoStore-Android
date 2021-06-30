@@ -6,11 +6,12 @@ export class DrawerContent extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {}
   }
 
 
   componentDidMount() {
-    console.log("HOME--------", this.props.user);
+    console.log("HOME--------", this.props.user.data.username);
   }
 
   // handle navigate home 
@@ -19,6 +20,7 @@ export class DrawerContent extends React.Component {
   }
   
   render() {
+    console.log('this.props.user.data.username' , this.props.user.data.username);
     return (
       <View>
         <View style={styles.headerStyle} >
@@ -34,7 +36,6 @@ export class DrawerContent extends React.Component {
 
         {/* list item in drawer  */}
         <View>
-
             {/* each item  */}
             <TouchableOpacity onPress = {this.onHomePress}>
                 <View style={styles.itemDrawer}>
@@ -45,7 +46,7 @@ export class DrawerContent extends React.Component {
                       >
                       </Icon>
                       <Text style={styles.itemText}>
-                        Home
+                        Home  
                       </Text>
                 </View>
             </TouchableOpacity>

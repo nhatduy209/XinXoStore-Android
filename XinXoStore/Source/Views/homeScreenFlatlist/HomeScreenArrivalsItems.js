@@ -8,21 +8,17 @@ export default class NewArrivalItem extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      url : "",
+      url : "img",
     }
   }
 
   componentDidMount(){
     var testApi = new TestAPI()
     testApi.myPromise(this.props.item.img).then(res => this.setState({url : res })).catch(err => console.log(err));
-  
-  }
-
-  componentDidUpdate(){
-    console.log("IMG UPDATE  ------------- " , this.props.item.img)
   }
 
   render(){
+    console.log(this.state.url);
         return(
           <View style = {styles.container}>
             <View>

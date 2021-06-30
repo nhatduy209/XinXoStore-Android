@@ -11,7 +11,6 @@ let messageError = {};
 const resolver = (action) => {
     const newArrivalsBusiness = new NewArrivalsBussiness();
     return new Promise((resolve, reject) => {
-        console.log('NEW ARRIVALS EPIC----------' , action);
         switch (action.type) {
             case NAME_ACTIONS.GET_NEW_ARRIVALS_ITEMS.GET_NEW_ARRIVALS_ITEMS_ACTION:
               newArrivalsBusiness.getListNewArrivals(success => {

@@ -1,14 +1,11 @@
 import React from 'react'
-import { Text, View, Image, StyleSheet, TouchableOpacity, FlatList, ScrollView } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, FlatList, ScrollView } from 'react-native'
 import { Dimensions } from 'react-native';
 import { SliderBox } from "react-native-image-slider-box";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import NewArrivalItem from './homeScreenFlatlist/HomeScreenArrivalsItems.js'
 import { getListNewArrivals } from '../redux/action/GetNewArrivalsAction/GetNewArrivalsAction'
-import firebase from 'firebase';
-import storage from '@react-native-firebase/storage';
-import TestAPI from './TestAPI.js';
 
 export class HomeScreen extends React.Component {
   constructor(props) {
@@ -29,14 +26,7 @@ export class HomeScreen extends React.Component {
     this.props.getListNewArrivals();
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.newArrivalsItems.status != prevProps.newArrivalsItems.status) {
-      console.log("ITEMS UPDATE------", this.props.newArrivalsItems.data)
-    }
-  }
-
   renderNewArrivalsItem = ({ item }) => {
-    console.log("ITEM NEWW ------" , item.img)
     return (
       <NewArrivalItem item={item} />
     )
@@ -45,6 +35,11 @@ export class HomeScreen extends React.Component {
   itemSeparator = () => {
     return <View style={{ width: 15 }} />;
   };
+
+  handleShowAll = () => {
+            this.props.navigation.navigate('NewArrivalsScreen');
+  }
+  
 
   render() {
     return (
@@ -83,7 +78,7 @@ export class HomeScreen extends React.Component {
                 New Arrivals
               </Text>
 
-              <TouchableOpacity style={{ marginLeft: 'auto' }}>
+              <TouchableOpacity style={{ marginLeft: 'auto' }} onPress = {this.handleShowAll}>
                 <Text style={styles.textShowAll}>
                   Show all {' '}
                   <Icon name="play" backgroundColor="#3b5998" />
