@@ -1,10 +1,14 @@
 import { Status } from '../Config/dataStatus';
 import ReadService from '../services/ReadData';
+import TestAPI from '../Views/TestAPI';
 
-export default class LoginBusiness {
-  verifyLogin = async ( data , success , fail ) => {
+export default class NewArrivalsBusiness {
+  getListNewArrivals = async (success , fail ) => {
       var readDataService = new ReadService();
-      const result  =await readDataService.verifyLoginApi(data.username , data.password )
+      var testApi = new TestAPI();
+
+      let result  = await readDataService.getListArrivalsAPI();
+      
       if( result.status  == Status.SUCCESS){
         success(result);
       }

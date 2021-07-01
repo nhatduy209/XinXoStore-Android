@@ -1,6 +1,5 @@
 
 import { Status } from '../../Config/dataStatus';
-import { NAME_ACTIONS } from '../action/LoginAction/ActionName';
 import { NAME_EPICS } from '../epics/LoginEpics/ActionName';
 const loginState = {
   user: {
@@ -22,13 +21,6 @@ const LoginReducer = (state = loginState, action) => {
       }
       break;
     default:
-      state = {
-        ...state,
-        user: {
-          status:  Status.FAIL,
-          data: {},
-        }
-      }
       break;
   }
   return state;
