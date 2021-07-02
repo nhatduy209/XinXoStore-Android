@@ -13,6 +13,8 @@ export default class RenderNewArrivalsItem extends React.Component {
     var testApi = new TestAPI()
     testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
+  handleDetail = () => {
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -45,7 +47,7 @@ export default class RenderNewArrivalsItem extends React.Component {
           </View>
 
           {/* go to detail screen */}
-          <TouchableOpacity>
+          <TouchableOpacity onPress = {this.handleDetail}>
             <Text style={{ marginLeft: 'auto', fontSize: 20, color: 'blue'  , fontStyle : 'italic'}}>
               Details {' '}
             </Text>

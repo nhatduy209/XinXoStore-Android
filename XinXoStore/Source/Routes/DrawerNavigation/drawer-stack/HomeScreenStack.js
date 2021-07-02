@@ -4,6 +4,7 @@ import HomeScreen from '../../../Views/HomeScreen'
 import {Image , View , Text , TouchableOpacity} from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import AllNewArrivalsItem from '../../../Views/ListItemScreen/AllNewArrivalsItems';
+import DetailItem from '../../../Views/DetailItemScreen/DetailItemArrival';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RNRestart from 'react-native-restart';
 const Stack = createStackNavigator();
@@ -47,7 +48,7 @@ export default class HomeScreenStack extends React.Component {
         }}        
       />
 
-       <Stack.Screen
+       {/* <Stack.Screen
         name="NewArrivalsScreen"
         component={AllNewArrivalsItem}   
         options={{ title: ' New Arrivals ' ,
@@ -69,7 +70,36 @@ export default class HomeScreenStack extends React.Component {
                         
           }}
              
-      />
+      /> */}
+      <Stack.Screen
+      name="NewArrivalsScreen"
+      component={DetailItem}
+      options={{ title: ' Detail ',
+        headerRight: ()=> {
+          return (
+            <View style={{flexDirection: 'row'}}>
+              <TouchableOpacity>
+                    <Icon
+                      size={25}
+                      name="wifi"
+                      style = {{ paddingRight : 15 }}
+                      color = "#bbbbbb"
+                    >
+                    </Icon>
+              </TouchableOpacity>
+            </View>
+          );
+        },
+        headerStyle: {
+          // backgroundColor: '#',
+          height: 56,
+          elevation: null,
+        }
+      }}
+      >
+
+      </Stack.Screen>
+
     </Stack.Navigator>
     );
   }
