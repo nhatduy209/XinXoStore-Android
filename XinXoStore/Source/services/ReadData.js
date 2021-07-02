@@ -1,10 +1,12 @@
 
 import firebase from 'firebase';
 import { Status } from '../Config/dataStatus';
+import _, { map } from 'underscore';
 export default class ReadService {
   verifyLoginApi = async (username , password) => {
     let canLogin = false ; 
     let Email = "";
+    let avatarUser = "";
     console.log("SERVICE ", username , password);
     await firebase
       .database()
@@ -15,6 +17,7 @@ export default class ReadService {
           console.log(myJson.Username + ' ' + myJson.Password);
           if (myJson.Username === username && myJson.Password === password) {
             Email = myJson.Email;
+            avatarUser = myJson.Avatar
             canLogin = true;
           }
         });
@@ -24,7 +27,8 @@ export default class ReadService {
         data : {
           username, 
           password,
-          Email
+          Email,
+          avatarUser,
         },
         status : Status.SUCCESS
       };
@@ -38,7 +42,7 @@ export default class ReadService {
     }
   }
 
-  getListArrivalsAPI = async () => {
+  getListArrivalsAPI = async (sortUp) => {
     var listItem = [];
     await firebase
       .database()
@@ -46,12 +50,15 @@ export default class ReadService {
       .once('value', function (snapshot) {
         snapshot.forEach(function (child) {
           var myJson = child.toJSON();
-          console.log('MY JSON -----------' , myJson);
           listItem.push(myJson);
         });
       });
     if (listItem.length > 0 ) {
       console.log('listItem-----------------',listItem);
+      listItem =  _.sortBy(listItem,'prices')
+      if(!sortUp){
+        listItem.reverse();
+      }
       return {
         data : {listItem},
         status : Status.SUCCESS
