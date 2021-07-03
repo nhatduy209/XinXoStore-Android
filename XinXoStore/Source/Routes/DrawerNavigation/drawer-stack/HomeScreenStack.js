@@ -71,8 +71,8 @@ export default class HomeScreenStack extends React.Component {
           }}
              
       />
-      {/* <Stack.Screen
-      name="NewArrivalsScreen"
+      <Stack.Screen
+      name="DetailItemScreen"
       component={DetailItem}
       options={{ title: ' Detail ',
         headerRight: ()=> {
@@ -98,7 +98,7 @@ export default class HomeScreenStack extends React.Component {
         }
       }}
       >
-      </Stack.Screen> */}
+      </Stack.Screen>
 
     </Stack.Navigator>
     );

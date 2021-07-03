@@ -3,6 +3,7 @@ import { View, Dimensions, StyleSheet, Image, Text ,TouchableOpacity, ScrollView
 import TestAPI from '../TestAPI';
 import { SliderBox } from "react-native-image-slider-box";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { getArrivalItem } from '../redux/action/GetItemArrivalAction/GetItemArrivalAction';
 
 export default class DetailItem extends React.Component {
     constructor(props) {
@@ -16,11 +17,11 @@ export default class DetailItem extends React.Component {
             imgUrl : "",
           };
     }
-    // componentDidMount() {
-    //     // var testApi = new TestAPI()
-    //     // testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
-    //     this.props.getListNewArrivals();
-    // }
+    componentDidMount() {
+        // var testApi = new TestAPI()
+        // testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
+        // this.props.getArrivalItem();
+    }
     // renderNewArrivalsItem = ({ item }) => {
     //     return (
     //       <NewArrivalItem item={item} />
@@ -187,6 +188,12 @@ export default class DetailItem extends React.Component {
         );
     }
 }
+// function mapStateToProps(state) {
+//     return {
+//     //   ArrivalItem: state.NewArrivalsReducer.items,
+//     };
+//   }
+//   export default connect(mapStateToProps, { getListNewArrivals })(HomeScreen);
 const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',

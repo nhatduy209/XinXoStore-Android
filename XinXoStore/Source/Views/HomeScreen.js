@@ -37,6 +37,7 @@ export class HomeScreen extends React.Component {
   };
 
   handleShowAll = () => {
+    // console.log('day ne' + this.props);
             this.props.navigation.navigate('NewArrivalsScreen');
   }
   

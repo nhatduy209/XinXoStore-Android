@@ -12,7 +12,7 @@ export default class ReadService {
       .once('value', function (snapshot) {
         snapshot.forEach(function (child) {
           var myJson = child.toJSON();
-          console.log(myJson.Username + ' ' + myJson.Password);
+          // console.log(myJson.Username + ' ' + myJson.Password);
           if (myJson.Username === username && myJson.Password === password) {
             Email = myJson.Email;
             canLogin = true;
@@ -38,6 +38,36 @@ export default class ReadService {
     }
   }
 
+  // truyền đô đây nè mẹ
+  getArrivalAPI = async (img) => {
+    // var listItem = [];
+    await firebase
+      .database()
+      .ref('NewArrivals/')
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+          //đặt ddieuf kiện
+          var myJson = child.toJSON();
+          if(myJson.img === img) {
+            console.log('MY JSON -----------' , myJson);
+            listItem.push(myJson);
+          }
+        });
+      });
+    if (listItem.length > 0 ) {
+      console.log('listItem-----------------',listItem);
+      return {
+        data : {listItem},
+        status : Status.SUCCESS
+      };
+    } else {
+      return {
+        data : {},
+        status : Status.FAIL,
+      }
+    }
+  }
+
   getListArrivalsAPI = async () => {
     var listItem = [];
     await firebase
@@ -45,6 +75,7 @@ export default class ReadService {
       .ref('NewArrivals/')
       .once('value', function (snapshot) {
         snapshot.forEach(function (child) {
+          //đặt ddieuf kiện
           var myJson = child.toJSON();
           console.log('MY JSON -----------' , myJson);
           listItem.push(myJson);

@@ -7,6 +7,7 @@ export default class RenderNewArrivalsItem extends React.Component {
     super(props);
     this.state = {
       url: "img",
+      
     }
   }
   componentDidMount() {
@@ -14,6 +15,8 @@ export default class RenderNewArrivalsItem extends React.Component {
     testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
   handleDetail = () => {
+    // console.log( 'đây nè' + this.props.item.navigate);
+    this.props.item.navigate.navigate('DetailItemScreen',this.props.item.img);
   }
   render() {
     return (
