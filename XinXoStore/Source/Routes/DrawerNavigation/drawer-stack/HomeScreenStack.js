@@ -48,7 +48,7 @@ export default class HomeScreenStack extends React.Component {
         }}        
       />
 
-       {/* <Stack.Screen
+       <Stack.Screen
         name="NewArrivalsScreen"
         component={AllNewArrivalsItem}   
         options={{ title: ' New Arrivals ' ,
@@ -70,8 +70,8 @@ export default class HomeScreenStack extends React.Component {
                         
           }}
              
-      /> */}
-      <Stack.Screen
+      />
+      {/* <Stack.Screen
       name="NewArrivalsScreen"
       component={DetailItem}
       options={{ title: ' Detail ',
@@ -94,11 +94,11 @@ export default class HomeScreenStack extends React.Component {
           // backgroundColor: '#',
           height: 56,
           elevation: null,
+          backgroundColor: '#FFF'
         }
       }}
       >
-
-      </Stack.Screen>
+      </Stack.Screen> */}
 
     </Stack.Navigator>
     );
