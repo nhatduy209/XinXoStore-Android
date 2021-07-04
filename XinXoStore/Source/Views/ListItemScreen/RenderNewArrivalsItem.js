@@ -13,6 +13,7 @@ export default class RenderNewArrivalsItem extends React.Component {
     var testApi = new TestAPI()
     testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
+  
   render() {
     return (
       <View style={styles.container}>

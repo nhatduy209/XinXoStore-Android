@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import RNRestart from 'react-native-restart';
 import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 import { connect } from 'react-redux';
+import EditProfileScreen from '../../../Views/EditProfileScreen';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -106,6 +107,19 @@ class HomeScreenStack extends React.Component {
 
             }
 
+          }}
+
+        />
+
+        <Stack.Screen
+          name="EditProfileScreen"
+          component={EditProfileScreen}
+          options={{
+            title: "Edit Profile",
+            headerLeft: () =>
+              <NavigationDrawerStructureLeft
+                navigationProps={this.props.navigation}
+              />
           }}
 
         />

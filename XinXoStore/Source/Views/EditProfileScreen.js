@@ -3,25 +3,29 @@ import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native'
 import TestAPI from './TestAPI';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import * as ImagePicker from "react-native-image-picker"
+import * as ImagePicker from "react-native-image-picker";
 class EditProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      url: 'img'
+      url: 'img',
     }
   }
 
   componentDidMount() {
-    console.log("HOME--------", this.props.user.data.username);
+    console.log("Againnn Edit ----------------", this.props.user.data.username);
     var testApi = new TestAPI();
     testApi.myPromise(this.props.user.data.avatarUser).then(res => this.setState({ url: res })).catch(err => console.log(err));
+  }
+
+  componentDidUpdate() {
+    console.log("Update Edit ----------------", )
   }
 
   handlePhotos = () => {
     const Options = {};
     ImagePicker.launchImageLibrary(Options , response => {
-      console.log("");
+      this.setState({ url : response.assets[0].uri})
     })
    }
   

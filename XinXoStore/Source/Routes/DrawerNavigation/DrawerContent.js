@@ -25,11 +25,10 @@ export class DrawerContent extends React.Component {
   }
 
   goToEditProfile = () => {
-    this.props.navigation.navigate('EditProfile');
+    this.props.navigation.push('EditProfileScreen')
   }
 
   render() {
-    console.log('this.props.user.data.username', this.props.user.data.username);
     return (
       <View>
         <TouchableOpacity onPress = {this.goToEditProfile}>
