@@ -8,7 +8,7 @@ export default class ButtonPrimary extends React.Component{
                 <TouchableOpacity onPress={this.props.onPressFunction} >
                     <Text
                         style={styles.TextSignUp}>
-                        Sign Up
+                        {this.props.text}
                     </Text>
                 </TouchableOpacity>
             </View>

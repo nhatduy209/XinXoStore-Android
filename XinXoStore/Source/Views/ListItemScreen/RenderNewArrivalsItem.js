@@ -2,7 +2,10 @@ import React from 'react'
 import { View, Dimensions, StyleSheet, Image, Text ,TouchableOpacity} from 'react-native'
 import TestAPI from '../TestAPI'
 import Icon from 'react-native-vector-icons/FontAwesome';
-export default class RenderNewArrivalsItem extends React.Component {
+import { connect } from 'react-redux';
+import { AddCart } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
+
+export  class RenderNewArrivalsItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,7 +16,12 @@ export default class RenderNewArrivalsItem extends React.Component {
     var testApi = new TestAPI()
     testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
+  addItem=async()=>{
+    console.log("this.addItem");
+    this.props.AddCart(this.props.item)
+  }
   render() {
+    console.log(this.props.item.img);
     return (
       <View style={styles.container}>
         <View>
@@ -40,6 +48,7 @@ export default class RenderNewArrivalsItem extends React.Component {
               size={35}
               name="shopping-cart"
               color="#dc143c"
+              onPress={this.addItem}
             ></Icon>
             </TouchableOpacity>
           </View>
@@ -57,6 +66,13 @@ export default class RenderNewArrivalsItem extends React.Component {
     )
   }
 }
+
+const mapStateToProps = state =>{
+  return{
+    numberCart:state.ShoppingCartReducer.numberCart
+  }
+}
+export default connect(mapStateToProps,{AddCart})(RenderNewArrivalsItem)
 
 const styles = StyleSheet.create({
   container: {

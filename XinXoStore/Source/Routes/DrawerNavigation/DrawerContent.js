@@ -18,7 +18,9 @@ export class DrawerContent extends React.Component {
   onHomePress = () => {
     this.props.navigation.navigate('Home');
   }
-  
+  onShoppingCartPress=()=>{
+    this.props.navigation.navigate('ShoppingCart');
+  }
   render() {
     console.log('this.props.user.data.username' , this.props.user.data.username);
     return (
@@ -104,6 +106,19 @@ export class DrawerContent extends React.Component {
                       </Icon>
                       <Text style={styles.itemText}>
                         Settings
+                      </Text>
+                </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress = {this.onShoppingCartPress}>
+                <View style={styles.itemDrawer}>
+                      <Icon
+                        size={35}
+                        name="cog"
+                        style={styles.iconStyle}
+                      >
+                      </Icon>
+                      <Text style={styles.itemText}>
+                        Shopping Cart
                       </Text>
                 </View>
             </TouchableOpacity>
