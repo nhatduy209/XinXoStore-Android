@@ -31,6 +31,20 @@ const NavigationDrawerStructureLeft = props => {
   );
 };
 
+const NavigationDrawerStructureRight = props => {
+  //Structure for the navigatin Drawer
+  const handleSave = () => {
+    //Props to open/close the drawer
+    console.log('------------------', props)
+  };
+  return (
+    <View style={{ flexDirection: 'row' }}>
+      <TouchableOpacity onPress={handleSave}>
+       <Text> Save </Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 
 
@@ -116,6 +130,7 @@ class HomeScreenStack extends React.Component {
           component={EditProfileScreen}
           options={{
             title: "Edit Profile",
+            headerRight : () => <NavigationDrawerStructureRight navigationProps = {this.props} />,
             headerLeft: () =>
               <NavigationDrawerStructureLeft
                 navigationProps={this.props.navigation}

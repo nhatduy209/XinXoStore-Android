@@ -6,7 +6,8 @@ export default class ReadService {
   verifyLoginApi = async (username , password) => {
     let canLogin = false ; 
     let Email = "";
-    let avatarUser = "";
+    let key = "";
+    let user = {};
     console.log("SERVICE ", username , password);
     await firebase
       .database()
@@ -16,19 +17,17 @@ export default class ReadService {
           var myJson = child.toJSON();
           console.log(myJson.Username + ' ' + myJson.Password);
           if (myJson.Username === username && myJson.Password === password) {
-            Email = myJson.Email;
-            avatarUser = myJson.Avatar
             canLogin = true;
+            key = child.key ;
+            user = myJson;
           }
         });
       });
     if (canLogin === true) {
       return {
         data : {
-          username, 
-          password,
-          Email,
-          avatarUser,
+          user,
+          key,
         },
         status : Status.SUCCESS
       };

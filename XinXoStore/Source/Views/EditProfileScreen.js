@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity, ScrollView , TextInput} from 'react-native'
 import TestAPI from './TestAPI';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -13,13 +13,8 @@ class EditProfileScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log("Againnn Edit ----------------", this.props.user.data.username);
     var testApi = new TestAPI();
-    testApi.myPromise(this.props.user.data.avatarUser).then(res => this.setState({ url: res })).catch(err => console.log(err));
-  }
-
-  componentDidUpdate() {
-    console.log("Update Edit ----------------", )
+    testApi.myPromise(this.props.user.data.user.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
 
   handlePhotos = () => {
@@ -47,6 +42,36 @@ class EditProfileScreen extends React.Component {
           </TouchableOpacity>
         </View>
 
+        {/* View for detail info */}
+        <ScrollView>
+        <View>
+          <View style = {styles.detailInfo}>
+              <Text style = { styles.textStyleTitle }>{' '}Username</Text>
+              <TextInput style = {styles.textStyleData}>{this.props.user.data.user.Username}</TextInput>
+          </View>
+
+          <View style = {styles.detailInfo}>
+              <Text style = { styles.textStyleTitle }>{' '}Email</Text>
+              <TextInput style = {styles.textStyleData}>{this.props.user.data.user.Email}</TextInput>
+          </View>
+
+          <View style = {styles.detailInfo}>
+              <Text style = { styles.textStyleTitle }>{' '}Age</Text>
+              <TextInput style = {styles.textStyleData}>{this.props.user.data.user.Age}</TextInput>
+          </View>
+
+          <View style = {styles.detailInfo}>
+              <Text style = { styles.textStyleTitle }>{' '}Phone Number</Text>
+              <TextInput style = {styles.textStyleData}>+{this.props.user.data.user.PhoneNum}</TextInput>
+          </View>
+
+          <View style = {styles.detailInfo}>
+              <Text style = { styles.textStyleTitle }>{' '}Gender</Text>
+              <TextInput style = {styles.textStyleData}>{this.props.user.data.user.Gender}</TextInput>
+          </View>
+        </View>
+        </ScrollView>
+
       </View>
     );
   }
@@ -62,7 +87,8 @@ export default connect(mapStateToProps, {})(EditProfileScreen);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor : '#ffffff'
   },
   avtImage: {
     height: 200,
@@ -72,5 +98,18 @@ const styles = StyleSheet.create({
   },
   cameraIcon: {
     height: 25, width: 25, alignSelf: 'center', marginLeft: 80, marginTop: 110, color: '#bbbbbb'
+  },
+  detailInfo: {
+    borderBottomWidth : 0.5 ,
+    borderColor : '#bbbbbb',
+    marginHorizontal : 20,
+    paddingTop : 15
+  },
+  textStyleTitle : {
+    color : '#bbbbbb',
+    fontSize : 17
+  },
+  textStyleData : {
+    fontSize : 19 ,
   }
 })

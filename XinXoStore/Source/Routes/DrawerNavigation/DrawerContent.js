@@ -16,16 +16,18 @@ export class DrawerContent extends React.Component {
   componentDidMount() {
     console.log("HOME--------", this.props.user.data.username);
     var testApi = new TestAPI()
-    testApi.myPromise(this.props.user.data.avatarUser).then(res => this.setState({ url: res })).catch(err => console.log(err));
+    testApi.myPromise(this.props.user.data.user.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
 
   // handle navigate home 
   onHomePress = () => {
+    this.props.navigation.push('Home');
     this.props.navigation.navigate('Home');
   }
 
   goToEditProfile = () => {
-    this.props.navigation.push('EditProfileScreen')
+    this.props.navigation.push('EditProfileScreen');
+    this.props.navigation.navigate('EditProfileScreen');
   }
 
   render() {
@@ -39,10 +41,10 @@ export class DrawerContent extends React.Component {
             </Image>
             <View>
               <Text style={{ fontSize: 25 }}>
-                {this.props.user.data.username}
+                {this.props.user.data.user.Username}
               </Text>
               <Text style={{ color: '#bbbbbb' }}>
-                {this.props.user.data.Email}
+                {this.props.user.data.user.Email}
               </Text>
             </View>
           </View>
