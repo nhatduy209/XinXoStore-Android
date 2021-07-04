@@ -3,9 +3,9 @@ import { View, Dimensions, StyleSheet, Image, Text ,TouchableOpacity, ScrollView
 import TestAPI from '../TestAPI';
 import { SliderBox } from "react-native-image-slider-box";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { getArrivalItem } from '../redux/action/GetItemArrivalAction/GetItemArrivalAction';
-
-export default class DetailItem extends React.Component {
+import { connect } from 'react-redux';
+import { getArrivalItem } from '../../redux/action/GetItemArrivalAction/GetItemArrivalAction.js'
+class DetailItem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,24 +14,21 @@ export default class DetailItem extends React.Component {
                 require("../../Images/clothingSlider.jpeg"),
                 require("../../Images/clothingSlider2.jpeg"),
               ],
-            imgUrl : "",
+            url : "img",
           };
     }
     componentDidMount() {
-        // var testApi = new TestAPI()
-        // testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
-        // this.props.getArrivalItem();
+        var testApi = new TestAPI()
+        testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
+        // const data = this.props.route.param.;
+        console.log('mount');
+        console.log(this.props.route.params.data.img);
+        console.log(this.props.route);
+        
+        // this.props.getArrivalItem(this.props.route.params.data.Name);
     }
-    // renderNewArrivalsItem = ({ item }) => {
-    //     return (
-    //       <NewArrivalItem item={item} />
-    //     )
-    //   }
-    
-    //   itemSeparator = () => {
-    //     return <View style={{ width: 15 }} />;
-    //   };
     render(){
+        console.log(this.state.url);
         return(
             <View>
                 {/* item image */}
@@ -48,7 +45,8 @@ export default class DetailItem extends React.Component {
                 <ScrollView>
                     {/* item images */}
                     <View style={{position:'absolute'}}>
-                        <SliderBox
+                        <Image source ={{uri : this.props.route.params.data.url}} />
+                        {/* <SliderBox
                             images={this.state.images}
                             sliderBoxHeight={350}
                             dotColor="#FFEE58"
@@ -57,7 +55,7 @@ export default class DetailItem extends React.Component {
                             autoplay
                             circleLoop
                             
-                        />
+                        /> */}
                     </View>
                     <View style={{height:320}}>
                         
@@ -68,7 +66,7 @@ export default class DetailItem extends React.Component {
                         {/* item name and favarite icon */}
                         <View style={{ flexDirection: 'row', padding:20,marginTop:20 }}>
                             <Text style={styles.textTitles}>
-                                Áo jecket túi hộp cổ cứng
+                                {this.props.route.params.data.Name}
                             </Text>
                             <TouchableOpacity >
                                     <Icon
@@ -84,7 +82,7 @@ export default class DetailItem extends React.Component {
                         <View style={{position:'relative',paddingHorizontal:20}}>
                             <View style={{flexDirection: 'row'}}>
                                 <Text style={{ color: "#000", fontSize: 21,width:Dimensions.get("window").width -150}}>
-                                    $2,000.00
+                                {this.props.route.params.data.prices}
                                 </Text>
                                 <View style={{flexDirection: 'row',padding:5}}>
                                     <Icon
@@ -188,12 +186,14 @@ export default class DetailItem extends React.Component {
         );
     }
 }
-// function mapStateToProps(state) {
-//     return {
-//     //   ArrivalItem: state.NewArrivalsReducer.items,
-//     };
-//   }
-//   export default connect(mapStateToProps, { getListNewArrivals })(HomeScreen);
+function mapStateToProps(state) {
+    console.log('state nè')
+     console.log(state);
+    return {
+        ArrivalItem: state.ArrivalItemReducer.items,
+    };
+  }
+export default connect(mapStateToProps, {getArrivalItem})(DetailItem);
 const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',

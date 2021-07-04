@@ -12,13 +12,16 @@ export default class RenderNewArrivalsItem extends React.Component {
   }
   componentDidMount() {
     var testApi = new TestAPI()
+    console.log(this.props.item.img);
     testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
   handleDetail = () => {
-    // console.log( 'đây nè' + this.props.item.navigate);
-    this.props.item.navigate.navigate('DetailItemScreen',this.props.item.img);
+    const data = {data:this.props.item,
+    url: this.state.url};
+    this.props.item.navigate.navigate('DetailItemScreen',data);
   }
   render() {
+    console.log(this.state.url);
     return (
       <View style={styles.container}>
         <View>

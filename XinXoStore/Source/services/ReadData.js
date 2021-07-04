@@ -39,8 +39,8 @@ export default class ReadService {
   }
 
   // truyền đô đây nè mẹ
-  getArrivalAPI = async (img) => {
-    // var listItem = [];
+  getArrivalItemAPI = async (Name) => {
+    var listItem = [];
     await firebase
       .database()
       .ref('NewArrivals/')
@@ -48,7 +48,7 @@ export default class ReadService {
         snapshot.forEach(function (child) {
           //đặt ddieuf kiện
           var myJson = child.toJSON();
-          if(myJson.img === img) {
+          if(myJson.Name === Name) {
             console.log('MY JSON -----------' , myJson);
             listItem.push(myJson);
           }
