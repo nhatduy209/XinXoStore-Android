@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, Text, TouchableOpacity, ScrollView , TextInput} from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity, ScrollView, TextInput, Dimensions } from 'react-native'
 import TestAPI from './TestAPI';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,6 +9,11 @@ class EditProfileScreen extends React.Component {
     super(props);
     this.state = {
       url: 'img',
+      username: this.props.user.data.user.Username,
+      email: this.props.user.data.user.Email,
+      age: this.props.user.data.user.Age,
+      phoneNum: this.props.user.data.user.PhoneNum,
+      gender: this.props.user.data.user.Gender,
     }
   }
 
@@ -19,16 +24,28 @@ class EditProfileScreen extends React.Component {
 
   handlePhotos = () => {
     const Options = {};
-    ImagePicker.launchImageLibrary(Options , response => {
-      this.setState({ url : response.assets[0].uri})
+    ImagePicker.launchImageLibrary(Options, response => {
+      this.setState({ url: response.assets[0].uri })
     })
-   }
-  
+  }
+
+  handleReset = () => {
+    this.setState({ username: this.props.user.data.user.Username })
+    this.setState({ gender: this.props.user.data.user.Gender })
+    this.setState({  phoneNum: this.props.user.data.user.PhoneNum})
+    this.setState({  age: this.props.user.data.user.Age})
+    this.setState({  email: this.props.user.data.user.Email})
+  }
+
+  handleSave = () => {
+    console.log(this.state.username);
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.avtImage}>
-          <TouchableOpacity onPress = {this.handlePhotos}>
+          <TouchableOpacity onPress={this.handlePhotos}>
             <Image
               style={{ height: 130, width: 130, borderRadius: 70, position: 'absolute', alignSelf: 'center' }}
               source={{ uri: this.state.url }}>
@@ -44,32 +61,76 @@ class EditProfileScreen extends React.Component {
 
         {/* View for detail info */}
         <ScrollView>
-        <View>
-          <View style = {styles.detailInfo}>
-              <Text style = { styles.textStyleTitle }>{' '}Username</Text>
-              <TextInput style = {styles.textStyleData}>{this.props.user.data.user.Username}</TextInput>
+          <View>
+            <View style={styles.detailInfo}>
+              <Text style={styles.textStyleTitle}>{' '}Username</Text>
+              <TextInput
+                style={styles.textStyleData}
+                onChangeText={value => {
+                  this.setState({ username: value })
+                }}
+                value={this.state.username}
+              >
+              </TextInput>
+            </View>
+
+            <View style={styles.detailInfo}>
+              <Text style={styles.textStyleTitle}>{' '}Email</Text>
+              <TextInput style={styles.textStyleData}
+                onChangeText={value => {
+                  this.setState({ email: value })
+                }}
+                value={this.state.email}
+              ></TextInput>
+            </View>
+
+            <View style={styles.detailInfo}>
+              <Text style={styles.textStyleTitle}>{' '}Age</Text>
+              <TextInput style={styles.textStyleData}
+                onChangeText={value => {
+                  this.setState({ age: value })
+                }}
+                value={this.state.age.toString()}
+              ></TextInput>
+            </View>
+
+            <View style={styles.detailInfo}>
+              <Text style={styles.textStyleTitle}>{' '}Phone Number</Text>
+              <TextInput style={styles.textStyleData}
+                onChangeText={value => {
+                  this.setState({ phoneNum: value })
+                }}
+                value={this.state.phoneNum}
+              ></TextInput>
+            </View>
+
+            <View style={styles.detailInfo}>
+              <Text style={styles.textStyleTitle}>{' '}Gender</Text>
+              <TextInput style={styles.textStyleData}
+                onChangeText={value => {
+                  this.setState({ gender : value })
+                }}
+                value={this.state.gender}
+              ></TextInput>
+            </View>
           </View>
 
-          <View style = {styles.detailInfo}>
-              <Text style = { styles.textStyleTitle }>{' '}Email</Text>
-              <TextInput style = {styles.textStyleData}>{this.props.user.data.user.Email}</TextInput>
+
+          <View style={{ flexDirection: 'row', marginVertical: 20, }}>
+            <View style={styles.btnReset}>
+              <TouchableOpacity onPress={this.handleReset}>
+                <Text style={{ fontSize: 25, padding: 5 }}>Reset</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.btnSave}>
+              <TouchableOpacity onPress={this.handleSave}>
+                <Text style={{ fontSize: 25, padding: 5, color: '#ffffff' }}>Save</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
-          <View style = {styles.detailInfo}>
-              <Text style = { styles.textStyleTitle }>{' '}Age</Text>
-              <TextInput style = {styles.textStyleData}>{this.props.user.data.user.Age}</TextInput>
-          </View>
 
-          <View style = {styles.detailInfo}>
-              <Text style = { styles.textStyleTitle }>{' '}Phone Number</Text>
-              <TextInput style = {styles.textStyleData}>+{this.props.user.data.user.PhoneNum}</TextInput>
-          </View>
-
-          <View style = {styles.detailInfo}>
-              <Text style = { styles.textStyleTitle }>{' '}Gender</Text>
-              <TextInput style = {styles.textStyleData}>{this.props.user.data.user.Gender}</TextInput>
-          </View>
-        </View>
         </ScrollView>
 
       </View>
@@ -88,7 +149,7 @@ export default connect(mapStateToProps, {})(EditProfileScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor : '#ffffff'
+    backgroundColor: '#ffffff'
   },
   avtImage: {
     height: 200,
@@ -100,16 +161,35 @@ const styles = StyleSheet.create({
     height: 25, width: 25, alignSelf: 'center', marginLeft: 80, marginTop: 110, color: '#bbbbbb'
   },
   detailInfo: {
-    borderBottomWidth : 0.5 ,
-    borderColor : '#bbbbbb',
-    marginHorizontal : 20,
-    paddingTop : 15
+    borderBottomWidth: 0.5,
+    borderColor: '#bbbbbb',
+    marginHorizontal: 20,
+    paddingTop: 15
   },
-  textStyleTitle : {
-    color : '#bbbbbb',
-    fontSize : 17
+  textStyleTitle: {
+    color: '#bbbbbb',
+    fontSize: 17
   },
-  textStyleData : {
-    fontSize : 19 ,
+  textStyleData: {
+    fontSize: 19,
+  },
+  btnReset: {
+    width: Dimensions.get('window').width / 2 - 40,
+    borderColor: '#bbbbbb',
+    borderWidth: 0.5,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    borderRadius: 20,
+    marginLeft: 20,
+  },
+  btnSave: {
+    width: Dimensions.get('window').width / 2 - 40,
+    borderColor: '#bbbbbb',
+    borderWidth: 0.5,
+    backgroundColor: '#1e90ff',
+    alignItems: 'center',
+    borderRadius: 20,
+    marginLeft: 'auto',
+    marginRight: 20
   }
 })
