@@ -7,21 +7,22 @@ export default class RenderNewArrivalsItem extends React.Component {
     super(props);
     this.state = {
       url: "img",
-      
     }
   }
   componentDidMount() {
     var testApi = new TestAPI()
-    console.log(this.props.item.img);
+    // console.log(this.props.item.img);
     testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
   handleDetail = () => {
     const data = {data:this.props.item,
     url: this.state.url};
+    // console.log('props nè');
+    // console.log(this.props);
     this.props.item.navigate.navigate('DetailItemScreen',data);
   }
   render() {
-    console.log(this.state.url);
+    // console.log(this.state.url);
     return (
       <View style={styles.container}>
         <View>

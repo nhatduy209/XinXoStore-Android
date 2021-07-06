@@ -28,7 +28,7 @@ export class HomeScreen extends React.Component {
 
   renderNewArrivalsItem = ({ item }) => {
     return (
-      <NewArrivalItem item={item} />
+      <NewArrivalItem item={item = {navigate:this.props.navigation,...item}} />
     )
   }
 
