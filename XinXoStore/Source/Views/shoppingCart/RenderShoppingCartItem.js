@@ -1,14 +1,20 @@
 import React from "react";
 import { View, StyleSheet,Image,Text ,Dimensions} from "react-native";
+import TestAPI from '../TestAPI'
 
 export default class RenderShoppingCartItem extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            url :'/NewArrivals/testImage.jpeg',
-        }
+            url:''
+          }
     }
-
+    componentDidMount(){
+        var testApi = new TestAPI()
+        console.log("Image",this.props.image);
+        testApi.myPromise(this.props.item.image).then(res => this.setState({url : res })).catch(err => console.log(err));
+        console.log("Image",this.state.url);
+      }
     render(){
         console.log(this.props.item.image);
         return(
@@ -27,7 +33,7 @@ export default class RenderShoppingCartItem extends React.Component{
                             {this.props.item.price}
                         </Text>
                         <Text style={{color:"gray"}}>
-                            {this.props.item.color} | {this.state.size}
+                            {this.props.item.color}
                         </Text>
                     </View>
                 

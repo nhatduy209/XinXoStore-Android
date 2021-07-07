@@ -4,7 +4,8 @@ import { NAME_ACTIONS } from "../action/ShoppingCartAction/ActionName";
 const initProduct = {
     numberCart:0,
     Carts:[],
-    _products:[]
+    _products:[],
+    totalBill:0
 }
  
 function ShoppingCartReducer(state = initProduct,action){
@@ -19,6 +20,7 @@ function ShoppingCartReducer(state = initProduct,action){
                     ...state
                 }
         case NAME_ACTIONS.ADD_CART:
+            let checkExist=false;
             let cart = {    
                 // id:action.payload.id,
                 quantity:1,
@@ -28,7 +30,27 @@ function ShoppingCartReducer(state = initProduct,action){
                 price:action.payload.prices,
                 publicDate:action.payload.publicDate
             }
-            state.Carts.push(cart);
+            state.Carts.forEach(element => {
+                if(element.name===cart.name){
+                   checkExist=true;
+                }
+            });
+            if(checkExist===false){
+                console.log("state.totalbill ",state.totalBill);
+                console.log("state.totalbill ",state.totalBill+ cart.price);
+                state.Carts.push(cart);
+                return{
+                    ...state,
+                    numberCart:state.numberCart+1,
+                    totalBill:state.totalBill+cart.price
+                }
+            }
+            return{
+                ...state,
+                numberCart:state.numberCart,
+                totalBill:state.totalBill
+            }
+            
             // if(state.numberCart==0){
                 
             // }
@@ -53,10 +75,7 @@ function ShoppingCartReducer(state = initProduct,action){
             //         state.Carts.push(_cart);
             //     }
             // }
-            return{
-                ...state,
-                numberCart:state.numberCart+1
-            }
+            
             case NAME_ACTIONS.INCREASE_QUANTITY:
                 state.numberCart++
                 state.Carts[action.payload].quantity++;
@@ -76,11 +95,12 @@ function ShoppingCartReducer(state = initProduct,action){
                 }
             case NAME_ACTIONS.DELETE_CART:
                 let quantity_ = 1;
+                console.log("minux",state.totalBill-action.payload.price);
                 return{
                     ...state,
                     numberCart:state.numberCart - quantity_,
-                    Carts:state.Carts.filter(cartItem => cartItem.name !== action.payload.name)
-                    
+                    Carts:state.Carts.filter(cartItem => cartItem.name !== action.payload.name),
+                    totalBill:state.totalBill-action.payload.price
                 }
         default:
             return state;

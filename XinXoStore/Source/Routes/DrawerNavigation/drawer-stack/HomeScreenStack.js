@@ -6,6 +6,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AllNewArrivalsItem from '../../../Views/ListItemScreen/AllNewArrivalsItems';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RNRestart from 'react-native-restart';
+import ShoppingCart from '../../../Views/shoppingCart/ShoppingCart';
+import CheckoutScreen from '../../../Views/checkout/CheckoutScreen';
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -46,8 +49,27 @@ export default class HomeScreenStack extends React.Component {
             />
         }}        
       />
-
-       <Stack.Screen
+      <Stack.Screen
+      name="ShoppingCart"
+      component={ShoppingCart}
+      options={{
+        headerLeft: ()=>
+          <NavigationDrawerStructureLeft
+            navigationProps={this.props.navigation}
+          />
+      }}
+      />
+      <Stack.Screen
+      name="Checkout"
+      component={CheckoutScreen}
+      options={{
+        headerLeft: ()=>
+          <NavigationDrawerStructureLeft
+            navigationProps={this.props.navigation}
+          />
+      }}
+      />
+      <Stack.Screen
         name="NewArrivalsScreen"
         component={AllNewArrivalsItem}   
         options={{ title: ' New Arrivals ' ,
@@ -67,8 +89,7 @@ export default class HomeScreenStack extends React.Component {
                       );
                     }
                         
-          }}
-             
+          }} 
       />
     </Stack.Navigator>
     );

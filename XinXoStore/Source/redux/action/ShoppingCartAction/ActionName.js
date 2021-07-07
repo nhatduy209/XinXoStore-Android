@@ -6,6 +6,7 @@ export const NAME_ACTIONS={
     ADD_CART : 'ADD_CART' ,
     UPDATE_CART : 'UPDATE_CART',
     DELETE_CART : 'DELETE_CART',
+    GET_TOTAL_BILL : 'GET_TOTAL_BILL',
 }
 
 /*GET_ALL_PRODUCT*/
@@ -23,6 +24,11 @@ export function GetNumberCart(){
     }
 }
  
+export function GetTotalBill(){
+    return{
+        type:'GET_TOTAL_BILL'
+    }
+}
 export function AddCart(payload){
     return {
         type:'ADD_CART',

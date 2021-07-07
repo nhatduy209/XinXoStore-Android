@@ -94,4 +94,33 @@ export default class ReadService {
       }
     }
   }
+  getListAdressApi= async(idAccount)=>{
+    let adress=[];
+    console.log("SERVICE GET LIST ADRESS",idAccount);
+    console.log('Account/'+idAccount+'/Adress/');
+    await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){
+      // console.log("KEY :",snapshot.key);
+      snapshot.forEach(function (child){
+        if(child.key=="Adress"){
+          console.log("JSON: ",child.toJSON(),child.key);
+          child.forEach(function(item){
+            adress.push(item.toJSON());
+          });
+        }
+      });
+    });
+    console.log(adress);
+    if (adress.length > 0 ) {
+      console.log('listItem-----------------',adress);
+      return {
+        data : {adress},
+        status : Status.SUCCESS
+      };
+    } else {
+      return {
+        data : {},
+        status : Status.FAIL,
+      }
+    }
+  }
 }

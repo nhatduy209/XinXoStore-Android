@@ -19,7 +19,7 @@ class Root extends React.Component {
           <Stack.Screen
           name="HomeScreen" component={RootDrawer} 
           />
-          <Stack.Screen name="ShoppingCart" component={ShoppingCart} />
+          {/* <Stack.Screen name="ShoppingCart" component={ShoppingCart} /> */}
           <Stack.Screen name="SignUp" component={SignUpScreen} />
         </Stack.Navigator>
     );

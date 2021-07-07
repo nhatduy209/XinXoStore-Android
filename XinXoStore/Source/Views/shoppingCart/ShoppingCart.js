@@ -6,12 +6,11 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DeleteCart } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 
+
 export class ShoppingCart extends React.Component {
   constructor(props){
     super(props);
-    this.state={
-      outerScrollViewScrollEnabled:true,
-    }
+   
   }
   
   renderItem = ({item}) => {
@@ -21,18 +20,21 @@ export class ShoppingCart extends React.Component {
       />
     );
   }
+  
   deleteCart=async(item)=>{
     this.props.DeleteCart(item);
   }
   handleGoShopping=()=>{
     this.props.navigation.navigate('HomeScreen');
   }
+  handleCheckout=()=>{
+    this.props.navigation.navigate('Checkout');
+  }
   handleInnerPressIn = () => this.setState({ outerScrollViewScrollEnabled: false });
     render(){
-        console.log(this.props.carts);
+        console.log(this.props.totalFee);
         return (
             <View style={styles.container}>
-                <Text style={styles.header}>Shopping cart</Text>                      
                       {this.props.numberCart===0 ?
                       <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
                         <Text style={{color:"gray"}}>Your shopping cart is empty</Text>
@@ -46,6 +48,7 @@ export class ShoppingCart extends React.Component {
                       <View  style={{ flex: 1 }}>
                          <ScrollView 
                             nestedScrollEnabled>
+                              <Text style={{color:"gray", paddingHorizontal:10}}>Swipe left to remove items</Text>                     
                           <Text style={styles.quantity}>{this.props.numberCart} items</Text>
                           <SwipeListView
                             data={this.props.carts}
@@ -72,17 +75,17 @@ export class ShoppingCart extends React.Component {
                         <View style={styles.containerToTal}>
                           <View style={styles.itemTotal}>
                               <Text>Shipping fee</Text>
-                              <Text>15$</Text>
+                              <Text>0</Text>
                           </View>
                           <View style={styles.itemTotal}>
                               <Text>Subtotal</Text>
-                              <Text >15$</Text>
+                              <Text >{this.props.totalFee}</Text>
                           </View>
                           <View style={styles.itemTotal}>
                               <Text style={{fontWeight: "bold"}}>Total</Text>
-                              <Text style={{fontWeight: "bold"}}>30$</Text>
+                              <Text style={{fontWeight: "bold"}}>{this.props.totalFee}</Text>
                           </View>
-                          <TouchableOpacity style={styles.btnCheckout}>
+                          <TouchableOpacity style={styles.btnCheckout} onPress={this.handleCheckout}>
                               <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>CHECKOUT</Text>
                           </TouchableOpacity>
                         </View>
@@ -96,7 +99,8 @@ export class ShoppingCart extends React.Component {
 const mapStateToProps = state =>{
   return{
       numberCart:state.ShoppingCartReducer.numberCart,
-      carts:state.ShoppingCartReducer.Carts
+      carts:state.ShoppingCartReducer.Carts,
+      totalFee: state.ShoppingCartReducer.totalBill
   }
 }
 export default connect(mapStateToProps,{DeleteCart})(ShoppingCart)
