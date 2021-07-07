@@ -4,6 +4,11 @@ import TestAPI from './TestAPI';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as ImagePicker from "react-native-image-picker";
+import { editProfile } from '../redux/action/LoginAction/LoginAction'
+import { FilePath } from '../Config/FilePath';
+import Modal from 'react-native-modal';
+import { Status } from '../Config/dataStatus';
+
 class EditProfileScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -14,36 +19,72 @@ class EditProfileScreen extends React.Component {
       age: this.props.user.data.user.Age,
       phoneNum: this.props.user.data.user.PhoneNum,
       gender: this.props.user.data.user.Gender,
+      Avatar:  this.props.user.data.user.Avatar,
+      PathImageDevice: "",
+      isModalVisible : true ,
     }
   }
 
   componentDidMount() {
     var testApi = new TestAPI();
+    console.log("AFTER EDIT ----------------", this.props.user.status)
     testApi.myPromise(this.props.user.data.user.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log("OKI" , );
+    if (this.props.user.status !==  prevProps.user.status) {
+      this.props.user.status = Status.FAIL;
+        this.setState({isModalVisible : true })
+    }
   }
 
   handlePhotos = () => {
     const Options = {};
     ImagePicker.launchImageLibrary(Options, response => {
+      console.log('IMAGE CHOOSE ', response.assets[0].fileName)
       this.setState({ url: response.assets[0].uri })
+      this.setState({ Avatar: response.assets[0].fileName })
+      this.setState({ PathImageDevice: response.assets[0].uri })
     })
   }
 
   handleReset = () => {
     this.setState({ username: this.props.user.data.user.Username })
     this.setState({ gender: this.props.user.data.user.Gender })
-    this.setState({  phoneNum: this.props.user.data.user.PhoneNum})
-    this.setState({  age: this.props.user.data.user.Age})
-    this.setState({  email: this.props.user.data.user.Email})
+    this.setState({ phoneNum: this.props.user.data.user.PhoneNum })
+    this.setState({ age: this.props.user.data.user.Age })
+    this.setState({ email: this.props.user.data.user.Email })
   }
 
   handleSave = () => {
-    console.log(this.state.username);
+    let avatarPath = this.state.Avatar ;
+    if(this.state.PathImageDevice.length > 0 ){
+      avatarPath = FilePath.ACCOUNT_IMAGE_STORAGE + '/' + this.state.Avatar;
+    }
+    const data = {
+      Username: this.state.username,
+      Email: this.state.email,
+      Age: this.state.age,
+      PhoneNum: this.state.phoneNum,
+      Gender: this.state.gender,
+      Key: this.props.user.data.key,
+      Avatar: avatarPath,
+      PathImageDevice: this.state.PathImageDevice,
+    }
+    this.props.editProfile(data)
   }
 
   render() {
     return (
       <View style={styles.container}>
+        {/* <View>
+          <Modal isVisible={this.state.isModalVisible}>
+            <View>
+              <Text>Hello!</Text>
+            </View>
+          </Modal>
+        </View> */}
         <View style={styles.avtImage}>
           <TouchableOpacity onPress={this.handlePhotos}>
             <Image
@@ -108,7 +149,7 @@ class EditProfileScreen extends React.Component {
               <Text style={styles.textStyleTitle}>{' '}Gender</Text>
               <TextInput style={styles.textStyleData}
                 onChangeText={value => {
-                  this.setState({ gender : value })
+                  this.setState({ gender: value })
                 }}
                 value={this.state.gender}
               ></TextInput>
@@ -143,7 +184,7 @@ function mapStateToProps(state) {
     user: state.LoginReducer.user,
   };
 }
-export default connect(mapStateToProps, {})(EditProfileScreen);
+export default connect(mapStateToProps, { editProfile })(EditProfileScreen);
 
 
 const styles = StyleSheet.create({
