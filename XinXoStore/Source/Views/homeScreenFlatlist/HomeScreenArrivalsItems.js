@@ -19,7 +19,7 @@ export default class NewArrivalItem extends React.Component{
   handleDetail = () => {
     const data = {data:this.props.item,
     url: this.state.url};
-    console.log(this.props)
+    // console.log(this.props)
     this.props.item.navigate.navigate('DetailItemScreen',data);
   }
   render(){

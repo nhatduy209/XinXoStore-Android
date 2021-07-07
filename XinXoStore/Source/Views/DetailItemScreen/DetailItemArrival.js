@@ -5,7 +5,9 @@ import { SliderBox } from "react-native-image-slider-box";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import NewArrivalItem from '../homeScreenFlatlist/HomeScreenArrivalsItems.js'
-import { getArrivalItem } from '../../redux/action/GetItemArrivalAction/GetItemArrivalAction.js'
+import { getArrivalItem } from '../../redux/action/GetItemArrivalAction/GetItemArrivalAction.js';
+import StarRating from './StarRating';
+
 class DetailItem extends React.Component {
     constructor(props) {
         super(props);
@@ -23,24 +25,15 @@ class DetailItem extends React.Component {
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
         // const data = this.props.route.param.;
         // console.log('mount');
-        // console.log(this.props);
+        // console.log(this.props.route.params.data);
         
         // this.props.getArrivalItem(this.props.route.params.data.Name);
     }
-    handleDetail = (item) => {
-        // const data = {data:item,
-        // navigate: this.props.navigation};
-        console.log('handleDetail');
-        console.log(data);
-        // this.props.item.navigate.navigate('DetailItemScreen',data);
-      }
     itemSeparator = () => {
         return <View style={{ width: 15 }} />;
     }
 
     render(){
-        // console.log('render props');
-        // console.log(this.props);
         return(
             <View>
                 
@@ -75,7 +68,7 @@ class DetailItem extends React.Component {
                                     size={20}
                                     name="heart"
                                     style = {{ paddingRight : 15 }}
-                                    color = "#bbbbbb"
+                                    color = {this.props.route.params.data.liked ? "#F00":"#bbbbbb"}
                                     >
                                     </Icon>
                             </TouchableOpacity>
@@ -86,42 +79,8 @@ class DetailItem extends React.Component {
                                 <Text style={{ color: "#000", fontSize: 21,width:Dimensions.get("window").width -150}}>
                                 {this.props.route.params.data.prices}
                                 </Text>
-                                <View style={{flexDirection: 'row',padding:5}}>
-                                    <Icon
-                                        size={15}
-                                        name="star"
-                                        color = "#f89504"
-                                        style={{paddingRight:5}}
-                                    >
-                                    </Icon>
-                                    <Icon
-                                        size={15}
-                                        name="star"
-                                        color = "#f89504"
-                                        style={{paddingRight:5}}
-                                    >
-                                    </Icon>
-                                    <Icon
-                                        size={15}
-                                        name="star"
-                                        color = "#f89504"
-                                        style={{paddingRight:5}}
-                                    >
-                                    </Icon>
-                                    <Icon
-                                        size={15}
-                                        name="star"
-                                        color = "#f89504"
-                                        style={{paddingRight:5}}
-                                    >
-                                    </Icon>
-                                    <Icon
-                                        size={15}
-                                        name="star"
-                                        color = "#e7e6ec"
-                                        style={{paddingRight:5}}
-                                    >
-                                    </Icon>
+                                <View>
+                                    <StarRating item={this.props.route.params.data}/>
                                 </View>
                                 
                         </View>
@@ -146,15 +105,6 @@ class DetailItem extends React.Component {
                                 
                                 />
                             </View>
-                            {/* <SliderBox
-                                images={this.state.images}
-                                sliderBoxHeight={150}
-                                dotColor="#FFEE58"
-                                inactiveDotColor="#90A4AE"
-                                paginationBoxVerticalPadding={20}
-                                autoplay
-                                circleLoop
-                            /> */}
                             
                         </View>
                         {/* decriptions */}
@@ -163,6 +113,7 @@ class DetailItem extends React.Component {
                                 Description
                             </Text>
                             <Text style={{lineHeight:20,paddingTop:10}}>
+                                {/* {this.props.route.params.description} */}
                             Đây là những chiếc áo khoác được thiết kế theo phong cách hoàng gia Anh.
                             Thiết kế này giúp cho người mặc tăng thêm sự quyến rũ và duyên dáng.
                             Dù hiện nay nó không còn phổ biến nữa nhưng vẫn được rất nhiều người yêu thích. 
@@ -195,7 +146,7 @@ class DetailItem extends React.Component {
 }
 function mapStateToProps(state) {
     // console.log('state nè')
-    //  console.log(state);
+    //  console.log(state.NewArrivalsReducer.items.data);
     return {
         newArrivalsItems: state.NewArrivalsReducer.items,
     };

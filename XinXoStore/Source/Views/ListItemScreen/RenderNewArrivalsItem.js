@@ -11,7 +11,7 @@ export default class RenderNewArrivalsItem extends React.Component {
   }
   componentDidMount() {
     var testApi = new TestAPI()
-    // console.log(this.props.item.img);
+    // console.log(this.props);
     testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
   handleDetail = () => {

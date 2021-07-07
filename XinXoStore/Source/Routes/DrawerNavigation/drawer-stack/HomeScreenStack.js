@@ -1,11 +1,11 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react'
 import HomeScreen from '../../../Views/HomeScreen'
-import {Image , View , Text , TouchableOpacity} from 'react-native'
+import {Image , View , Text , TouchableOpacity, Alert} from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import AllNewArrivalsItem from '../../../Views/ListItemScreen/AllNewArrivalsItems';
 import DetailItem from '../../../Views/DetailItemScreen/DetailItemArrival';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import RNRestart from 'react-native-restart';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -28,7 +28,6 @@ const NavigationDrawerStructureLeft = props => {
     </View>
   );
 };
-
 
 
 
@@ -81,9 +80,9 @@ export default class HomeScreenStack extends React.Component {
               <TouchableOpacity>
                     <Icon
                       size={25}
-                      name="wifi"
+                      name="ellipsis-vertical"
                       style = {{ paddingRight : 15 }}
-                      color = "#bbbbbb"
+                      color = "#000"
                     >
                     </Icon>
               </TouchableOpacity>
