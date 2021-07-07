@@ -2,6 +2,8 @@
 import firebase from 'firebase';
 import { Status } from '../Config/dataStatus';
 import _, { map } from 'underscore';
+import {PushData} from './PushData';
+
 export default class ReadService {
   verifyLoginApi = async (username , password) => {
     let canLogin = false ; 
@@ -38,6 +40,35 @@ export default class ReadService {
         status : Status.FAIL,
       }
   
+    }
+  }
+  signUpApi= async(email,username,password,age)=>{
+    let canSignUp=true;
+    console.log("SERVICE ",email,username,password,age);
+    await firebase
+      .database()
+      .ref('Account/')
+      .once('value',function (snapshot){
+        snapshot.forEach(function (child){
+          var myJson=child.toJSON();
+          console.log(myJson.Email);
+          if(myJson.Email===email ){
+              canSignUp=false;
+          }
+        });
+      });
+    
+    if(canSignUp===true){
+      return {
+        data:{},
+        status: Status.SUCCESS
+      };
+    }else{
+      return {
+        data:{
+        },
+        status:Status.FAIL
+      };
     }
   }
 
