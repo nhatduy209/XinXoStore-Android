@@ -5,13 +5,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {Login} from '../redux/action/LoginAction/LoginAction'
 import { connect } from 'react-redux';
 import { Status } from '../Config/dataStatus';
+import auth, { firebase } from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-community/google-signin';
+import Authentication  from '../Config/Component/Authentication';
+
 export class LoginScreen extends React.Component {
 
   constructor(props){
     super(props)
     this.state = {
       email : "",
-      password : "",
+      password : ""
     }
   }
 
@@ -32,6 +36,37 @@ export class LoginScreen extends React.Component {
   componentDidMount() {
     console.log("USER : "  , this.props.user);
   }
+  _signIn = async () => {
+    try {
+      GoogleSignin.configure(
+      {
+        //webClientId is required if you need offline access
+        offlineAccess: false,
+        webClientId:'1020094745628-l6k4731ug31m72vvjv8kd1ksejn441d0.apps.googleusercontent.com',
+        scopes: ['profile', 'email']
+      });
+      await GoogleSignin.hasPlayServices();
+      console.log("reached google sign in");
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo);
+      this.setState({ userInfo });
+      this.props.navigation.navigate('HomeScreen');
+
+    } catch (error) {
+      if (error.code === "SIGN_IN_CANCELLED") {
+        console.log("error occured SIGN_IN_CANCELLED");
+        // user cancelled the login flow
+      } else if (error.code === "IN_PROGRESS") {
+        console.log("error occured IN_PROGRESS");
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === "PLAY_SERVICES_NOT_AVAILABLE") {
+        console.log("error occured PLAY_SERVICES_NOT_AVAILABLE");
+      } else {
+        console.log(error)
+        console.log("error occured unknow error");
+      }
+    }
+  };
 
   componentDidUpdate(prevProps) {
     if(this.props.user.status != prevProps.user.status){
@@ -74,43 +109,38 @@ export class LoginScreen extends React.Component {
             </Text>
           </Icon.Button>
           </View>
-          <Icon.Button name="google" backgroundColor="#bbbb">
-            <Text style={{ fontFamily: 'Arial', fontSize: 15 }}>
-            Google
-            </Text>
-          </Icon.Button>
+         
         </View>
          
-
+         
         </View>
-
+        
 
         <TouchableOpacity>
           <Text style={{ fontSize: 18, color: '#bbbbbb', textAlign: 'center', marginTop: 20 }}>Forgot your password ?</Text>
         </TouchableOpacity>
 
-
-
         <View style={styles.bottom}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
             <Text style={{ fontSize: 18, color: '#bbbbbb' }}> Don't have account ?</Text>
-            <TouchableOpacity>
-              <Text style={{ textDecorationLine: 'underline', textAlign: 'center', fontSize: 18, color: '#bbbbbb' }}> Sign up
+            <TouchableOpacity  onPress={() => this.props.navigation.navigate('SignUp')}>
+              <Text style={{ textDecorationLine: 'underline', textAlign: 'center', fontSize: 18, color: '#bbbbbb' }}> 
+              Sign up
                </Text>
             </TouchableOpacity>
 
           </View>
         </View>
+        <Authentication onGoogleButtonPress={this._signIn} />
       </View>
-
-
     );
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state) {  
   return {
     user : state.LoginReducer.user,
+    // user: firebase.auth().currentUser,
   };
 }
 export default connect(mapStateToProps, {Login})(LoginScreen);
