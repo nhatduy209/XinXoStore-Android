@@ -9,7 +9,7 @@ const loginState = {
 };
 
 const LoginReducer = (state = loginState, action) => {
-  console.log('REDUCER -----' , action);
+  console.log('REDUCER -----', action);
   switch (action.type) {
     case NAME_EPICS.LOGIN_EPICS_SCREEN.LOGIN_EPICS_SUCCESS:
       state = {
@@ -17,6 +17,24 @@ const LoginReducer = (state = loginState, action) => {
         user: {
           status: Status.SUCCESS,
           data: action.data,
+        }
+      }
+      break;
+    case NAME_EPICS.LOGIN_EPICS_SCREEN.EDIT_PROFILE_SUCCESS:
+      state = {
+        ...state,
+        user: {
+          status: Status.SUCCESS,
+          data: action.data,
+        }
+      }
+      break;
+
+    case NAME_EPICS.LOGIN_EPICS_SCREEN.EDIT_PROFILE_FAIL:
+      state = {
+        ...state,
+        user: {
+          status: Status.FAIL,
         }
       }
       break;

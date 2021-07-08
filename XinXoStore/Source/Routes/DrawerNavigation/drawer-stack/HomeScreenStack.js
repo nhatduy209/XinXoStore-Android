@@ -1,12 +1,15 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react'
 import HomeScreen from '../../../Views/HomeScreen'
-import {Image , View , Text , TouchableOpacity, Alert} from 'react-native'
+import { Image, View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import AllNewArrivalsItem from '../../../Views/ListItemScreen/AllNewArrivalsItems';
 import DetailItem from '../../../Views/DetailItemScreen/DetailItemArrival';
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNRestart from 'react-native-restart';
+import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
+import { connect } from 'react-redux';
+import EditProfileScreen from '../../../Views/EditProfileScreen';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -17,12 +20,12 @@ const NavigationDrawerStructureLeft = props => {
     props.navigationProps.openDrawer();
   };
   return (
-    <View style={{flexDirection: 'row'}}>
+    <View style={{ flexDirection: 'row' }}>
       <TouchableOpacity onPress={toggleDrawer}>
         {/*Donute Button Image */}
         <Image
           source={require('../../../Images/drawer.png')}
-          style={{width: 25, height: 25, marginLeft: 5}}
+          style={{ width: 25, height: 25, marginLeft: 5 }}
         />
       </TouchableOpacity>
     </View>
@@ -31,42 +34,92 @@ const NavigationDrawerStructureLeft = props => {
 
 
 
-export default class HomeScreenStack extends React.Component {
+class HomeScreenStack extends React.Component {
 
-  render(){
+  constructor(props) {
+    super(props);
+    this.state = {
+      sortUpOption: false
+    }
+
+  }
+
+  sortUp = () => {
+    this.setState({ sortUpOption: true })
+    this.props.getListNewArrivals(true);
+  }
+
+  sortDown = () => {
+    this.setState({ sortUpOption: false });
+    this.props.getListNewArrivals();
+  }
+
+  render() {
     return (
       <Stack.Navigator>
-      <Stack.Screen
-        name="Home"
-        component={HomeScreen}   
-        options={{
-          headerLeft: ()=>
-            <NavigationDrawerStructureLeft
-              navigationProps={this.props.navigation}
-            />
-        }}        
-      />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            headerLeft: () =>
+              <NavigationDrawerStructureLeft
+                navigationProps={this.props.navigation}
+              />
+          }}
+        />
 
-       <Stack.Screen
-        name="NewArrivalsScreen"
-        component={AllNewArrivalsItem}   
-        options={{ title: ' New Arrivals ' ,
-                    headerRight: ()=> {
-                      return (
-                        <View style={{flexDirection: 'row'}}>
-                          <TouchableOpacity>
-                                <Icon
-                                  size={25}
-                                  name="filter"
-                                  style = {{ paddingRight : 15 }}
-                                  color = "#bbbbbb"
-                                >
-                                </Icon>
-                          </TouchableOpacity>
-                        </View>
-                      );
-                    }
-                        
+        <Stack.Screen
+          name="NewArrivalsScreen"
+          component={AllNewArrivalsItem}
+          options={{
+            title: ' New Arrivals ',
+            headerRight: () => {
+              if (this.state.sortUpOption) {
+                return (
+                  <View style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity onPress={this.sortDown}>
+                      <Icon
+                        size={25}
+                        name="sort-up"
+                        style={{ paddingRight: 15 }}
+                        color="#bbbbbb"
+                      >
+                      </Icon>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }
+              else {
+                return (
+                  <View style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity onPress={this.sortUp}>
+                      <Icon
+                        size={25}
+                        name="sort-down"
+                        style={{ paddingRight: 15 }}
+                        color="#bbbbbb"
+                      >
+                      </Icon>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }
+
+            }
+
+          }}
+
+        />
+
+        <Stack.Screen
+          name="EditProfileScreen"
+          component={EditProfileScreen}
+          options={{
+            title: "Edit Profile",
+            headerLeft: () =>
+              <NavigationDrawerStructureLeft
+                navigationProps={this.props.navigation}
+              />
           }}
              
       />
@@ -105,3 +158,34 @@ export default class HomeScreenStack extends React.Component {
 
 }
 
+function mapStateToProps(state) {
+  return {
+    newArrivalsItems: state.NewArrivalsReducer.items,
+  };
+}
+export default connect(mapStateToProps, { getListNewArrivals })(HomeScreenStack);
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
+})

@@ -1,12 +1,15 @@
 
 import firebase from 'firebase';
 import { Status } from '../Config/dataStatus';
+import _, { map } from 'underscore';
 import {PushData} from './PushData';
 
 export default class ReadService {
   verifyLoginApi = async (username , password) => {
     let canLogin = false ; 
     let Email = "";
+    let key = "";
+    let user = {};
     console.log("SERVICE ", username , password);
     await firebase
       .database()
@@ -16,17 +19,17 @@ export default class ReadService {
           var myJson = child.toJSON();
           // console.log(myJson.Username + ' ' + myJson.Password);
           if (myJson.Username === username && myJson.Password === password) {
-            Email = myJson.Email;
             canLogin = true;
+            key = child.key ;
+            user = myJson;
           }
         });
       });
     if (canLogin === true) {
       return {
         data : {
-          username, 
-          password,
-          Email
+          user,
+          key,
         },
         status : Status.SUCCESS
       };
@@ -98,8 +101,7 @@ export default class ReadService {
       }
     }
   }
-
-  getListArrivalsAPI = async () => {
+  getListArrivalsAPI = async (sortUp) => {
     var listItem = [];
     await firebase
       .database()
@@ -108,12 +110,15 @@ export default class ReadService {
         snapshot.forEach(function (child) {
           //đặt ddieuf kiện
           var myJson = child.toJSON();
-          console.log('MY JSON -----------' , myJson);
           listItem.push(myJson);
         });
       });
     if (listItem.length > 0 ) {
       console.log('listItem-----------------',listItem);
+      listItem =  _.sortBy(listItem,'prices')
+      if(!sortUp){
+        listItem.reverse();
+      }
       return {
         data : {listItem},
         status : Status.SUCCESS
