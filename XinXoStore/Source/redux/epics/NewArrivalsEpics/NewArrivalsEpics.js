@@ -13,7 +13,7 @@ const resolver = (action) => {
     return new Promise((resolve, reject) => {
         switch (action.type) {
             case NAME_ACTIONS.GET_NEW_ARRIVALS_ITEMS.GET_NEW_ARRIVALS_ITEMS_ACTION:
-              newArrivalsBusiness.getListNewArrivals(success => {
+              newArrivalsBusiness.getListNewArrivals(action.data , success => {
                     resolve({
                         actionType: NAME_ACTIONS.GET_NEW_ARRIVALS_ITEMS.GET_NEW_ARRIVALS_ITEMS_SUCCESS,
                         data: success
