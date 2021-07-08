@@ -5,8 +5,6 @@ import RootDrawer from './DrawerNavigation/RootDrawer';
 import SignUpScreen from '../Views/SignUpScreen';
 const Stack = createStackNavigator();
 import {Image , View , Text , TouchableOpacity} from 'react-native'
-
-const Stack = createStackNavigator();
 class Root extends React.Component {
 
   render(){

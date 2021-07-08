@@ -9,6 +9,7 @@ import RNRestart from 'react-native-restart';
 import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 import { connect } from 'react-redux';
 import EditProfileScreen from '../../../Views/EditProfileScreen';
+import SettingScreens from '../../../Views/SettingScreen';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -115,6 +116,18 @@ class HomeScreenStack extends React.Component {
           component={EditProfileScreen}
           options={{
             title: "Edit Profile",
+            headerLeft: () =>
+              <NavigationDrawerStructureLeft
+                navigationProps={this.props.navigation}
+              />
+          }}
+        />
+
+        <Stack.Screen
+          name="SettingScreens"
+          component={SettingScreens}
+          options={{
+            title: "",
             headerLeft: () =>
               <NavigationDrawerStructureLeft
                 navigationProps={this.props.navigation}

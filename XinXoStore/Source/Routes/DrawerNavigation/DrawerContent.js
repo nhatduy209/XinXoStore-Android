@@ -29,6 +29,10 @@ export class DrawerContent extends React.Component {
     this.props.navigation.navigate('EditProfileScreen');
   }
 
+  goToSettingScreen = () => {
+    this.props.navigation.navigate('SettingScreens');
+  }
+
   render() {
     return (
       <View>
@@ -110,7 +114,7 @@ export class DrawerContent extends React.Component {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.onHomePress}>
+          <TouchableOpacity onPress={this.goToSettingScreen}>
             <View style={styles.itemDrawer}>
               <Icon
                 size={35}
