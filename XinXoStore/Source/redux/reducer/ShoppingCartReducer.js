@@ -22,13 +22,7 @@ function ShoppingCartReducer(state = initProduct,action){
         case NAME_ACTIONS.ADD_CART:
             let checkExist=false;
             let cart = {    
-                // id:action.payload.id,
-                quantity:1,
-                name:action.payload.Name,
-                image:action.payload.img,
-                // color:action.payload.color,
-                price:action.payload.prices,
-                publicDate:action.payload.publicDate
+                id:action.itemID,
             }
             state.Carts.forEach(element => {
                 if(element.name===cart.name){
@@ -50,31 +44,7 @@ function ShoppingCartReducer(state = initProduct,action){
                 numberCart:state.numberCart,
                 totalBill:state.totalBill
             }
-            
-            // if(state.numberCart==0){
-                
-            // }
-            // else{
-            //     let check = false;
-            //     state.Carts.map((item,key)=>{
-            //         if(item.id==action.payload.id){
-            //             state.Carts[key].quantity++;
-            //             check=true;
-            //         }
-            //     });
-            //     if(!check){
-            //         let _cart = {
-            //             id:action.payload.id,
-            //             quantity:1,
-            //             name:action.payload.Name,
-            //             image:action.payload.img,
-            //             // color:action.payload.color,
-            //             price:action.payload.prices,
-            //             publicDate:action.payload.publicDate
-            //         }
-            //         state.Carts.push(_cart);
-            //     }
-            // }
+
             
             case NAME_ACTIONS.INCREASE_QUANTITY:
                 state.numberCart++

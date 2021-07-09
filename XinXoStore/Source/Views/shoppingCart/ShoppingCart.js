@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DeleteCart } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
+import { GetAllProduct } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 
 
 export class ShoppingCart extends React.Component {
   constructor(props){
     super(props);
-   
   }
   
   renderItem = ({item}) => {
@@ -20,7 +20,9 @@ export class ShoppingCart extends React.Component {
       />
     );
   }
-  
+  componentDidMount(){
+    this.props.GetAllProduct(this.props.user.data.key);
+  }
   deleteCart=async(item)=>{
     this.props.DeleteCart(item);
   }
@@ -32,7 +34,6 @@ export class ShoppingCart extends React.Component {
   }
   handleInnerPressIn = () => this.setState({ outerScrollViewScrollEnabled: false });
     render(){
-        console.log(this.props.totalFee);
         return (
             <View style={styles.container}>
                       {this.props.numberCart===0 ?
@@ -100,10 +101,11 @@ const mapStateToProps = state =>{
   return{
       numberCart:state.ShoppingCartReducer.numberCart,
       carts:state.ShoppingCartReducer.Carts,
-      totalFee: state.ShoppingCartReducer.totalBill
+      totalFee: state.ShoppingCartReducer.totalBill,
+      user: state.LoginReducer.user
   }
 }
-export default connect(mapStateToProps,{DeleteCart})(ShoppingCart)
+export default connect(mapStateToProps,{GetAllProduct,DeleteCart})(ShoppingCart)
 
 const styles = StyleSheet.create({
     container: {

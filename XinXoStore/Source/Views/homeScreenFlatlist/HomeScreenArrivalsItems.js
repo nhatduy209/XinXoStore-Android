@@ -14,11 +14,9 @@ export default class NewArrivalItem extends React.Component{
 
   componentDidMount(){
     var testApi = new TestAPI()
-    testApi.myPromise(this.props.item.img).then(res => this.setState({url : res })).catch(err => console.log(err));
+    testApi.myPromise(this.props.item.data.img).then(res => this.setState({url : res })).catch(err => console.log(err));
   }
-
   render(){
-    console.log(this.state.url);
         return(
           <View style = {styles.container}>
             <View>
@@ -29,10 +27,10 @@ export default class NewArrivalItem extends React.Component{
                 />
                 <View style = {{ paddingTop : 5}}>
                     <Text style = {{ fontSize : 16}}>
-                        {this.props.item.Name}
+                        {this.props.item.data.Name}
                     </Text>
                     <Text style ={{color : '#bbbbbb'}}>
-                        {this.props.item.prices}VND
+                        {this.props.item.data.prices}VND
                     </Text>
                 </View>
               </TouchableOpacity>

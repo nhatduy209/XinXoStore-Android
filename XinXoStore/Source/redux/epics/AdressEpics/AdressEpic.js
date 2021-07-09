@@ -60,7 +60,6 @@ const dispatchError = (error, action) => {
 };
 
 const AdressEpic = (action$) =>
-    // console.log("======actions$: ",action$);
     action$.pipe(
         ofType(NAME_ACTIONS.ADRESS_ACTIONS.GET_LIST_ADRESS),
         mergeMap((action) =>
