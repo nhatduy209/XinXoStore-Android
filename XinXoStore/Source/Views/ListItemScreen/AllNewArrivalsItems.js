@@ -1,21 +1,20 @@
 import React from 'react'
-import {View , Text, StyleSheet , FlatList } from 'react-native'
+import {View , Text, StyleSheet , FlatList,TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux';
 import RenderNewArrivalsItem from './RenderNewArrivalsItem'
 class AllNewArrivalsItem extends React.Component {
 
 
   renderItem = ({item}) => {
+    newItem = {navigate:this.props.navigation,...item}
     return( 
-          <RenderNewArrivalsItem  item  = {item}/>
+          <RenderNewArrivalsItem  item  = {newItem}/>
     );
   }
-
 
   itemSeparator = () => {
     return <View style={{ height: 10 }} />;
   };
-
 
   render(){
     return(
@@ -33,7 +32,7 @@ class AllNewArrivalsItem extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    newArrivalsItems: state.NewArrivalsReducer.items,
+    newArrivalsItems: state.NewArrivalsReducer.items
   };
 }
 export default connect(mapStateToProps, {})(AllNewArrivalsItem);

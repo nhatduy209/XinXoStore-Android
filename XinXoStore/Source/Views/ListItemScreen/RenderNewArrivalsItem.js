@@ -19,7 +19,15 @@ export  class RenderNewArrivalsItem extends React.Component {
   addItem=async()=>{
     this.props.AddCart(this.props.user.data.key,this.props.item.key)
   }
+  handleDetail = () => {
+    const data = {data:this.props.item,
+    url: this.state.url};
+    // console.log('props nè');
+    // console.log(this.props);
+    this.props.item.navigate.navigate('DetailItemScreen',data);
+  }
   render() {
+    // console.log(this.state.url);
     return (
       <View style={styles.container}>
         <View>
@@ -52,7 +60,7 @@ export  class RenderNewArrivalsItem extends React.Component {
           </View>
 
           {/* go to detail screen */}
-          <TouchableOpacity>
+          <TouchableOpacity onPress = {this.handleDetail}>
             <Text style={{ marginLeft: 'auto', fontSize: 20, color: 'blue'  , fontStyle : 'italic'}}>
               Details {' '}
             </Text>

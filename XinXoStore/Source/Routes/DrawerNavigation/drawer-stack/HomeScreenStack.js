@@ -4,7 +4,8 @@ import HomeScreen from '../../../Views/HomeScreen'
 import { Image, View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import AllNewArrivalsItem from '../../../Views/ListItemScreen/AllNewArrivalsItems';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import DetailItem from '../../../Views/DetailItemScreen/DetailItemArrival';
+import Icon from 'react-native-vector-icons/Ionicons';
 import RNRestart from 'react-native-restart';
 import ShoppingCart from '../../../Views/shoppingCart/ShoppingCart';
 import CheckoutScreen from '../../../Views/checkout/CheckoutScreen';
@@ -121,7 +122,37 @@ class HomeScreenStack extends React.Component {
                 navigationProps={this.props.navigation}
               />
           }}
-        />
+             
+      />
+      <Stack.Screen
+      name="DetailItemScreen"
+      component={DetailItem}
+      options={{ title: ' Detail ',
+        headerRight: ()=> {
+          return (
+            <View style={{flexDirection: 'row'}}>
+              <TouchableOpacity>
+                    <Icon
+                      size={25}
+                      name="ellipsis-vertical"
+                      style = {{ paddingRight : 15 }}
+                      color = "#000"
+                    >
+                    </Icon>
+              </TouchableOpacity>
+            </View>
+          );
+        },
+        headerStyle: {
+          // backgroundColor: '#',
+          height: 56,
+          elevation: null,
+          backgroundColor: '#FFF'
+        }
+      }}
+      >
+      </Stack.Screen>
+
     </Stack.Navigator>
     );
   }
