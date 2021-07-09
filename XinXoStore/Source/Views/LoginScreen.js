@@ -70,7 +70,7 @@ export class LoginScreen extends React.Component {
 
   componentDidUpdate(prevProps) {
     if(this.props.user.status != prevProps.user.status){
-      this.props.navigation.navigate('HomeScreen');
+      this.props.navigation.navigate('RootDrawer');
     }    
   }
 

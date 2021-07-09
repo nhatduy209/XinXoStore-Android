@@ -19,3 +19,10 @@ export const editProfile = ( data ) => {
       data : {data } ,
     }
 }
+
+export const Logout = () => {
+  return {
+    type : NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_ACTIONS ,
+    data : {} ,
+  }
+}

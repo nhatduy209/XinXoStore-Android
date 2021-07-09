@@ -15,7 +15,12 @@ export class DrawerContent extends React.Component {
 
   componentDidMount() {
     var testApi = new TestAPI()
-    testApi.myPromise(this.props.user.data.user.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
+    try{
+      testApi.myPromise(this.props.user.data.user.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
+    }
+    catch(err){
+      console.log(err);
+    }
   }
 
   // handle navigate home 
@@ -30,10 +35,18 @@ export class DrawerContent extends React.Component {
   }
 
   goToSettingScreen = () => {
-    this.props.navigation.navigate('SettingScreens');
+    this.props.navigation.navigate('SettingsScreensStack');
   }
 
   render() {
+    let username  = "" , email = "" ; 
+    try {
+      username = this.props.user.data.user.Username ; 
+      email = this.props.user.data.user.Email ; 
+    }catch(err) {
+        username = "" ;
+        email = "";
+    }
     return (
       <View>
         <TouchableOpacity onPress = {this.goToEditProfile}>
@@ -44,10 +57,10 @@ export class DrawerContent extends React.Component {
             </Image>
             <View>
               <Text style={{ fontSize: 25 }}>
-                {this.props.user.data.user.Username}
+                {username}  
               </Text>
               <Text style={{ color: '#bbbbbb' }}>
-                {this.props.user.data.user.Email}
+                {email}
               </Text>
             </View>
           </View>

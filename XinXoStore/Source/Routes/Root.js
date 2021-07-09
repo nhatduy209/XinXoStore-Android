@@ -15,7 +15,7 @@ class Root extends React.Component {
         }}>
           <Stack.Screen name="Login" component={LoginScreen} />
          <Stack.Screen
-         name="HomeScreen" component={RootDrawer} 
+         name="RootDrawer" component={RootDrawer} 
          />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
         </Stack.Navigator>

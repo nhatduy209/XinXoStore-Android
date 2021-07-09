@@ -10,6 +10,7 @@ import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/G
 import { connect } from 'react-redux';
 import EditProfileScreen from '../../../Views/EditProfileScreen';
 import SettingScreens from '../../../Views/SettingScreen';
+import SettingScreenStack from './SettingScreenStack';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -123,9 +124,9 @@ class HomeScreenStack extends React.Component {
           }}
         />
 
-        <Stack.Screen
+        {/* <Stack.Screen
           name="SettingScreens"
-          component={SettingScreens}
+          component={SettingScreenStack}
           options={{
             title: "",
             headerLeft: () =>
@@ -133,7 +134,7 @@ class HomeScreenStack extends React.Component {
                 navigationProps={this.props.navigation}
               />
           }}
-        />
+        /> */}
       </Stack.Navigator>
     );
   }
