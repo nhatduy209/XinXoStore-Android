@@ -23,6 +23,11 @@ export class DrawerContent extends React.Component {
     this.props.navigation.push('Home');
     this.props.navigation.navigate('Home');
   }
+  // handle navigate management 
+  onManagementPress = () => {
+    this.props.navigation.push('ManagementScreen');
+    this.props.navigation.navigate('ManagementScreen');
+  }
 
   goToEditProfile = () => {
     this.props.navigation.push('EditProfileScreen');
@@ -56,7 +61,7 @@ export class DrawerContent extends React.Component {
           <TouchableOpacity onPress={this.onHomePress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={35}
+                size={25}
                 name="home"
                 style={styles.iconStyle}
               >
@@ -70,7 +75,7 @@ export class DrawerContent extends React.Component {
           <TouchableOpacity onPress={this.onHomePress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={35}
+                size={25}
                 name="tags"
                 style={styles.iconStyle}
               >
@@ -84,7 +89,7 @@ export class DrawerContent extends React.Component {
           <TouchableOpacity onPress={this.onHomePress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={35}
+                size={25}
                 name="heart"
                 style={styles.iconStyle}
               >
@@ -95,11 +100,24 @@ export class DrawerContent extends React.Component {
             </View>
           </TouchableOpacity>
 
+          <TouchableOpacity onPress={this.onManagementPress}>
+            <View style={styles.itemDrawer}>
+              <Icon
+                size={25}
+                name="list"
+                style={styles.iconStyle}
+              >
+              </Icon>
+              <Text style={styles.itemText}>
+                Manage
+              </Text>
+            </View>
+          </TouchableOpacity>
 
           <TouchableOpacity onPress={this.onHomePress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={35}
+                size={25}
                 name="bell"
                 style={styles.iconStyle}
               >
@@ -113,7 +131,7 @@ export class DrawerContent extends React.Component {
           <TouchableOpacity onPress={this.onHomePress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={35}
+                size={25}
                 name="cog"
                 style={styles.iconStyle}
               >

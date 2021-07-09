@@ -5,7 +5,6 @@ import { SliderBox } from "react-native-image-slider-box";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import NewArrivalItem from '../homeScreenFlatlist/HomeScreenArrivalsItems.js'
-import { getArrivalItem } from '../../redux/action/GetItemArrivalAction/GetItemArrivalAction.js';
 import StarRating from './StarRating';
 
 class DetailItem extends React.Component {
@@ -32,6 +31,10 @@ class DetailItem extends React.Component {
     itemSeparator = () => {
         return <View style={{ width: 15 }} />;
     }
+    componentDidUpdate(prevProps) {
+        var testApi = new TestAPI()
+        testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
+      }
 
     render(){
         return(
@@ -39,21 +42,8 @@ class DetailItem extends React.Component {
                 
                 <ScrollView>
                     {/* item images */}
-                    <View style={{position:'absolute'}}>
-                        {/* <Image source ={{uri : this.props.route.params.data.url}} /> */}
-                        <SliderBox
-                            images={this.state.images}
-                            sliderBoxHeight={350}
-                            dotColor="#FFEE58"
-                            inactiveDotColor="#90A4AE"
-                            paginationBoxVerticalPadding={50}
-                            autoplay
-                            circleLoop
-                            
-                        />
-                    </View>
                     <View style={{height:320}}>
-                        
+                        <Image style={{height:350,resizeMode: 'cover'}} source ={{uri : this.state.url}} />
                     </View>
                     
                 <View style={styles.boxContent}>

@@ -5,11 +5,13 @@ import { Image, View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-na
 import { createStackNavigator } from '@react-navigation/stack';
 import AllNewArrivalsItem from '../../../Views/ListItemScreen/AllNewArrivalsItems';
 import DetailItem from '../../../Views/DetailItemScreen/DetailItemArrival';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import RNRestart from 'react-native-restart';
 import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 import { connect } from 'react-redux';
 import EditProfileScreen from '../../../Views/EditProfileScreen';
+import ManagementScreen from '../../../Views/ManagementScreen/ManagementScreen';
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -121,8 +123,8 @@ class HomeScreenStack extends React.Component {
                 navigationProps={this.props.navigation}
               />
           }}
-             
       />
+      
       <Stack.Screen
       name="DetailItemScreen"
       component={DetailItem}
@@ -133,7 +135,7 @@ class HomeScreenStack extends React.Component {
               <TouchableOpacity>
                     <Icon
                       size={25}
-                      name="ellipsis-vertical"
+                      name="ellipsis-v"
                       style = {{ paddingRight : 15 }}
                       color = "#000"
                     >
@@ -146,11 +148,16 @@ class HomeScreenStack extends React.Component {
           // backgroundColor: '#',
           height: 56,
           elevation: null,
-          backgroundColor: '#FFF'
+          backgroundColor: '#FFF',
         }
       }}
-      >
-      </Stack.Screen>
+      />
+      <Stack.Screen
+        name="ManagementScreen"
+        component={ManagementScreen}
+        options={{title: "Management"
+        }}
+      />
 
     </Stack.Navigator>
     );
