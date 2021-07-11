@@ -1,6 +1,6 @@
 import { Status } from '../Config/dataStatus';
 import PushData from '../services/PushData';
-import ReadhData from '../services/ReadData';
+import ReadData from '../services/ReadData';
 
 export default class NewArrivalsBusiness {
   addToShoppingCart = async (data,success , fail ) => {
@@ -16,13 +16,14 @@ export default class NewArrivalsBusiness {
       }
   }
   getAllProduct= async (data,success,fail)=>{
-    var readDataService= new ReadhData();
-      let result  = await readDataService.getShoppingCart(data.idAccount);
+    var readDataService= new ReadData();
+      let result  = await readDataService.loadMeetings(data.idAccount);
       if( result.status  == Status.SUCCESS){
         success(result);
       }
       else{
-        fail(result)
+        fail(result);
       }
   }
+  
 }

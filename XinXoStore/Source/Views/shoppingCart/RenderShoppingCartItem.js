@@ -11,12 +11,12 @@ export default class RenderShoppingCartItem extends React.Component{
     }
     componentDidMount(){
         var testApi = new TestAPI()
-        console.log("Image",this.props.image);
-        testApi.myPromise(this.props.item.image).then(res => this.setState({url : res })).catch(err => console.log(err));
+        console.log("Image",this.props.item.img);
+        testApi.myPromise(this.props.item.img).then(res => this.setState({url : res })).catch(err => console.log(err));
         console.log("Image",this.state.url);
       }
     render(){
-        console.log(this.props.item.image);
+        console.log(this.props.item);
         return(
             <View style={styles.container}>
                     <View>
@@ -27,13 +27,13 @@ export default class RenderShoppingCartItem extends React.Component{
                     </View>
                     <View style={styles.content}>
                         <Text style={styles.name}>
-                            {this.props.item.name}
+                            {this.props.item.Name}
                         </Text>
                         <Text style={{color:"gray"}}>
-                            {this.props.item.price}
+                            {this.props.item.prices}
                         </Text>
                         <Text style={{color:"gray"}}>
-                            {this.props.item.color}
+                            {this.props.item.publicDate}
                         </Text>
                     </View>
                 

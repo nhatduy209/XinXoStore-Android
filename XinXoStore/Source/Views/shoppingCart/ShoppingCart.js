@@ -14,9 +14,10 @@ export class ShoppingCart extends React.Component {
   }
   
   renderItem = ({item}) => {
+    console.log("item render",item);
     return (
       <RenderShoppingCartItem
-        item={item}
+        item={item.data}
       />
     );
   }
@@ -32,77 +33,77 @@ export class ShoppingCart extends React.Component {
   handleCheckout=()=>{
     this.props.navigation.navigate('Checkout');
   }
+  
   handleInnerPressIn = () => this.setState({ outerScrollViewScrollEnabled: false });
-    render(){
-        return (
-            <View style={styles.container}>
-                      {this.props.numberCart===0 ?
-                      <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
-                        <Text style={{color:"gray"}}>Your shopping cart is empty</Text>
-                        <Text style={{fontWeight:"bold"}}>Fortunately, there's an easy solution</Text>
-                        <TouchableOpacity style={styles.btnCheckout}
-                          onPress={this.handleGoShopping}>
-                          <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>Go Shopping</Text>
+  render(){
+      return (
+          <View style={styles.container}>
+                    {this.props._products.data.length===5 ?
+                    <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
+                      <Text style={{color:"gray"}}>Your shopping cart is empty</Text>
+                      <Text style={{fontWeight:"bold"}}>Fortunately, there's an easy solution</Text>
+                      <TouchableOpacity style={styles.btnCheckout}
+                        onPress={this.handleGoShopping}>
+                        <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>Go Shopping</Text>
+                      </TouchableOpacity>
+                    </View>
+                    :
+                    <View  style={{ flex: 1 }}>
+                        <ScrollView 
+                          nestedScrollEnabled>
+                            <Text style={{color:"gray", paddingHorizontal:10}}>Swipe left to remove items</Text>                     
+                        <Text style={styles.quantity}>{this.props._products.data.length} items</Text>
+                        {console.log(this.props._products.data.values)}
+                        <SwipeListView
+                          data={this.props._products.data.values}
+                          renderItem={this.renderItem}
+                          keyExtractor={data =>data.Name}
+                          renderHiddenItem={ (data, rowMap) => (
+                            <View style={styles.btnDelete}>
+                                <Icon.Button name="trash" 
+                                    paddingLeft={15}
+                                    paddingVertical={15}
+                                    borderRadius={30}
+                                    alignItems={"center"}
+                                    justifyContent={"center"}
+                                    onPress={()=>this.deleteCart(data.item)}
+                                    backgroundColor={"red"}
+                                >
+                                </Icon.Button>
+                            </View>
+                          )}
+                          rightOpenValue={-75}
+                          nestedScrollEnabled
+                        />
+                      </ScrollView>
+                      <View style={styles.containerToTal}>
+                        <View style={styles.itemTotal}>
+                            <Text>Shipping fee</Text>
+                            <Text>0</Text>
+                        </View>
+                        <View style={styles.itemTotal}>
+                            <Text>Subtotal</Text>
+                            <Text >{this.props.totalFee}</Text>
+                        </View>
+                        <View style={styles.itemTotal}>
+                            <Text style={{fontWeight: "bold"}}>Total</Text>
+                            <Text style={{fontWeight: "bold"}}>{this.props.totalFee}</Text>
+                        </View>
+                        <TouchableOpacity style={styles.btnCheckout} onPress={this.handleCheckout}>
+                            <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>CHECKOUT</Text>
                         </TouchableOpacity>
                       </View>
-                      :
-                      <View  style={{ flex: 1 }}>
-                         <ScrollView 
-                            nestedScrollEnabled>
-                              <Text style={{color:"gray", paddingHorizontal:10}}>Swipe left to remove items</Text>                     
-                          <Text style={styles.quantity}>{this.props.numberCart} items</Text>
-                          <SwipeListView
-                            data={this.props.carts}
-                            renderItem={this.renderItem}
-                            keyExtractor={data =>data.name}
-                            renderHiddenItem={ (data, rowMap) => (
-                              <View style={styles.btnDelete}>
-                                  <Icon.Button name="trash" 
-                                      paddingLeft={15}
-                                      paddingVertical={15}
-                                      borderRadius={30}
-                                      alignItems={"center"}
-                                      justifyContent={"center"}
-                                      onPress={()=>this.deleteCart(data.item)}
-                                      backgroundColor={"red"}
-                                  >
-                                  </Icon.Button>
-                              </View>
-                            )}
-                            rightOpenValue={-75}
-                            nestedScrollEnabled
-                          />
-                        </ScrollView>
-                        <View style={styles.containerToTal}>
-                          <View style={styles.itemTotal}>
-                              <Text>Shipping fee</Text>
-                              <Text>0</Text>
-                          </View>
-                          <View style={styles.itemTotal}>
-                              <Text>Subtotal</Text>
-                              <Text >{this.props.totalFee}</Text>
-                          </View>
-                          <View style={styles.itemTotal}>
-                              <Text style={{fontWeight: "bold"}}>Total</Text>
-                              <Text style={{fontWeight: "bold"}}>{this.props.totalFee}</Text>
-                          </View>
-                          <TouchableOpacity style={styles.btnCheckout} onPress={this.handleCheckout}>
-                              <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>CHECKOUT</Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    }
-            </View>
-          );
-    }
+                    </View>
+                  }
+          </View>
+        );
+  }
 }
-
-const mapStateToProps = state =>{
+function mapStateToProps(state){
   return{
-      numberCart:state.ShoppingCartReducer.numberCart,
-      carts:state.ShoppingCartReducer.Carts,
-      totalFee: state.ShoppingCartReducer.totalBill,
-      user: state.LoginReducer.user
+      // numberCart:state.ShoppingCartReducer.numberCart,
+      user: state.LoginReducer.user,
+      _products: state.ShoppingCartReducer.items
   }
 }
 export default connect(mapStateToProps,{GetAllProduct,DeleteCart})(ShoppingCart)

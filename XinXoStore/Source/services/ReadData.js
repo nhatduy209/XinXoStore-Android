@@ -142,18 +142,19 @@ export default class ReadService {
     await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){
       snapshot.forEach(function (child){
         if(child.key=="Adress"){
-          console.log("JSON: ",child.toJSON(),child.key);
           child.forEach(function(item){
             adress.push(item.toJSON());
           });
         }
       });
     });
-    console.log(adress);
+    // console.log("resultttt",adress);
     if (adress.length > 0 ) {
-      console.log('listItem-----------------',adress);
       return {
-        data : {adress},
+        data : {
+          adress:adress,
+          length:adress.length
+        },
         status : Status.SUCCESS
       };
     } else {
@@ -163,40 +164,57 @@ export default class ReadService {
       }
     }
   }
-  getShoppingCart= async(idAccount)=>{
-    var listItem=new Array(); 
-    console.log("SERVICE GET LIST Shopping cart",idAccount);
-    await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){
-      snapshot.forEach(function (child){
-        if(child.key=="Cart"){
-          child.forEach(async function(itemID){
-            //get item and return
-            await firebase.database()
-              .ref('NewArrivals/'+itemID.toJSON().ItemID)
-              .once('value', function (snapshot) {
-                var item ={
-                  key:itemID.toJSON().ItemID,
-                  data:snapshot.toJSON()
-                }
-                listItem.push(item);
-                console.log("LIST ITEM 3: ",listItem);
-            }); 
-          console.log("LIST ITEM 3: ",listItem);
-            if (listItem.length > 0 ) {
-              console.log('listItem-----------------',listItem);
-              return {
-                data : {listItem},
-                status : Status.SUCCESS
-              };
-            } else {
-              return {
-                data : {},
-                status : Status.FAIL,
-              }
-            }     
+  
+  loadMeetings(idAccount) {
+    console.log("idaccount",idAccount);
+    //$('#meetingsTable').empty();
+    return firebase.database().ref("Account/"+idAccount).once('value').then(function(snapshot) {
+        var reads = [];
+        snapshot.forEach(function(childSnapshot) {
+            if(childSnapshot.key=="Cart"){
+              childSnapshot.forEach(function(child){
+                var promise = firebase.database().ref('NewArrivals/'+child.toJSON().ItemID).once('value').then(function(snap) {
+                  // The Promise was fulfilled.
+                  var myJson = snap.toJSON();
+                    var item= {
+                      key:snap.key,
+                      data:myJson
+                    };
+                    reads.push(item);
+                  return item;
+                },
+                 function(error) {
+                    // The Promise was rejected.
+                    console.error(error);
+                });
+                reads.push(promise);
+              })
+            }
+            
         });
+        return Promise.all(reads);
+//      ^^^^^^^^^^^^^^^^^
+    }, function(error) {
+        // The Promise was rejected.
+        console.error(error);
+    }).then(function(values) { 
+      console.log("values la",values);
+      if(values.length>0){
+        return {
+          data : {
+            values:values,
+            length:values.length
+          },
+          status : Status.SUCCESS,
         }
-      });
+      }
+      else{
+        return {
+          data : {},
+          status : Status.FAIL,
+        }
+      }
     });
-  }
+}
+  
 }

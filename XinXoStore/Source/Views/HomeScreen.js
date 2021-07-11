@@ -43,6 +43,7 @@ export class HomeScreen extends React.Component {
   
 
   render() {
+    console.log("RENDER PROP ",this.props.newArrivalsItems.data.listItem);
     return (
       <View style={styles.container}>
         {/* header  */}

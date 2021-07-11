@@ -1,8 +1,10 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {View ,Text,StyleSheet,Dimensions,TouchableOpacity} from 'react-native';
+import {View ,Text,StyleSheet,Dimensions,TouchableOpacity, FlatList} from 'react-native';
 import { connect } from 'react-redux';
 import {getListAdress} from '../../redux/action/Adress/AdressAction';
+import { RenderItemAdress } from './RenderItemAdress';
+import { GetAllProduct } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 
 export class CheckoutScreen extends React.Component{
     constructor(props){
@@ -11,46 +13,44 @@ export class CheckoutScreen extends React.Component{
             isChecked:true
         }
     }
-    componentDidMount() {
-        // this.props.getListAdress(this.props.user.data.key);
-        this.props.getListAdress("-McSVl4mVNzZPh65PqDv");
-        console.log("ADRESS",this.props.adress);
+    componentDidMount=async()=> {
+        this.props.getListAdress(this.props.user.data.key);
+        // this.props.GetAllProduct(this.props.user.data.key);
+        console.log("didmount");
+       
     }
-    handleChooseAdress=()=>{
-        this.setState({isChecked:!this.state.isChecked});
-        // do something
+    renderItemAdress=(item)=>{
+        console.log(item);
+    }
+    itemSeparator=()=>{
+        return(
+            <View style={{ width: 15 }} />
+        );
     }
     render(){
-        console.log(this.state.isChecked);
         return(
             <View backgroundColor={"#fff"}>
                 <Text>Shipping to</Text>
-                <TouchableOpacity style={styles.iconAdd}>
+                {this.props.adress.data.length>0?
+                (
+                    <FlatList
+                        paddingHorizontal={30}
+                        data={this.props.adress.data.adress}
+                        renderItem={({ item, index, separators }) => (
+                            <RenderItemAdress item={item}
+                            key={index}
+                            />
+                          )}
+                        horizontal
+                        ItemSeparatorComponent={this.itemSeparator}
+                    />
+                )
+                : (
+                <TouchableOpacity style={styles.iconAdd} onPress={()=>{this.props.navigation.navigate("AddAdress")}}>
                     <Icon name="plus" size={20} color={"#2f7afb"}/>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.addressComponent}
-                    onPress={this.handleChooseAdress}>
-                    <View style={styles.home}>
-                        <Icon name="home" size={30} color={"#2f7afb"}/>
-                    </View>
-                   <View style={{marginHorizontal:5, maxWidth:250}}>
-                       <Text style={{fontWeight:'bold'}}>
-                           309, Nguyen Thi Ranh
-                       </Text>
-                       <Text style={{color:'gray'}}>
-                           Cu Chi, HCM
-                       </Text>
-                   </View>
-                   {this.state.isChecked===true ?
-                       (
-                        <View style={{justifyContent:'center', marginHorizontal:10}}>
-                            <Icon name="check-circle" color={"#2f7afb"} size={20} />
-                        </View>
-                       )
-                       :null
-                   }
-                   
-                </TouchableOpacity>
+                )}
+               
                 <Text>Payment method</Text>
                 <View style={styles.containerToTal}>
                           <View style={styles.itemTotal}>
@@ -77,10 +77,11 @@ export class CheckoutScreen extends React.Component{
 const mapStateToProps = state =>{
     return{
         adress:state.AdressReducer.adress,
-        user:state.LoginReducer.user
+        user:state.LoginReducer.user,
+        cart:state.ShoppingCartReducer.items,
     }
   }
-export default connect(mapStateToProps,{getListAdress})(CheckoutScreen)
+export default connect(mapStateToProps,{getListAdress,GetAllProduct})(CheckoutScreen)
   
 const styles=StyleSheet.create({
     containerToTal:{
@@ -112,20 +113,4 @@ const styles=StyleSheet.create({
         alignItems:'center',
         borderRadius:30
     },
-    home:{
-        backgroundColor:'#fff',
-        justifyContent:'center',
-        alignItems:'center',
-        height:40,
-        width:40,
-        borderRadius:10,
-        marginHorizontal:5
-    },
-    addressComponent:{
-        alignSelf:'center',
-        flexDirection:'row',
-        backgroundColor:'#f3f3f3',
-        padding:10,
-        borderRadius:10
-    }
 });

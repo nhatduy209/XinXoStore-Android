@@ -1,24 +1,27 @@
 import {NAME_ACTIONS} from './ActionName'
 export function getAdress(){
   return{
-    type : NAME_ACTIONS.ADRESS_ACTIONS.GET_ADRESS,
+    type : NAME_ACTIONS.ADRESS_ACTIONS.GET_ACTION_SCREEN,
     data : {}
   }
 }
 
 export function getListAdress(idAccount){
     return{
-      type : NAME_ACTIONS.ADRESS_ACTIONS.GET_LIST_ADRESS,
+      type : NAME_ACTIONS.ADRESS_ACTIONS.GET_ACTION_SCREEN,
       data : {
         idAccount:idAccount
       }
     }
 }
 
-export function addAdress(){
+export function addAdress(idAccount,data){
     return{
-      type : NAME_ACTIONS.ADRESS_ACTIONS.ADD_ADRESS,
-      data : {}
+      type : NAME_ACTIONS.ADRESS_ACTIONS.ADD_ACTION_SCREEN,
+      data : {
+        idAccount:idAccount,
+        data: data
+      }
     }
 }
 export function setDefault(){

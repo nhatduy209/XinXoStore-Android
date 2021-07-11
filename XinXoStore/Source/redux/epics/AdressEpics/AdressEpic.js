@@ -13,15 +13,26 @@ const resolver = (action) => {
     return new Promise((resolve, reject) => {
         console.log('ADRESS EPIC----------' , action);
         switch (action.type) {
-            case NAME_ACTIONS.ADRESS_ACTIONS.GET_LIST_ADRESS:
+            case NAME_ACTIONS.ADRESS_ACTIONS.GET_ACTION_SCREEN:
                 adressBusiness.getListAdress(action.data, success => {
                     resolve({
-                        actionType: NAME_ACTIONS.ADRESS_ACTIONS.ADRESS_ACTION_SUCCESS,
+                        actionType: NAME_ACTIONS.ADRESS_ACTIONS.GET_ACTION_SUCCESS,
                         data: success
                     });
                 }, failed => {
                     messageError = failed;
-                    reject(new Error(NAME_ACTIONS.ADRESS_ACTIONS.ADRESS_ACTION_FAIL));
+                    reject(new Error(NAME_ACTIONS.ADRESS_ACTIONS.GET_ACTION_FAIL));
+                })
+                break;
+             case NAME_ACTIONS.ADRESS_ACTIONS.ADD_ACTION_SCREEN:
+                adressBusiness.addAdress(action.data, success => {
+                    resolve({
+                        actionType: NAME_ACTIONS.ADRESS_ACTIONS.ADD_ACTION_SUCCESS,
+                        data: success
+                    });
+                }, failed => {
+                    messageError = failed;
+                    reject(new Error(NAME_ACTIONS.ADRESS_ACTIONS.ADD_ACTION_FAIL));
                 })
                 break;
             default:
@@ -33,9 +44,14 @@ const resolver = (action) => {
 
 const dispatch = (data) => {
     switch (data.actionType) {
-        case NAME_ACTIONS.ADRESS_ACTIONS.ADRESS_ACTION_SUCCESS:
+        case NAME_ACTIONS.ADRESS_ACTIONS.GET_ACTION_SUCCESS:
             return {
-                type: NAME_EPICS.ADRESS_EPICS.ADRESS_EPICS_SUCCESS,
+                type: NAME_EPICS.ADRESS_EPICS.GET_EPICS_SUCCESS,
+                data: data.data.data
+            };
+        case NAME_ACTIONS.ADRESS_ACTIONS.ADD_ACTION_SUCCESS:
+            return {
+                type: NAME_EPICS.ADRESS_EPICS.ADD_EPICS_SUCCESS,
                 data: data.data.data
             };
         default:
@@ -46,9 +62,14 @@ const dispatch = (data) => {
 
 const dispatchError = (error, action) => {
     switch (error.message) {
-        case NAME_ACTIONS.ADRESS_ACTIONS.ADRESS_ACTION_FAIL:
+        case NAME_ACTIONS.ADRESS_ACTIONS.GET_ACTION_FAIL:
             return {
-                type: NAME_EPICS.ADRESS_EPICS.ADRESS_EPICS_FAIL,
+                type: NAME_EPICS.ADRESS_EPICS.GET_EPICS_FAIL,
+                data: messageError
+            }
+        case NAME_ACTIONS.ADRESS_ACTIONS.ADD_ACTION_FAIL:
+            return {
+                type: NAME_EPICS.ADRESS_EPICS.ADD_EPICS_FAIL,
                 data: messageError
             }
         default:
@@ -61,7 +82,8 @@ const dispatchError = (error, action) => {
 
 const AdressEpic = (action$) =>
     action$.pipe(
-        ofType(NAME_ACTIONS.ADRESS_ACTIONS.GET_LIST_ADRESS),
+        ofType(NAME_ACTIONS.ADRESS_ACTIONS.GET_ACTION_SCREEN,
+            NAME_ACTIONS.ADRESS_ACTIONS.ADD_ACTION_SCREEN),
         mergeMap((action) =>
             from(resolver(action)).pipe(
                 map((success) => dispatch(success)),

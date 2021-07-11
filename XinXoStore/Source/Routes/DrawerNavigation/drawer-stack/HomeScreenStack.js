@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import RNRestart from 'react-native-restart';
 import ShoppingCart from '../../../Views/shoppingCart/ShoppingCart';
 import CheckoutScreen from '../../../Views/checkout/CheckoutScreen';
+import AddAdress from '../../../Views/adress/AdressScreen';
 
 import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 import { connect } from 'react-redux';
@@ -83,12 +84,15 @@ class HomeScreenStack extends React.Component {
       <Stack.Screen
       name="Checkout"
       component={CheckoutScreen}
-      options={{
-        headerLeft: ()=>
-          <NavigationDrawerStructureLeft
-            navigationProps={this.props.navigation}
-          />
-      }}
+      options={{ title: ' Checkout ' ,
+                    headerRight: ()=> {
+                      return (
+                        <View style={{flexDirection: 'row'}}>
+                        </View>
+                      );
+                    }
+                        
+          }} 
       />
       <Stack.Screen
         name="NewArrivalsScreen"
@@ -152,7 +156,29 @@ class HomeScreenStack extends React.Component {
       }}
       >
       </Stack.Screen>
-
+      <Stack.Screen
+      name="AddAdress"
+      component={AddAdress}
+      options={{ title: ' Add Adress ' ,
+                    headerRight: ()=> {
+                      return (
+                        <View style={{flexDirection: 'row'}}>
+                          <TouchableOpacity>
+                                <Icon
+                                  size={25}
+                                  name="filter"
+                                  style = {{ paddingRight : 15 }}
+                                  color = "#bbbbbb"
+                                >
+                                </Icon>
+                          </TouchableOpacity>
+                        </View>
+                      );
+                    }
+                        
+          }} 
+      >
+      </Stack.Screen>
     </Stack.Navigator>
     );
   }

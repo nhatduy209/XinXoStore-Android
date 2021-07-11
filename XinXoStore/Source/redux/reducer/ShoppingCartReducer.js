@@ -1,25 +1,28 @@
 import { combineReducers } from "redux";
 import { NAME_ACTIONS } from "../action/ShoppingCartAction/ActionName";
+import { Status } from "../../Config/dataStatus";
+import { NAME_EPICS } from "../epics/ShoppingCartEpics/ActionName";
 
-const initProduct = {
-    numberCart:0,
-    Carts:[],
-    _products:[],
+const shoppingCartState = {
+    items: {
+      status: Status.FAIL,
+      data: {},
+    },
     totalBill:0
-}
+  };
  
-function ShoppingCartReducer(state = initProduct,action){
+const ShoppingCartReducer=(state = shoppingCartState,action)=>{
     switch(action.type){
-        case NAME_ACTIONS.GET_ALL_PRODUCT:
-            return{
+        case NAME_EPICS.SHOPPING_CART_EPICS.GET_ALL_EPICS_SUCCESS:
+            state = {
                 ...state,
-                _products:action.payload
-            }
-        case NAME_ACTIONS.GET_NUMBER_CART:
-                return{
-                    ...state
+                items: {
+                  status: Status.SUCCESS,
+                  data: action.data,
                 }
-        case NAME_ACTIONS.ADD_CART:
+              }
+            break;
+        case NAME_EPICS.SHOPPING_CART_EPICS.ADD_EPICS_SUCCESS:
             let checkExist=false;
             let cart = {    
                 id:action.itemID,
@@ -44,36 +47,19 @@ function ShoppingCartReducer(state = initProduct,action){
                 numberCart:state.numberCart,
                 totalBill:state.totalBill
             }
-
-            
-            case NAME_ACTIONS.INCREASE_QUANTITY:
-                state.numberCart++
-                state.Carts[action.payload].quantity++;
-               
-               return{
-                   ...state
-               }
-            case NAME_ACTIONS.DECREASE_QUANTITY:
-                let quantity = state.Carts[action.payload].quantity;
-                if(quantity>1){
-                    state.numberCart--;
-                    state.Carts[action.payload].quantity--;
-                }
-               
-                return{
-                    ...state
-                }
-            case NAME_ACTIONS.DELETE_CART:
-                let quantity_ = 1;
-                console.log("minux",state.totalBill-action.payload.price);
-                return{
-                    ...state,
-                    numberCart:state.numberCart - quantity_,
-                    Carts:state.Carts.filter(cartItem => cartItem.name !== action.payload.name),
-                    totalBill:state.totalBill-action.payload.price
-                }
+        // case NAME_ACTIONS.SHOPPING_CART_ACTIONS.DELETE_CART:
+        //     let quantity_ = 1;
+        //     console.log("minux",state.totalBill-action.payload.price);
+        //     return{
+        //         ...state,
+        //         numberCart:state.numberCart - quantity_,
+        //         Carts:state.Carts.filter(cartItem => cartItem.name !== action.payload.name),
+        //         totalBill:state.totalBill-action.payload.price
+        //     }
         default:
-            return state;
+            break;
+       
     }
-}
+    return state;
+};
 export default ShoppingCartReducer;
