@@ -11,6 +11,8 @@ import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/G
 import { connect } from 'react-redux';
 import EditProfileScreen from '../../../Views/EditProfileScreen';
 import ManagementScreen from '../../../Views/ManagementScreen/ManagementScreen';
+import AddScreen from '../../../Views/ManagementScreen/AddProductScreen';
+
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -124,7 +126,17 @@ class HomeScreenStack extends React.Component {
               />
           }}
       />
-      
+      <Stack.Screen
+          name="AddScreen"
+          component={AddScreen}
+          options={{
+            title: "Add Product",
+            headerLeft: () =>
+              <NavigationDrawerStructureLeft
+                navigationProps={this.props.navigation}
+              />
+          }}
+      />
       <Stack.Screen
       name="DetailItemScreen"
       component={DetailItem}

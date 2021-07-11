@@ -104,7 +104,7 @@ export class DrawerContent extends React.Component {
             <View style={styles.itemDrawer}>
               <Icon
                 size={25}
-                name="list"
+                name="book"
                 style={styles.iconStyle}
               >
               </Icon>

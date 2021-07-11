@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import NewArrivalItem from '../homeScreenFlatlist/HomeScreenArrivalsItems.js'
 import StarRating from './StarRating';
+import { editProduct } from '../../redux/action/GetItemArrivalAction/GetItemArrivalAction';
+import { getListNewArrivals } from '../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction'
 
 class DetailItem extends React.Component {
     constructor(props) {
@@ -17,25 +19,53 @@ class DetailItem extends React.Component {
                 require("../../Images/clothingSlider2.jpeg"),
               ],
             url : "img",
+            isLiked: false,
+            listItem:[],
           };
     }
     componentDidMount() {
+        this.setState({isLiked: this.props.route.params.data.isLiked});
+        this.setState({listItem: this.props.newArrivalsItems.data.listItem})
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
-        // const data = this.props.route.param.;
-        // console.log('mount');
-        // console.log(this.props.route.params.data);
-        
-        // this.props.getArrivalItem(this.props.route.params.data.Name);
     }
     itemSeparator = () => {
         return <View style={{ width: 15 }} />;
     }
     componentDidUpdate(prevProps) {
+        const itemData = prevProps.route.params.data;
+        const data = {
+            Name: itemData.Name,
+            Rating: itemData.Rating,
+            img: itemData.img,
+            Key: itemData.key,
+            liked: itemData.liked,
+            prices: itemData.prices,
+            publicDate: itemData.publicDate,
+          }
+        if(prevProps.route.params.data.Name != this.props.route.params.data.Name){
+            if(prevProps.route.params.data.liked != this.state.liked){
+                // const listItem = this.state.listItem;
+                // listItem.forEach((item, index) =>{
+                //     if(item.key=== data.key){
+                //         listItem[index].liked = data.liked;
+                //     }
+                // })
+                this.props.editProduct(data);
+                // this.setState({listItem: listItem});
+                this.setState({isLiked: this.props.route.params.data.isLiked})
+            }
+            
+            // console.log(prevProps.route.params.data);
+            // console.log('khac');
+        }
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
-      }
-
+    }
+    isLiked = () => {
+        this.props.route.params.data.liked = !this.props.route.params.data.liked;
+        console.log(this.props.route.params.data.liked);
+    }
     render(){
         return(
             <View>
@@ -53,7 +83,7 @@ class DetailItem extends React.Component {
                             <Text style={styles.textTitles}>
                                 {this.props.route.params.data.Name}
                             </Text>
-                            <TouchableOpacity >
+                            <TouchableOpacity onPress={this.isLiked}>
                                     <Icon
                                     size={20}
                                     name="heart"
@@ -67,7 +97,7 @@ class DetailItem extends React.Component {
                         <View style={{position:'relative',paddingHorizontal:20,paddingVertical:10}}>
                             <View style={{flexDirection: 'row'}}>
                                 <Text style={{ color: "#000", fontSize: 21,width:Dimensions.get("window").width -150}}>
-                                {this.props.route.params.data.prices}
+                                {this.props.route.params.data.prices} VNĐ
                                 </Text>
                                 <View>
                                     <StarRating item={this.props.route.params.data}/>
@@ -86,7 +116,7 @@ class DetailItem extends React.Component {
                             {/* flatlist item  */}
                             <View style={{paddingHorizontal:10}}>
                                 <FlatList
-                                data={this.props.newArrivalsItems.data.listItem}
+                                data={this.state.listItem}
                                 renderItem={({item = {navigate:this.props.navigate,...item}}) =>
                                     <NewArrivalItem item={item = {navigate:this.props.navigation,...item}}/>}
                                 keyExtractor={item => item.Name}
@@ -135,14 +165,11 @@ class DetailItem extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    // console.log('state nè')
-    //  console.log(state.NewArrivalsReducer.items.data);
     return {
         newArrivalsItems: state.NewArrivalsReducer.items,
     };
   }
-// export default connect(mapStateToProps, {getArrivalItem})(DetailItem);
-export default connect(mapStateToProps, {})(DetailItem);
+export default connect(mapStateToProps, {editProduct})(DetailItem);
 const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',

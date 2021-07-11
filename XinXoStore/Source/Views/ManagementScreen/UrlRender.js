@@ -16,11 +16,9 @@ export default class UrlComponent extends React.Component {
     }
 
     render() {
-        console.log('url');
-        console.log(this.props.item);
         return (
-            <View>
-                <Image style={{height:140,width:140,resizeMode: 'cover'}} source ={{uri : this.state.url}} />
+            <View style={{padding:15,backgroundColor:'#0000fd',borderRadius:90}}>
+                <Image style={{height:130,width:130,resizeMode: 'cover',borderRadius:80}} source ={{uri : this.state.url}} />
             </View>
         )
     }
