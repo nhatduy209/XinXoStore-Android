@@ -1,6 +1,6 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react'
-import { Image, View, TouchableOpacity, StyleSheet } from 'react-native'
+import { Image, View, TouchableOpacity, StyleSheet , Text} from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 import { connect } from 'react-redux';
@@ -30,6 +30,25 @@ const NavigationDrawerStructureLeft = props => {
 
 
 
+const NavigationBack = props => {
+  //Structure for the navigatin Drawer
+  const goBack = () => {
+    //Props to open/close the drawer
+    props.navigationProps.goBack();
+  };
+  return (
+    <View style={{ flexDirection: 'row' }}>
+      <TouchableOpacity onPress={goBack}>
+        {/*Donute Button Image */}
+        <Text>
+              Back
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+
 class SettingsScreenStack extends React.Component {
 
   constructor(props) {
@@ -45,11 +64,15 @@ class SettingsScreenStack extends React.Component {
             headerLeft: () =>
               <NavigationDrawerStructureLeft
                 navigationProps={this.props.navigation}
-              />
+              />,
+            title: ''
           }}
         />
         <Stack.Screen
           name="ChangePasswordScreen"
+          options = {{
+            title : '',
+          }}
           component={ChangePasswordScreen}
         />
 

@@ -12,11 +12,11 @@ export function Login(username, password) {
     }
 }
 
-export const editProfile = ( data ) => {
+export const editProfile = ( data, changePasswords = false  ) => {
   console.log('THIS IS EDIT PROFILE --------- ', data )
     return {
       type : NAME_ACTIONS.LOGIN_SCREEN.EDIT_PROFILE_ACTIONS ,
-      data : {data } ,
+      data : {data , changePasswords } ,
     }
 }
 
