@@ -4,8 +4,12 @@ import HomeScreen from '../../../Views/HomeScreen'
 import { Image, View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import AllNewArrivalsItem from '../../../Views/ListItemScreen/AllNewArrivalsItems';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import DetailItem from '../../../Views/DetailItemScreen/DetailItemArrival';
+import Icon from 'react-native-vector-icons/Ionicons';
 import RNRestart from 'react-native-restart';
+import ShoppingCart from '../../../Views/shoppingCart/ShoppingCart';
+import CheckoutScreen from '../../../Views/checkout/CheckoutScreen';
+
 import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 import { connect } from 'react-redux';
 import EditProfileScreen from '../../../Views/EditProfileScreen';
@@ -58,61 +62,59 @@ class HomeScreenStack extends React.Component {
   render() {
     return (
       <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            headerLeft: () =>
-              <NavigationDrawerStructureLeft
-                navigationProps={this.props.navigation}
-              />
-          }}
-        />
-
-        <Stack.Screen
-          name="NewArrivalsScreen"
-          component={AllNewArrivalsItem}
-          options={{
-            title: ' New Arrivals ',
-            headerRight: () => {
-              if (this.state.sortUpOption) {
-                return (
-                  <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={this.sortDown}>
-                      <Icon
-                        size={25}
-                        name="sort-up"
-                        style={{ paddingRight: 15 }}
-                        color="#bbbbbb"
-                      >
-                      </Icon>
-                    </TouchableOpacity>
-                  </View>
-                );
-              }
-              else {
-                return (
-                  <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={this.sortUp}>
-                      <Icon
-                        size={25}
-                        name="sort-down"
-                        style={{ paddingRight: 15 }}
-                        color="#bbbbbb"
-                      >
-                      </Icon>
-                    </TouchableOpacity>
-                  </View>
-                );
-              }
-
-            }
-
-          }}
-
-        />
-
-        <Stack.Screen
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}   
+        options={{
+          headerLeft: ()=>
+            <NavigationDrawerStructureLeft
+              navigationProps={this.props.navigation}
+            />
+        }}        
+      />
+      <Stack.Screen
+      name="ShoppingCart"
+      component={ShoppingCart}
+      options={{
+        headerLeft: ()=>
+          <NavigationDrawerStructureLeft
+            navigationProps={this.props.navigation}
+          />
+      }}
+      />
+      <Stack.Screen
+      name="Checkout"
+      component={CheckoutScreen}
+      options={{
+        headerLeft: ()=>
+          <NavigationDrawerStructureLeft
+            navigationProps={this.props.navigation}
+          />
+      }}
+      />
+      <Stack.Screen
+        name="NewArrivalsScreen"
+        component={AllNewArrivalsItem}   
+        options={{ title: ' New Arrivals ' ,
+                    headerRight: ()=> {
+                      return (
+                        <View style={{flexDirection: 'row'}}>
+                          <TouchableOpacity>
+                                <Icon
+                                  size={25}
+                                  name="filter"
+                                  style = {{ paddingRight : 15 }}
+                                  color = "#bbbbbb"
+                                >
+                                </Icon>
+                          </TouchableOpacity>
+                        </View>
+                      );
+                    }
+                        
+          }} 
+      />
+      <Stack.Screen
           name="EditProfileScreen"
           component={EditProfileScreen}
           options={{
@@ -122,20 +124,38 @@ class HomeScreenStack extends React.Component {
                 navigationProps={this.props.navigation}
               />
           }}
-        />
+            
+      />
+      <Stack.Screen
+      name="DetailItemScreen"
+      component={DetailItem}
+      options={{ title: ' Detail ',
+        headerRight: ()=> {
+          return (
+            <View style={{flexDirection: 'row'}}>
+              <TouchableOpacity>
+                    <Icon
+                      size={25}
+                      name="ellipsis-vertical"
+                      style = {{ paddingRight : 15 }}
+                      color = "#000"
+                    >
+                    </Icon>
+              </TouchableOpacity>
+            </View>
+          );
+        },
+        headerStyle: {
+          // backgroundColor: '#',
+          height: 56,
+          elevation: null,
+          backgroundColor: '#FFF'
+        }
+      }}
+      >
+      </Stack.Screen>
 
-        {/* <Stack.Screen
-          name="SettingScreens"
-          component={SettingScreenStack}
-          options={{
-            title: "",
-            headerLeft: () =>
-              <NavigationDrawerStructureLeft
-                navigationProps={this.props.navigation}
-              />
-          }}
-        /> */}
-      </Stack.Navigator>
+    </Stack.Navigator>
     );
   }
 

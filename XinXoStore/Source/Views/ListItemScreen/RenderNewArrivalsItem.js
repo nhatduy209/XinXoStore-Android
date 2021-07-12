@@ -2,7 +2,10 @@ import React from 'react'
 import { View, Dimensions, StyleSheet, Image, Text ,TouchableOpacity} from 'react-native'
 import TestAPI from '../TestAPI'
 import Icon from 'react-native-vector-icons/FontAwesome';
-export default class RenderNewArrivalsItem extends React.Component {
+import { connect } from 'react-redux';
+import { AddCart } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
+
+export  class RenderNewArrivalsItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,10 +14,20 @@ export default class RenderNewArrivalsItem extends React.Component {
   }
   componentDidMount() {
     var testApi = new TestAPI()
-    testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
+    testApi.myPromise(this.props.item.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
-  
+  addItem=async()=>{
+    this.props.AddCart(this.props.user.data.key,this.props.item.key)
+  }
+  handleDetail = () => {
+    const data = {data:this.props.item,
+    url: this.state.url};
+    // console.log('props nè');
+    // console.log(this.props);
+    this.props.item.navigate.navigate('DetailItemScreen',data);
+  }
   render() {
+    // console.log(this.state.url);
     return (
       <View style={styles.container}>
         <View>
@@ -27,13 +40,13 @@ export default class RenderNewArrivalsItem extends React.Component {
         <View style={styles.detailView}>
           <View style={{ flexDirection: 'row' }}>
             <View>
-              <Text style={{ fontSize: 17 }}>{this.props.item.Name}</Text>
-              <Text style={{ color: "#bbbbbb" }}>{this.props.item.prices}VNĐ</Text>
+              <Text style={{ fontSize: 17 }}>{this.props.item.data.Name}</Text>
+              <Text style={{ color: "#bbbbbb" }}>{this.props.item.data.prices}VNĐ</Text>
               <Text style={{ color: "#bbbbbb", fontStyle: 'italic' }}>
                 <Text>
                   Ngày đăng bán {" "}
                 </Text>
-                {this.props.item.publicDate}</Text>
+                {this.props.item.data.publicDate}</Text>
             </View>
 
             <TouchableOpacity  style={styles.iconStyle}>
@@ -41,12 +54,13 @@ export default class RenderNewArrivalsItem extends React.Component {
               size={35}
               name="shopping-cart"
               color="#dc143c"
+              onPress={this.addItem}
             ></Icon>
             </TouchableOpacity>
           </View>
 
           {/* go to detail screen */}
-          <TouchableOpacity>
+          <TouchableOpacity onPress = {this.handleDetail}>
             <Text style={{ marginLeft: 'auto', fontSize: 20, color: 'blue'  , fontStyle : 'italic'}}>
               Details {' '}
             </Text>
@@ -58,6 +72,14 @@ export default class RenderNewArrivalsItem extends React.Component {
     )
   }
 }
+
+const mapStateToProps = state =>{
+  return{
+    numberCart:state.ShoppingCartReducer.numberCart,
+    user: state.LoginReducer.user,
+  }
+}
+export default connect(mapStateToProps,{AddCart})(RenderNewArrivalsItem)
 
 const styles = StyleSheet.create({
   container: {

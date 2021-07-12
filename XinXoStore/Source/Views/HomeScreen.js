@@ -28,7 +28,7 @@ export class HomeScreen extends React.Component {
 
   renderNewArrivalsItem = ({ item }) => {
     return (
-      <NewArrivalItem item={item} />
+      <NewArrivalItem item={item = {navigate:this.props.navigation,...item}} />
     )
   }
 
@@ -37,6 +37,7 @@ export class HomeScreen extends React.Component {
   };
 
   handleShowAll = () => {
+    // console.log('day ne' + this.props);
             this.props.navigation.navigate('NewArrivalsScreen');
   }
   

@@ -28,6 +28,9 @@ export class DrawerContent extends React.Component {
     this.props.navigation.push('Home');
     this.props.navigation.navigate('Home');
   }
+  onShoppingCartPress=()=>{
+    this.props.navigation.navigate('ShoppingCart');
+  }
 
   goToEditProfile = () => {
     this.props.navigation.push('EditProfileScreen');
@@ -140,6 +143,19 @@ export class DrawerContent extends React.Component {
               </Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity onPress = {this.onShoppingCartPress}>
+                <View style={styles.itemDrawer}>
+                      <Icon
+                        size={35}
+                        name="cog"
+                        style={styles.iconStyle}
+                      >
+                      </Icon>
+                      <Text style={styles.itemText}>
+                        Shopping Cart
+                      </Text>
+                </View>
+            </TouchableOpacity>
 
         </View>
 
