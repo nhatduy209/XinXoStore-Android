@@ -28,6 +28,7 @@
     "react-native-image-slider-box": "^1.0.12",
     "react-native-modal": "^12.0.2",
     "react-native-password-strength-meter": "0.0.5",
+    "react-native-push-notification": "^7.4.0",
     "react-native-reanimated": "^2.2.0",
     "react-native-restart": "0.0.22",
     "react-native-safe-area-context": "^3.2.0",

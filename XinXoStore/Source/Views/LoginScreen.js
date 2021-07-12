@@ -8,6 +8,8 @@ import { Status } from '../Config/dataStatus';
 import auth, { firebase } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import Authentication  from '../Config/Component/Authentication';
+import PushNotification from "react-native-push-notification";
+
 
 export class LoginScreen extends React.Component {
 
@@ -29,7 +31,7 @@ export class LoginScreen extends React.Component {
     }
 
   //handle login 
-  handleLogin =async () => {
+  handleLogin =async () => { 
     this.props.Login(this.state.email , this.state.password);  
   }
   
@@ -74,6 +76,11 @@ export class LoginScreen extends React.Component {
     }    
   }
 
+  Test = () => {
+
+  }
+
+
   render() {
     return (
       <View style={styles.container}>
@@ -116,7 +123,7 @@ export class LoginScreen extends React.Component {
         </View>
         
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress = {this.Test}>
           <Text style={{ fontSize: 18, color: '#bbbbbb', textAlign: 'center', marginTop: 20 }}>Forgot your password ?</Text>
         </TouchableOpacity>
 
