@@ -4,7 +4,7 @@ import RNPasswordStrengthMeter from 'react-native-password-strength-meter';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {editProfile} from '../redux/action/LoginAction/LoginAction'
+import {editProfile} from '../../redux/action/LoginAction/LoginAction'
 class ChangePasswordScreen extends React.Component {
 
   constructor(props) {

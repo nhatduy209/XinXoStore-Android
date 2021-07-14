@@ -13,8 +13,9 @@ import CheckoutScreen from '../../../Views/checkout/CheckoutScreen';
 import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 import { connect } from 'react-redux';
 import EditProfileScreen from '../../../Views/EditProfileScreen';
-import SettingScreens from '../../../Views/SettingScreen';
+import SettingScreens from '../../../Views/settingScreens/SettingScreen';
 import SettingScreenStack from './SettingScreenStack';
+import PublisherProfileScreen from '../../../Views/PublisherProfileScreen';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -154,6 +155,16 @@ class HomeScreenStack extends React.Component {
       }}
       >
       </Stack.Screen>
+
+      <Stack.Screen
+          name="PublisherProfileScreen"
+          component={PublisherProfileScreen}
+          options={{
+            headerTitleAlign : 'center',
+            headerTitle : 'Profile'
+          }}
+            
+      />
 
     </Stack.Navigator>
     );

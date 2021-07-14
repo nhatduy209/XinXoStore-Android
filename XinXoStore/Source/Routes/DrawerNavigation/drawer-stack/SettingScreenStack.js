@@ -4,8 +4,8 @@ import { Image, View, TouchableOpacity, StyleSheet , Text} from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 import { connect } from 'react-redux';
-import ChangePasswordScreen from '../../../Views/ChangePasswordScreen';
-import SettingScreen from '../../../Views/SettingScreen';
+import ChangePasswordScreen from '../../../Views/settingScreens/ChangePasswordScreen';
+import SettingScreen from '../../../Views/settingScreens/SettingScreen';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 

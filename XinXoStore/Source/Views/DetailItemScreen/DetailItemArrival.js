@@ -123,7 +123,7 @@ class DetailItem extends React.Component {
                     
                     {/* add to card */}
                     <View style={styles.box}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress = { () => this.props.navigation.navigate('PublisherProfileScreen')}>
                             <Text style={{borderRadius:30,
                             fontSize:16,
                             padding:20,
