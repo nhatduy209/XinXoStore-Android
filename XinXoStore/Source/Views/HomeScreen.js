@@ -132,6 +132,7 @@ export class HomeScreen extends React.Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state.LoginReducer.user.data);
   return {
     newArrivalsItems: state.NewArrivalsReducer.items,
   };

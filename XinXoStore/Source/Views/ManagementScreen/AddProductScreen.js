@@ -19,69 +19,77 @@ class AddScreen extends React.Component {
             url : "img",
           };
     }
-    // componentDidMount() {
-    //     var testApi = new TestAPI()
-    //     testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
-    // }
+    componentDidMount() {
+        // console.log(this.props);
+        // var testApi = new TestAPI()
+        // testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
+    }
     render(){
         return(
-            <View>
+            <View style={{backgroundColor: '#fff'}}>
+                <View style={{position: 'absolute',zIndex:10,justifyContent: 'center'}}>
+                    <TouchableOpacity style={styles.navigationIcon} onPress={() =>this.props.navigation.toggleDrawer()}>
+                            <Icon
+                            size={20}
+                            name="bars"
+                            >
+                            </Icon>
+                    </TouchableOpacity>
+                        <Text style={styles.textHeader}>Add Product</Text>
+                        <View style={{height:60,backgroundColor:'#eee',opacity:0.5,width:Dimensions.get('window').width}}>
+                        
+                        </View>
+                    </View>
+                
                 <ScrollView>
-                    <View style={{backgroundColor: '#04f',height:200,borderBottomRightRadius:100,borderTopLeftRadius:0,flexDirection: 'row'}}>
-                        <Text style={{ fontSize:28,fontWeight:'bold',color:'#fff',top:80,right:40,position: 'absolute'}}>Add Product</Text>
-                        <View style={{width:160,height:160,position: 'absolute',top:20,left:30,borderRadius:80,padding:10,backgroundColor:'#004dad',}}>
-                            <Image style={{width:140,height:140,borderRadius:80}} source={require("../../Images/clothingSlider2.jpeg")}></Image>
-                            <TouchableOpacity>
+                    <View style={{backgroundColor: '#fff',borderRadius:20}}>
+                        <View>
+                        <Image style={{height:350,width:Dimensions.get('window').width,borderRadius:20}} source={require("../../Images/clothingSlider2.jpeg")}></Image>
+                        </View>
+                        <TouchableOpacity style={styles.cameraIcon} onPress={() =>this.props.navigation.toggleDrawer()}>
                                 <Icon
-                                size={24}
+                                size={30}
                                 name="camera"
-                                style={styles.cameraIcon}
                                 >
                                 </Icon>
-                            </TouchableOpacity>
-                            
-                        </View>
+                        </TouchableOpacity>
                         
                     </View>
-                    <View style={{backgroundColor: '#04f'}}>
-                        <View style={{backgroundColor: '#eef',borderTopLeftRadius:100,paddingHorizontal:30,paddingVertical:20}}>
-                            <View style={{backgroundColor: '#c0dfff',padding:15,borderRadius:70}}>
+                    <View>
+                        
+                            <View style={styles.infoBox}>
                                 <Text style={{marginTop:10,marginHorizontal:20,fontSize:20,fontWeight:'bold'}}>Name</Text>
                                 <View style={styles.detailInfo}>
-                                    <TextInput style={{fontSize:18}}> tao nè</TextInput>
+                                    <TextInput style={{fontSize:18}} placeholder={'Type Name here'}></TextInput>
                                 </View>
                             </View>
-                            
-                        </View>
-                        <View style={{backgroundColor: '#eef',paddingHorizontal:30,paddingBottom:20}}>
-                            <View style={{backgroundColor: '#c0dfff',padding:15,borderRadius:70}}>
+                        
+                            <View style={styles.infoBox}>
                                 <Text style={{marginTop:10,marginHorizontal:20,fontSize:20,fontWeight:'bold'}}>Price</Text>
                                 <View style={styles.detailInfo}>
-                                    <TextInput style={{fontSize:18}}> 500000VNĐ</TextInput>
+                                    <TextInput style={{fontSize:18}} placeholder={'Type price here'}></TextInput>
                                 </View>
                             </View>
-                        </View>
-                        <View style={{backgroundColor: '#eef',paddingHorizontal:30,paddingBottom:20}}>
-                            <View style={{backgroundColor: '#c0dfff',padding:15,borderRadius:70}}>
+                       
+                            <View style={styles.infoBox}>
                                 <Text style={{marginTop:10,marginHorizontal:20,fontSize:20,fontWeight:'bold'}}>Describe</Text>
                                 <View style={styles.detailInfo}>
-                                    <TextInput style={{fontSize:18}}> leather</TextInput>
+                                    <TextInput style={{fontSize:18}} placeholder={'Type Describe here'}></TextInput>
                                 </View>
                             </View>
-                        </View>
-                        <View style={{backgroundColor: '#eef',paddingHorizontal:30,paddingBottom:20}}>
-                            <View style={{backgroundColor: '#c0dfff',padding:15,borderRadius:70}}>
+                       
+                            <View style={styles.infoBox}>
                                 <Text style={{marginTop:10,marginHorizontal:20,fontSize:20,fontWeight:'bold'}}>Public Date</Text>
                                 <View style={styles.detailInfo}>
-                                    <TextInput style={{fontSize:18}}> 30/2/2000</TextInput>
+                                    <TextInput style={{fontSize:18}}></TextInput>
                                 </View>
                             </View>
-                        </View>
                         
-                        <View style={{backgroundColor: '#eef',paddingHorizontal:30,paddingBottom:20,alignItems: 'center'}}>
+                        <View style={{backgroundColor: '#fff',paddingHorizontal:30,paddingBottom:20,alignItems: 'center'}}>
                             <TouchableOpacity>
-                                <View style={{backgroundColor: '#00a04f',padding:15,borderRadius:70,width:Dimensions.get('window').width-140}}>
-                                    <Text style={{marginHorizontal:20,fontSize:20,fontWeight:'bold',textAlign: 'center'}}>Save</Text>
+                            {/* '#00a04f' */}
+                                <View style={{backgroundColor: '#ddd',padding:15,borderRadius:10,width:Dimensions.get('window').width-140}}>
+                                    <Text style={{marginHorizontal:20,fontSize:20,fontWeight:'bold',textAlign: 'center'}}>Add</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -102,39 +110,31 @@ function mapStateToProps(state) {
   }
 export default connect(mapStateToProps, {editProduct})(AddScreen);
 const styles = StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      flex: 1
-    },
-    imageStyle: {
-        height: 150,
-        width: Dimensions.get("window").width-40
-      },
-    textTitles : {
-        fontSize:21,
-        fontWeight: '700',
-        width:Dimensions.get("window").width-80
-    },
-    box:{
-        paddingHorizontal:10,
-        position:'relative',
-        bottom:10,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    boxContent:{
-        position:'relative',
-        borderTopLeftRadius:30,
-        borderTopRightRadius:30,
-        width: Dimensions.get("window").width,
-        backgroundColor: "#fff",
-        elevation:5
-    },
     detailInfo: {
         borderBottomWidth: 1,
-        borderColor: '#fff',
+        borderColor: '#eee',
         marginHorizontal: 25,
-      },cameraIcon: {
-        height: 30, width: 30, alignSelf: 'center', marginLeft: 80,bottom:10, color: '#000'
-      },
+    },
+    cameraIcon: {
+        alignSelf: 'center',
+        position:'absolute',
+        right:20,bottom:10,
+    },
+    navigationIcon: {
+        left:20,
+        position:'absolute',zIndex:10
+    },
+    textHeader:{
+        left:70,
+        fontSize:21,
+        fontWeight:'bold',
+        color:'#000',
+        position:'absolute',zIndex:10
+    },
+    infoBox:{
+        backgroundColor: '#fff',
+        padding:10,
+        // marginBottom:10,
+        // elevation:6,
+    }
 });

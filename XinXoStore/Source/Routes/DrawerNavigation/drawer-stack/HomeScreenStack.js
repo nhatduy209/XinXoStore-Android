@@ -129,8 +129,8 @@ class HomeScreenStack extends React.Component {
       <Stack.Screen
           name="AddScreen"
           component={AddScreen}
-          options={{
-            title: "Add Product",
+          options={{headerShown: false,
+            title: "",
             headerLeft: () =>
               <NavigationDrawerStructureLeft
                 navigationProps={this.props.navigation}
@@ -140,7 +140,7 @@ class HomeScreenStack extends React.Component {
       <Stack.Screen
       name="DetailItemScreen"
       component={DetailItem}
-      options={{ title: ' Detail ',
+      options={{ title: ' Detail ',headerShown: false,
         headerRight: ()=> {
           return (
             <View style={{flexDirection: 'row'}}>
@@ -167,7 +167,7 @@ class HomeScreenStack extends React.Component {
       <Stack.Screen
         name="ManagementScreen"
         component={ManagementScreen}
-        options={{title: "Management"
+        options={{title: ""
         }}
       />
 

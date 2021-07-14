@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, FlatList, ScrollView } from 'react-native'
 import { Dimensions,LayoutAnimation, UIManager } from 'react-native';
+// import {LinearGradient} from 'react-native-linear-gradient';
 import { SliderBox } from "react-native-image-slider-box";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
@@ -24,7 +25,11 @@ class ManagementScreen extends React.Component {
     componentDidMount() {
         const array = this.state.list;
         this.props.newArrivalsItems.data.listItem.forEach((element, index) => {
-            array.push({isExpanded: false, ...element});
+            // console.log(this.props.userInfo.key)
+            if(element.ownerId === this.props.userInfo.key)
+            {
+                array.push({isExpanded: false, ...element});
+            }
         });
         
         this.setState({list: array});
@@ -32,40 +37,49 @@ class ManagementScreen extends React.Component {
     renderItem=({ item}) => {
         var layoutWidthOptions = 0;
         var layoutHeightOptions = 0;
-        var layoutWidth = Dimensions.get('window').width-100;
+        var layoutWidth = Dimensions.get('window').width-200;
         var layoutWidthText = null;
+        var icon = 'chevron-left';
+        var leftRange = 15;
         if(item.isExpanded){
-            layoutWidthOptions = Dimensions.get('window').width - 310;
-            layoutWidth = Dimensions.get('window').width- 200;
-            layoutHeightOptions = 160;
+            layoutWidthOptions = Dimensions.get('window').width - 290;
+            layoutHeightOptions = 120;
+            layoutWidth = Dimensions.get('window').width-240;
             layoutWidthText = 130;
+            icon = 'chevron-right';
+            leftRange = -30;
         }
         return(
-            <View style={{paddingHorizontal:0}}>
-                <View style={{flexDirection: 'row',width:Dimensions.get('window').width,paddingStart:10}}>
-                    <TouchableOpacity style={{width: layoutWidth,height:180}} onPress={()=> this.changed(item)}>
-                        <View style={{position:'absolute',zIndex:10,marginTop:10}}>
+            <View style={{paddingHorizontal:10,marginBottom:10}}>
+                <View style={{flexDirection: 'row',width:Dimensions.get('window').width,paddingStart:10,}}>
+                    <View style={{width: Dimensions.get('window').width-150,height:140,flexDirection: 'row',left: leftRange}} >
+                        <View style={{marginVertical:10}}>
                             <UrlComponent item ={item}/>
                         </View>
                            
-                        <View style={[styles.item,{paddingHorizontal:20, width: layoutWidth,borderBottomWidth:5,borderRightWidth:5,borderColor: '#aaa',boxShadow:'10px 5px 5px black',}]}>
-                            <View style={{marginStart:70}}>
+                        <View style={[styles.item,{ width: layoutWidth}]}>
+                            <View>
                                 <Text style={styles.itemText}>{item.Name}</Text>
                                 <Text style={styles.itemText}>{item.prices} VNĐ</Text>
                             </View>
-                            
+                            <TouchableOpacity style={{right:25,top:50,position: 'absolute',padding:5,borderRadius:50}} onPress={()=> this.changed(item)}>
+                                <Icon name={icon} backgroundColor="#3b5998">
+                                </Icon>
+                            </TouchableOpacity>
                         </View>
-                    </TouchableOpacity>
+                        
+                    </View>
                     <View style={{ width: layoutWidthOptions,height:layoutHeightOptions,
                         overflow: 'hidden',backgroundColor: '#eee',
-                        marginTop:10,justifyContent: 'center',position:'relative',left:85
+                        marginTop:20,flexDirection: 'row',left:15
                         }}>
-                        <View style={{backgroundColor: '#f00',borderRadius:100,borderBottomWidth:5,borderRightWidth:5,borderColor: '#ddd'}}>
+                        <View style={{backgroundColor: '#ddd',justifyContent: 'center',width:50}}>
                             <Text style={styles.itemOption}>
                                 Edit
                             </Text>
                         </View>
-                        <View style={{backgroundColor: '#16c05d',marginTop:10,borderRadius:100,borderBottomWidth:5,borderRightWidth:5,borderColor: '#ddd'}}>
+                        <View style={{backgroundColor: '#ccc',justifyContent: 'center',width:70,borderTopEndRadius:10,
+                    borderBottomEndRadius:10}}>
                             <Text style={styles.itemOption}>
                                 Delete
                             </Text>
@@ -81,7 +95,7 @@ class ManagementScreen extends React.Component {
     }
 
     changed = (item) => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        // LayoutAnimation.configureNext();
         const array = this.state.list;
         const indexItem = array.indexOf(item);
         array.forEach((item, index)=>{
@@ -93,23 +107,26 @@ class ManagementScreen extends React.Component {
     render() {
         // console.log(this.state.url);
         return(
-            <View style={{backgroundColor: '#eee'}}>
-                    <FlatList
-                    data={this.state.list}
-                    renderItem={this.renderItem}
-                    keyExtractor={item => item.Name}
-                    ItemSeparatorComponent={this.itemSeparator}
-                    style={{marginTop:50}}
-                    />
+            <ScrollView style={{backgroundColor: '#fff'}}>
+                <View style={{height:100,justifyContent: 'center',backgroundColor:'#fff'}}>
+                        <Text style={{fontSize:36,fontWeight:'bold',left:40}}>Management</Text>  
+                </View>
                 <View style={styles.AddButton}>
-                    <TouchableOpacity onPress={()=> {
-                        this.props.navigation.navigate('AddScreen');
-                        // console.log(this.props.route.params)
-                    }}>
-                     <Text style={styles.textButton}> Add</Text>
+                        <TouchableOpacity onPress={()=> {
+                            this.props.navigation.navigate('AddScreen');
+                        }}>
+                        <Text style={styles.textButton}> Add</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+                <FlatList
+                data={this.state.list}
+                renderItem={this.renderItem}
+                keyExtractor={item => item.Name}
+                ItemSeparatorComponent={this.itemSeparator}
+                />
+                
+                
+            </ScrollView>
         )
     }
 }
@@ -117,40 +134,39 @@ class ManagementScreen extends React.Component {
 function mapStateToProps(state) {
     return {
       newArrivalsItems: state.NewArrivalsReducer.items,
-      check: 0,
+      userInfo : state.LoginReducer.user.data,
     };
   }
 export default connect(mapStateToProps, {})(ManagementScreen);
   
 const styles = StyleSheet.create({
     item: {
+        elevation:6,
         padding:10,
         backgroundColor:'#fff',
-        marginTop:10,
-        borderRadius:20,
-        position: 'absolute',
-        height:160,
-        left:80,
+        marginTop:20,
+        borderRadius:10,
+        height:120,
+        paddingHorizontal:10,
+        borderColor: '#aaa',
     },
     itemOption:{
-        fontSize:21,
-        paddingVertical:15,
+        fontSize:16,
+        paddingVertical:20,marginHorizontal:10,
         height:60,
-        textAlign: 'center',
         fontWeight:'bold',
-        color: '#fff'
+        color: '#000',
     },
     itemText:{
-        fontSize:18,
+        fontSize:14,
         fontWeight:'bold',
+        width:150
     },
     AddButton:{
-        position: 'absolute',
-            backgroundColor:'#20a0f1',
-            width: Dimensions.get('window').width,height:50,
-            justifyContent: 'center',
-            borderBottomRightRadius:15,
-            borderBottomLeftRadius:15
+    backgroundColor:'#000',
+    width: Dimensions.get('window').width,height:50,
+    justifyContent: 'center',
+    elevation:6
     },
     textButton:{
         padding: 5,

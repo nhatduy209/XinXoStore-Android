@@ -24,8 +24,12 @@ class DetailItem extends React.Component {
           };
     }
     componentDidMount() {
-        this.setState({isLiked: this.props.route.params.data.isLiked});
-        this.setState({listItem: this.props.newArrivalsItems.data.listItem})
+        const product = this.props.route.params.data;
+        this.setState({isLiked: product.isLiked});
+        const listProduct = this.props.newArrivalsItems.data.listItem.filter((element) => {
+            return element.key != product.key;
+        })
+        this.setState({listItem: listProduct});
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
     }
@@ -45,31 +49,36 @@ class DetailItem extends React.Component {
           }
         if(prevProps.route.params.data.Name != this.props.route.params.data.Name){
             if(prevProps.route.params.data.liked != this.state.liked){
-                // const listItem = this.state.listItem;
-                // listItem.forEach((item, index) =>{
-                //     if(item.key=== data.key){
-                //         listItem[index].liked = data.liked;
-                //     }
-                // })
                 this.props.editProduct(data);
-                // this.setState({listItem: listItem});
                 this.setState({isLiked: this.props.route.params.data.isLiked})
             }
-            
-            // console.log(prevProps.route.params.data);
-            // console.log('khac');
         }
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
     }
+    componentWillUnmount(){
+        this._isMounted = false;
+    }
     isLiked = () => {
         this.props.route.params.data.liked = !this.props.route.params.data.liked;
-        console.log(this.props.route.params.data.liked);
+        console.log(this.props);
     }
     render(){
         return(
             <View>
-                
+                <View style={{position: 'absolute',zIndex:10,justifyContent: 'center'}}>
+                    <TouchableOpacity style={styles.navigationIcon} onPress={() =>this.props.navigation.toggleDrawer()}>
+                            <Icon
+                            size={20}
+                            name="bars"
+                            >
+                            </Icon>
+                    </TouchableOpacity>
+                        <Text style={styles.textHeader}>Detail</Text>
+                        <View style={{height:60,backgroundColor:'#eee',opacity:0.5,width:Dimensions.get('window').width}}>
+                        
+                        </View>
+                    </View>
                 <ScrollView>
                     {/* item images */}
                     <View style={{height:320}}>
@@ -77,7 +86,7 @@ class DetailItem extends React.Component {
                     </View>
                     
                 <View style={styles.boxContent}>
-                    <View>
+                    <View >
                         {/* item name and favarite icon */}
                         <View style={{ flexDirection: 'row', paddingVertical:10,paddingHorizontal:20,marginTop:20 }}>
                             <Text style={styles.textTitles}>
@@ -94,15 +103,31 @@ class DetailItem extends React.Component {
                             </TouchableOpacity>
                         </View>
                         {/* price and rate */}
-                        <View style={{position:'relative',paddingHorizontal:20,paddingVertical:10}}>
+                        <View style={{paddingHorizontal:20,paddingVertical:10}}>
                             <View style={{flexDirection: 'row'}}>
                                 <Text style={{ color: "#000", fontSize: 21,width:Dimensions.get("window").width -150}}>
                                 {this.props.route.params.data.prices} VNĐ
-                                </Text>
-                                <View>
-                                    <StarRating item={this.props.route.params.data}/>
-                                </View>
+                            </Text>
+                            <View>
+                                <StarRating item={this.props.route.params.data}/>
+                            </View>
                                 
+                        </View>
+                        <View style={{marginTop:20}}>
+                            <TouchableOpacity>
+                                <View style={{height:70,flexDirection: 'row'}}>
+                                    <Image style={{height:70,width:70,resizeMode: 'cover',borderRadius:50,}} source ={{uri : this.state.url}} />
+                                    <View style={{justifyContent: 'center',paddingVertical:20,flexDirection: 'row'}}>
+                                        <Text style={{ marginHorizontal:20,fontSize:24,justifyContent: 'center'}}>{this.props.userInfo.user.Username}</Text>
+                                        
+                                        <Text  style={{borderRadius:3,color:'#dd5246',borderColor:'#dd5246',marginLeft:90,height:29,padding:5,fontSize:14,justifyContent: 'center',borderWidth:1}}>View shop</Text>
+                                        
+                                    </View>
+                                    
+                                </View>
+                            </TouchableOpacity>
+                            
+
                         </View>
                         </View>
                         {/* maybe also like */}
@@ -125,7 +150,6 @@ class DetailItem extends React.Component {
                                 
                                 />
                             </View>
-                            
                         </View>
                         {/* decriptions */}
                         <View style={{marginHorizontal:20,paddingVertical:10}}>
@@ -144,15 +168,7 @@ class DetailItem extends React.Component {
                     {/* add to card */}
                     <View style={styles.box}>
                         <TouchableOpacity>
-                            <Text style={{borderRadius:30,
-                            fontSize:16,
-                            padding:20,
-                            marginTop:20,
-                            color:'#fff',
-                            width: Dimensions.get("window").width - 40,
-                            backgroundColor:'#ea5310',
-                            textAlign:'center',
-                            }}>
+                            <Text style={styles.addToCard}>
                                 Add to card
                             </Text>
                         </TouchableOpacity> 
@@ -167,6 +183,7 @@ class DetailItem extends React.Component {
 function mapStateToProps(state) {
     return {
         newArrivalsItems: state.NewArrivalsReducer.items,
+        userInfo : state.LoginReducer.user.data,
     };
   }
 export default connect(mapStateToProps, {editProduct})(DetailItem);
@@ -193,10 +210,30 @@ const styles = StyleSheet.create({
     },
     boxContent:{
         position:'relative',
-        borderTopLeftRadius:30,
-        borderTopRightRadius:30,
+        borderTopLeftRadius:10,
+        borderTopRightRadius:10,
         width: Dimensions.get("window").width,
         backgroundColor: "#fff",
         elevation:5
-    }
+    },addToCard :{
+        borderRadius:10,
+        fontSize:16,
+        padding:20,
+        marginTop:20,
+        color:'#fff',
+        width: Dimensions.get("window").width - 40,
+        backgroundColor:'#ea5310',
+        textAlign:'center',
+    },
+    navigationIcon: {
+        left:20,
+        position:'absolute',zIndex:10
+    },
+    textHeader:{
+        left:70,
+        fontSize:21,
+        fontWeight:'bold',
+        color:'#000',
+        position:'absolute',zIndex:10
+    },
 });
