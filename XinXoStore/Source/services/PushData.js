@@ -21,4 +21,18 @@ export default class  PushData{
             status: Status.SUCCESS
           };
     }
+    addToShoppingCart=async(idAccount,itemID)=>{
+        await firebase
+        .database()
+        .ref('Account/'+idAccount+"/Cart")
+        .push()
+        .set({
+            ItemID:itemID
+        })
+        .then(()=>console.log('Data added============='));
+        return {
+            data:{},
+            status: Status.SUCCESS
+        };
+    }
 }

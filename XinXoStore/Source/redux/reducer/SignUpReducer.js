@@ -1,6 +1,5 @@
 
 import { Status } from '../../Config/dataStatus';
-import { NAME_ACTIONS } from '../action/SignUpAction/ActionName';
 import { NAME_EPICS } from '../epics/SignUpEpics/ActionName';
 const signUpState = {
   user: {

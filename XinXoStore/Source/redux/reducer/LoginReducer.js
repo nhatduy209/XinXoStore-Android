@@ -38,6 +38,15 @@ const LoginReducer = (state = loginState, action) => {
         }
       }
       break;
+    case NAME_EPICS.LOGIN_EPICS_SCREEN.LOGOUT_SUCCESS:
+      state = {
+        ...state,
+        user: {
+          status: Status.FAIL,
+          data: {},
+        }
+      }
+      break;
     default:
       break;
   }

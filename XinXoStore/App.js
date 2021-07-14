@@ -12,6 +12,8 @@ import Root from './Source/Routes/Root'
 import firebase from 'firebase';
 import { Provider } from 'react-redux';
 import Store from './Source/redux/Store';
+
+
 // config database
 var config = {
   databaseURL: 'https://xinxostore-8f1e6-default-rtdb.asia-southeast1.firebasedatabase.app',

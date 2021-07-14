@@ -3,6 +3,7 @@ import firebase from 'firebase';
 import { Status } from '../Config/dataStatus';
 import _, { map } from 'underscore';
 import {PushData} from './PushData';
+import { async } from 'rxjs';
 
 export default class ReadService {
   verifyLoginApi = async(username , password) => {
@@ -128,7 +129,9 @@ export default class ReadService {
         listItem.reverse();
       }
       return {
-        data : {listItem},
+        data : {
+          listItem
+        },
         status : Status.SUCCESS
       };
     } else {
@@ -137,5 +140,67 @@ export default class ReadService {
         status : Status.FAIL,
       }
     }
+  }
+  getListAdressApi= async(idAccount)=>{
+    let adress=[];
+    await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){
+      snapshot.forEach(function (child){
+        if(child.key=="Adress"){
+          console.log("JSON: ",child.toJSON(),child.key);
+          child.forEach(function(item){
+            adress.push(item.toJSON());
+          });
+        }
+      });
+    });
+    console.log(adress);
+    if (adress.length > 0 ) {
+      console.log('listItem-----------------',adress);
+      return {
+        data : {adress},
+        status : Status.SUCCESS
+      };
+    } else {
+      return {
+        data : {},
+        status : Status.FAIL,
+      }
+    }
+  }
+  getShoppingCart= async(idAccount)=>{
+    var listItem=new Array(); 
+    console.log("SERVICE GET LIST Shopping cart",idAccount);
+    await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){
+      snapshot.forEach(function (child){
+        if(child.key=="Cart"){
+          child.forEach(async function(itemID){
+            //get item and return
+            await firebase.database()
+              .ref('NewArrivals/'+itemID.toJSON().ItemID)
+              .once('value', function (snapshot) {
+                var item ={
+                  key:itemID.toJSON().ItemID,
+                  data:snapshot.toJSON()
+                }
+                listItem.push(item);
+                console.log("LIST ITEM 3: ",listItem);
+            }); 
+          console.log("LIST ITEM 3: ",listItem);
+            if (listItem.length > 0 ) {
+              console.log('listItem-----------------',listItem);
+              return {
+                data : {listItem},
+                status : Status.SUCCESS
+              };
+            } else {
+              return {
+                data : {},
+                status : Status.FAIL,
+              }
+            }     
+        });
+        }
+      });
+    });
   }
 }
