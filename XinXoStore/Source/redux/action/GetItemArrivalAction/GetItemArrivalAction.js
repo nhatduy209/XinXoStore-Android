@@ -6,3 +6,11 @@ export function getArrivalItem(Name){
     data : {}
   }
 }
+
+export const editProduct = ( data ) => {
+  console.log('THIS IS EDIT PRODUCT --------- ', data )
+    return {
+      type : NAME_ACTIONS.EDIT_PRODUCT.EDIT_PRODUCT_ACTIONS,
+      data : {data } ,
+    }
+}
