@@ -25,7 +25,6 @@ const resolver = (action) => {
                 break;
             case NAME_ACTIONS.SHOPPING_CART_ACTIONS.GET_ALL_SCREEN:
                 shoppingCartBusiness.getAllProduct(action.data,success => {
-                    console.log("epic success",success);
                     resolve({
                         actionType: NAME_ACTIONS.SHOPPING_CART_ACTIONS.GET_ALL_SUCCESS,
                         data: success
@@ -43,7 +42,6 @@ const resolver = (action) => {
 };
 
 const dispatch = (data) => {
-    console.log("data.data.data",data.data.data);
     switch (data.actionType) {
         case NAME_ACTIONS.SHOPPING_CART_ACTIONS.ADD_SUCCESS:
             return {

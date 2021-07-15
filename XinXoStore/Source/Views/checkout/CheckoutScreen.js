@@ -2,25 +2,20 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {View ,Text,StyleSheet,Dimensions,TouchableOpacity, FlatList} from 'react-native';
 import { connect } from 'react-redux';
-import {getListAdress} from '../../redux/action/Adress/AdressAction';
-import { RenderItemAdress } from './RenderItemAdress';
+import {getDefaultAddress} from '../../redux/action/Address/AddressAction';
+import { RenderItemAddress } from './RenderItemAdress';
 import { GetAllProduct } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 
 export class CheckoutScreen extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            isChecked:true
+            isChecked:true,
+            default:{}
         }
     }
     componentDidMount=async()=> {
-        this.props.getListAdress(this.props.user.data.key);
-        // this.props.GetAllProduct(this.props.user.data.key);
-        console.log("didmount");
-       
-    }
-    renderItemAdress=(item)=>{
-        console.log(item);
+        this.props.getDefaultAddress(this.props.user.data.key);
     }
     itemSeparator=()=>{
         return(
@@ -31,44 +26,38 @@ export class CheckoutScreen extends React.Component{
         return(
             <View backgroundColor={"#fff"}>
                 <Text>Shipping to</Text>
-                {this.props.adress.data.length>0?
+                {JSON.stringify(this.props.default.data)!=='{}' ?
                 (
-                    <FlatList
-                        paddingHorizontal={30}
-                        data={this.props.adress.data.adress}
-                        renderItem={({ item, index, separators }) => (
-                            <RenderItemAdress item={item}
-                            key={index}
-                            />
-                          )}
-                        horizontal
-                        ItemSeparatorComponent={this.itemSeparator}
-                    />
-                )
-                : (
-                <TouchableOpacity style={styles.iconAdd} onPress={()=>{this.props.navigation.navigate("AddAdress")}}>
-                    <Icon name="plus" size={20} color={"#2f7afb"}/>
-                </TouchableOpacity>
+                    <RenderItemAddress item={this.props.default.data} navigation={this.props.navigation}/>
+                ):
+                 (
+                    <TouchableOpacity style={styles.container} 
+                    onPress={()=>this.props.navigation.navigate("AddAddress")}>
+                        <Icon name="plus" size={20} color={"#2f7afb"}/>
+                        <Text>
+                             Thêm địa chỉ
+                        </Text>
+                    </TouchableOpacity>
                 )}
                
                 <Text>Payment method</Text>
                 <View style={styles.containerToTal}>
-                          <View style={styles.itemTotal}>
-                              <Text>Shipping fee</Text>
-                              <Text>0</Text>
-                          </View>
-                          <View style={styles.itemTotal}>
-                              <Text>Subtotal</Text>
-                              <Text ></Text>
-                          </View>
-                          <View style={styles.itemTotal}>
-                              <Text style={{fontWeight: "bold"}}>Total</Text>
-                              <Text style={{fontWeight: "bold"}}></Text>
-                          </View>
-                          <TouchableOpacity style={styles.btnCheckout}>
-                              <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>CHECKOUT</Text>
-                          </TouchableOpacity>
-                        </View>
+                    <View style={styles.itemTotal}>
+                        <Text>Shipping fee</Text>
+                        <Text>0</Text>
+                    </View>
+                    <View style={styles.itemTotal}>
+                        <Text>Subtotal</Text>
+                        <Text ></Text>
+                    </View>
+                    <View style={styles.itemTotal}>
+                        <Text style={{fontWeight: "bold"}}>Total</Text>
+                        <Text style={{fontWeight: "bold"}}></Text>
+                    </View>
+                    <TouchableOpacity style={styles.btnCheckout}>
+                        <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>CHECKOUT</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
@@ -76,12 +65,13 @@ export class CheckoutScreen extends React.Component{
 
 const mapStateToProps = state =>{
     return{
-        adress:state.AdressReducer.adress,
+        address:state.AddressReducer.address,
         user:state.LoginReducer.user,
         cart:state.ShoppingCartReducer.items,
+        default:state.AddressReducer.default
     }
   }
-export default connect(mapStateToProps,{getListAdress,GetAllProduct})(CheckoutScreen)
+export default connect(mapStateToProps,{getDefaultAddress,GetAllProduct})(CheckoutScreen)
   
 const styles=StyleSheet.create({
     containerToTal:{
@@ -112,5 +102,22 @@ const styles=StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         borderRadius:30
+    },
+    addressComponent:{
+        alignSelf:'center',
+        flexDirection:'row',
+        backgroundColor:'#f3f3f3',
+        padding:10,
+        borderRadius:10,
+        width:200
+    },
+    home:{
+        backgroundColor:'#fff',
+        justifyContent:'center',
+        alignItems:'center',
+        height:40,
+        width:40,
+        borderRadius:10,
+        marginHorizontal:5
     },
 });

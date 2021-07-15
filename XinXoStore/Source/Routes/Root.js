@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../Views/LoginScreen'
 import RootDrawer from './DrawerNavigation/RootDrawer';
 import SignUpScreen from '../Views/SignUpScreen';
-import AdressScreen from '../Views/adress/AdressScreen';
 
 const Stack = createStackNavigator();
 class Root extends React.Component {
@@ -14,7 +13,6 @@ class Root extends React.Component {
         screenOptions={{
           headerShown: false
         }}>
-          {/* <Stack.Screen name="Adress" component={AdressScreen} /> */}
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen
           name="HomeScreen" component={RootDrawer} 

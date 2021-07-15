@@ -1,50 +1,42 @@
 import React from 'react';
 import { Formik } from 'formik'
-import validationAdress from '../../Config/validattionSchema';
+import validationAddress from '../../Config/validattionSchema';
 import {View,Text,Image,StyleSheet,TextInput, Button,TouchableOpacity} from 'react-native';
-import {addAdress} from '../../redux/action/Adress/AdressAction';
+import {addAddress} from '../../redux/action/Address/AddressAction';
 import { connect } from 'react-redux';
-import {getListAdress} from '../../redux/action/Adress/AdressAction';
+import {getListAddress} from '../../redux/action/Address/AddressAction';
 
-export class AdressScreen extends React.Component{
+export class AddressScreen extends React.Component{
     constructor(props){
         super(props);
         this.handleAdd=this.handleAdd.bind(this);
     }
     handleAdd(values){
-        this.props.addAdress(this.props.user.data.key,{
+        this.props.addAddress(this.props.user.data.key,{
             street:values.street,
             number:values.number,
             commune:values.commune,
             district:values.district,
             city:values.city,
         });
-        console.log("status",this.props.adress.status);
     }
     showToast = () => {
         ToastAndroid.show("A pikachu appeared nearby !", ToastAndroid.SHORT);
       };
-    
-    componentDidUpdate(prevProps) {
-        if(this.props.adress.status != prevProps.adress.status){
-            this.props.getListAdress(this.props.user.data.key);
-            this.props.navigation.goBack();
-        }    
-      }
     render(){
         return(
             <View style={styles.container}>
                 <Formik 
-                    validationSchema={validationAdress}
+                    validationSchema={validationAddress}
                     initialValues={{
-                        street:'this.state.street',
-                        commune:'this.state.commune',
-                        district:'this.state.district',
-                        city:'this.state.city',
-                        number:'this.state.number'}}
-                        onSubmit={(values) => {
-                            this.handleAdd(values)
-                          }}
+                        number:"",
+                        street:'',
+                        commune:'',
+                        district:'',
+                        city:''}}
+                    onSubmit={(values) => {
+                        this.handleAdd(values)
+                        }}
                     >
                     {({handleChange, handleSubmit ,handleBlur,errors,touched})=>(
                         <>
@@ -109,10 +101,10 @@ export class AdressScreen extends React.Component{
 function mapStateToProps(state){
     return{
         user: state.LoginReducer.user,
-        adress: state.AdressReducer.adress,
+        add: state.AddressReducer.add,
     }
 }
-export default connect(mapStateToProps,{addAdress,getListAdress})(AdressScreen);
+export default connect(mapStateToProps,{addAddress,getListAddress})(AddressScreen);
 const styles=StyleSheet.create({
     GrayText:{
         color:'gray',
@@ -151,3 +143,4 @@ const styles=StyleSheet.create({
         paddingHorizontal:50
     },
 });
+

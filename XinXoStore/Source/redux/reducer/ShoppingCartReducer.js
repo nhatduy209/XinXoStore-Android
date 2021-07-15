@@ -23,30 +23,14 @@ const ShoppingCartReducer=(state = shoppingCartState,action)=>{
               }
             break;
         case NAME_EPICS.SHOPPING_CART_EPICS.ADD_EPICS_SUCCESS:
-            let checkExist=false;
-            let cart = {    
-                id:action.itemID,
-            }
-            state.Carts.forEach(element => {
-                if(element.name===cart.name){
-                   checkExist=true;
-                }
-            });
-            if(checkExist===false){
-                console.log("state.totalbill ",state.totalBill);
-                console.log("state.totalbill ",state.totalBill+ cart.price);
-                state.Carts.push(cart);
-                return{
-                    ...state,
-                    numberCart:state.numberCart+1,
-                    totalBill:state.totalBill+cart.price
-                }
-            }
-            return{
+            state = {
                 ...state,
-                numberCart:state.numberCart,
-                totalBill:state.totalBill
-            }
+                items: {
+                  status: Status.SUCCESS,
+                  data: action.data,
+                }
+              }
+            break;
         // case NAME_ACTIONS.SHOPPING_CART_ACTIONS.DELETE_CART:
         //     let quantity_ = 1;
         //     console.log("minux",state.totalBill-action.payload.price);

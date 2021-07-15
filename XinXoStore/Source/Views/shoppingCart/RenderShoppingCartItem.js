@@ -11,12 +11,9 @@ export default class RenderShoppingCartItem extends React.Component{
     }
     componentDidMount(){
         var testApi = new TestAPI()
-        console.log("Image",this.props.item.img);
         testApi.myPromise(this.props.item.img).then(res => this.setState({url : res })).catch(err => console.log(err));
-        console.log("Image",this.state.url);
       }
     render(){
-        console.log(this.props.item);
         return(
             <View style={styles.container}>
                     <View>

@@ -17,8 +17,9 @@ export default class NewArrivalsBusiness {
   }
   getAllProduct= async (data,success,fail)=>{
     var readDataService= new ReadData();
-      let result  = await readDataService.loadMeetings(data.idAccount);
+      let result  = await readDataService.getShoppingCart(data.idAccount);
       if( result.status  == Status.SUCCESS){
+        // let listItem= aw
         success(result);
       }
       else{

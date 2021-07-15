@@ -20,17 +20,17 @@ export const validationSchema = yup.object().shape({
 export const validationAdress= yup.object().shape({
     number:yup
       .string()
-      .required('Age is Required'),
+      .required('Number is Required'),
     commune:yup
       .string()
-      .required('Age is Required'),
+      .required('Commune is Required'),
     district:yup
       .string()
-      .required('Age is Required'),
+      .required('District is Required'),
     street:yup
       .string()
-      .required('Age is Required'),
+      .required('Street is Required'),
     city:yup
       .string()
-      .required('Age is Required'),
+      .required('City is Required'),
 })

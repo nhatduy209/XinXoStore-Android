@@ -137,23 +137,20 @@ export default class ReadService {
       }
     }
   }
-  getListAdressApi= async(idAccount)=>{
-    let adress=[];
+  getListAddressApi= async(idAccount)=>{
+    let address=[];
     await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){
       snapshot.forEach(function (child){
-        if(child.key=="Adress"){
+        if(child.key=="Address"){
           child.forEach(function(item){
-            adress.push(item.toJSON());
+            address.push(item.toJSON());
           });
         }
       });
     });
-    // console.log("resultttt",adress);
-    if (adress.length > 0 ) {
+    if (address.length > 0 ) {
       return {
-        data : {
-          adress:adress,
-          length:adress.length
+        data : {address
         },
         status : Status.SUCCESS
       };
@@ -164,9 +161,37 @@ export default class ReadService {
       }
     }
   }
+  getDefaultAddress=async(idAccount)=>{
+    var address= new Object();
+    await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){
+      snapshot.forEach(function (child){
+        if(child.key=="Address"){
+          child.forEach(function(item){
+            if(item.toJSON().Default==true){
+              address=item.toJSON();
+              return;
+            }
+          });
+        }
+      });
+    });
+    console.log("read data",address)
+    if(!!address){
+      return {
+        status: Status.SUCCESS,
+        data:{
+          address
+        }
+      }
+    }else{
+      return {
+        status: Status.FAIL,
+        data:{}
+      }
+    }
+  }
   
-  loadMeetings(idAccount) {
-    console.log("idaccount",idAccount);
+  getShoppingCart(idAccount) {
     //$('#meetingsTable').empty();
     return firebase.database().ref("Account/"+idAccount).once('value').then(function(snapshot) {
         var reads = [];
@@ -193,17 +218,13 @@ export default class ReadService {
             
         });
         return Promise.all(reads);
-//      ^^^^^^^^^^^^^^^^^
     }, function(error) {
         // The Promise was rejected.
         console.error(error);
     }).then(function(values) { 
-      console.log("values la",values);
       if(values.length>0){
         return {
-          data : {
-            values:values,
-            length:values.length
+          data : {values
           },
           status : Status.SUCCESS,
         }

@@ -14,7 +14,6 @@ export class ShoppingCart extends React.Component {
   }
   
   renderItem = ({item}) => {
-    console.log("item render",item);
     return (
       <RenderShoppingCartItem
         item={item.data}

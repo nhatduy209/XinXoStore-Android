@@ -35,12 +35,12 @@ export default class  PushData{
             status: Status.SUCCESS
         };
     }
-    addAdress=async(idAccount,data)=>{
+    addAddress=async(idAccount,data)=>{
         console.log("hihih");
         console.log(idAccount);
         await firebase
         .database()
-        .ref('Account/'+idAccount+"/Adress")
+        .ref('Account/'+idAccount+"/Address")
         .push()
         .set({
             Street:data.street,
