@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import EditProfileScreen from '../../../Views/EditProfileScreen';
 import ManagementScreen from '../../../Views/ManagementScreen/ManagementScreen';
 import AddScreen from '../../../Views/ManagementScreen/AddProductScreen';
-
+import EditScreen from '../../../Views/ManagementScreen/EditProductScreen';
 
 import SettingScreens from '../../../Views/SettingScreen';
 import SettingScreenStack from './SettingScreenStack';
@@ -171,7 +171,13 @@ class HomeScreenStack extends React.Component {
       <Stack.Screen
         name="ManagementScreen"
         component={ManagementScreen}
-        options={{title: ""
+        options={{title: "",headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="EditScreen"
+        component={EditScreen}
+        options={{title: "",headerShown: false,
         }}
       />
 

@@ -9,7 +9,7 @@ const arrivalItemState = {
 };
 
 const ArrivalItemReducer = (state = arrivalItemState, action) => {
-  console.log('REDUCER -----', action.type);
+  console.log('REDUCER -----', action);
   switch (action.type) {
     case NAME_EPICS.GET_ARRIVAL_ITEM_EPICS.GET_ARRIVAL_ITEM_EPICS_SUCCESS:
       state = {
@@ -23,7 +23,7 @@ const ArrivalItemReducer = (state = arrivalItemState, action) => {
     case NAME_EPICS.EDIT_PRODUCT_EPICS.EDIT_PRODUCT_SUCCESS:
       state = {
         ...state,
-        user: {
+        product: {
           status: Status.SUCCESS,
           data: action.data,
         }
@@ -33,7 +33,25 @@ const ArrivalItemReducer = (state = arrivalItemState, action) => {
     case NAME_EPICS.EDIT_PRODUCT_EPICS.EDIT_PRODUCT_FAIL:
       state = {
         ...state,
-        user: {
+        product: {
+          status: Status.FAIL,
+        }
+      }
+      break;
+    case NAME_EPICS.ADD_PRODUCT_EPICS.ADD_PRODUCT_SUCCESS:
+      state = {
+        ...state,
+        product: {
+          status: Status.SUCCESS,
+          data: action.data,
+        }
+      }
+      break;
+
+    case NAME_EPICS.ADD_PRODUCT_EPICS.ADD_PRODUCT_FAIL:
+      state = {
+        ...state,
+        product: {
           status: Status.FAIL,
         }
       }

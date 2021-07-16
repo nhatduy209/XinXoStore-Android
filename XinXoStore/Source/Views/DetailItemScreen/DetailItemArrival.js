@@ -8,22 +8,24 @@ import NewArrivalItem from '../homeScreenFlatlist/HomeScreenArrivalsItems.js'
 import StarRating from './StarRating';
 import { editProduct } from '../../redux/action/GetItemArrivalAction/GetItemArrivalAction';
 import { getListNewArrivals } from '../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction'
+import UrlComponent from './UrlRender';
 
 class DetailItem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             images: [
-                require("../../Images/clothingHome.jpeg"),
-                require("../../Images/clothingSlider.jpeg"),
-                require("../../Images/clothingSlider2.jpeg"),
+                require("../../Images/sold.png"),
+                require("../../Images/sold1.png"),
+                require("../../Images/sold2.png"),
               ],
             url : "img",
-            isLiked: false,
+            sold: false,
             listItem:[],
           };
     }
     componentDidMount() {
+        console.log(this.props.route.params.data.sold)
         const product = this.props.route.params.data;
         this.setState({isLiked: product.isLiked});
         const listProduct = this.props.newArrivalsItems.data.listItem.filter((element) => {
@@ -37,31 +39,19 @@ class DetailItem extends React.Component {
         return <View style={{ width: 15 }} />;
     }
     componentDidUpdate(prevProps) {
-        const itemData = prevProps.route.params.data;
-        const data = {
-            Name: itemData.Name,
-            Rating: itemData.Rating,
-            img: itemData.img,
-            Key: itemData.key,
-            liked: itemData.liked,
-            prices: itemData.prices,
-            publicDate: itemData.publicDate,
-          }
-        if(prevProps.route.params.data.Name != this.props.route.params.data.Name){
-            if(prevProps.route.params.data.liked != this.state.liked){
-                this.props.editProduct(data);
-                this.setState({isLiked: this.props.route.params.data.isLiked})
-            }
+        if(prevProps.route.params.data.key != this.props.route.params.data.key){
+            const product = this.props.route.params.data;
+            this.setState({isLiked: product.isLiked});
+            const listProduct = this.props.newArrivalsItems.data.listItem.filter((element) => {
+                return element.key != product.key;
+            })
+            this.setState({listItem: listProduct});
         }
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
     }
     componentWillUnmount(){
         this._isMounted = false;
-    }
-    isLiked = () => {
-        this.props.route.params.data.liked = !this.props.route.params.data.liked;
-        console.log(this.props);
     }
     render(){
         return(
@@ -79,28 +69,26 @@ class DetailItem extends React.Component {
                         
                         </View>
                     </View>
+                    <View style={{position:'absolute',right:30,marginTop:20,zIndex:10}}>
+                            {
+                                !this.props.route.params.data.sold ? <Image></Image> : <Image style={{height:100,width:100}} source={this.state.images[0]}></Image>
+                            }
+                                
+                    </View>
                 <ScrollView>
                     {/* item images */}
                     <View style={{height:320}}>
                         <Image style={{height:350,resizeMode: 'cover'}} source ={{uri : this.state.url}} />
+                        
                     </View>
                     
                 <View style={styles.boxContent}>
                     <View >
                         {/* item name and favarite icon */}
-                        <View style={{ flexDirection: 'row', paddingVertical:10,paddingHorizontal:20,marginTop:20 }}>
+                        <View style={{paddingVertical:10,paddingHorizontal:20,marginTop:20 }}>
                             <Text style={styles.textTitles}>
                                 {this.props.route.params.data.Name}
                             </Text>
-                            <TouchableOpacity onPress={this.isLiked}>
-                                    <Icon
-                                    size={20}
-                                    name="heart"
-                                    style = {{ paddingRight : 15 }}
-                                    color = {this.props.route.params.data.liked ? "#F00":"#bbbbbb"}
-                                    >
-                                    </Icon>
-                            </TouchableOpacity>
                         </View>
                         {/* price and rate */}
                         <View style={{paddingHorizontal:20,paddingVertical:10}}>
@@ -116,11 +104,11 @@ class DetailItem extends React.Component {
                         <View style={{marginTop:20}}>
                             <TouchableOpacity>
                                 <View style={{height:70,flexDirection: 'row'}}>
-                                    <Image style={{height:70,width:70,resizeMode: 'cover',borderRadius:50,}} source ={{uri : this.state.url}} />
-                                    <View style={{justifyContent: 'center',paddingVertical:20,flexDirection: 'row'}}>
-                                        <Text style={{ marginHorizontal:20,fontSize:24,justifyContent: 'center'}}>{this.props.userInfo.user.Username}</Text>
+                                    <UrlComponent item={{img:this.props.userInfo.Avatar}}/>
+                                    <View style={{paddingVertical:20,flexDirection: 'row',width:Dimensions.get("window").width - 120}}>
+                                        <Text style={{marginHorizontal:10,fontSize:18,justifyContent: 'center'}}>{this.props.route.params.data.ownerShop}</Text>
                                         
-                                        <Text  style={{borderRadius:3,color:'#dd5246',borderColor:'#dd5246',marginLeft:90,height:29,padding:5,fontSize:14,justifyContent: 'center',borderWidth:1}}>View shop</Text>
+                                        <Text  style={styles.buttonInfoShop}>View shop</Text>
                                         
                                     </View>
                                     
@@ -181,9 +169,10 @@ class DetailItem extends React.Component {
     }
 }
 function mapStateToProps(state) {
+    // console.log(state.LoginReducer.user.data.user);
     return {
         newArrivalsItems: state.NewArrivalsReducer.items,
-        userInfo : state.LoginReducer.user.data,
+        userInfo : state.LoginReducer.user.data.user,
     };
   }
 export default connect(mapStateToProps, {editProduct})(DetailItem);
@@ -235,5 +224,15 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         color:'#000',
         position:'absolute',zIndex:10
+    },
+    buttonInfoShop:{
+        position: 'absolute',
+        right:10,top:20,
+        borderRadius:3,
+        color:'#dd5246',
+        borderColor:'#dd5246',
+        height:29,padding:5,
+        fontSize:14,
+        borderWidth:1
     },
 });

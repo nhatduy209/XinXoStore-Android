@@ -5,12 +5,13 @@ import { NAME_EPICS } from './ActionName'
 import {NAME_ACTIONS}from '../../action/GetItemArrivalAction/ActionName';
 import DetailItemBussiness from '../../../bussiness/DetailItemBussiness';
 import EditProductBusiness from '../../../bussiness/EditProductBussiness';
-
+import AddProductBusiness from '../../../bussiness/AddProductBussiness'
 let messageError = {};
 
 const resolver = (action) => {
     const detailItemBusiness = new DetailItemBussiness();
     const editProductBusiness = new EditProductBusiness();
+    const addProductBusiness = new AddProductBusiness();
     return new Promise((resolve, reject) => {
         console.log('UserEPIC----------', action);
         switch (action.type) {
@@ -36,6 +37,17 @@ const resolver = (action) => {
                     reject(new Error(NAME_ACTIONS.EDIT_PRODUCT.EDIT_PRODUCT_FAIL));
                 })
                 break;
+            case NAME_ACTIONS.ADD_PRODUCT.ADD_PRODUCT_ACTIONS:
+                addProductBusiness.addProduct(action.data, success => {
+                    resolve({
+                        actionType: NAME_ACTIONS.ADD_PRODUCT.ADD_PRODUCT_SUCCESS,
+                        data: success
+                    });
+                }, failed => {
+                    messageError = failed;
+                    reject(new Error(NAME_ACTIONS.ADD_PRODUCT.ADD_PRODUCT_FAIL));
+                })
+                break;
             default:
                 console.error('Error when resolver Arrival Item Epic.');
                 break;
@@ -53,6 +65,11 @@ const dispatch = (data) => {
         case NAME_ACTIONS.EDIT_PRODUCT.EDIT_PRODUCT_SUCCESS:
             return {
                 type: NAME_EPICS.EDIT_PRODUCT_EPICS.EDIT_PRODUCT_SUCCESS,
+                data: data.data.data
+            };
+        case NAME_ACTIONS.ADD_PRODUCT.ADD_PRODUCT_SUCCESS:
+            return {
+                type: NAME_EPICS.ADD_PRODUCT_EPICS.ADD_PRODUCT_SUCCESS,
                 data: data.data.data
             };
         default:
@@ -73,6 +90,11 @@ const dispatchError = (error, action) => {
                 type: NAME_EPICS.EDIT_PRODUCT_EPICS.EDIT_PRODUCT_FAIL,
                 data: messageError
             }
+        case NAME_ACTIONS.ADD_PRODUCT.ADD_PRODUCT_FAIL:
+            return {
+                type: NAME_EPICS.ADD_PRODUCT_EPICS.ADD_PRODUCT_FAIL,
+                data: messageError
+            }
         default:
             console.error('Error when dispatch error arrival item Epic.');
             return new Error('Error when dispatch error arrival item  Epic.'); 
@@ -81,7 +103,9 @@ const dispatchError = (error, action) => {
 
 const ArrivalItemEpic = (action$) =>
     action$.pipe(
-        ofType(NAME_ACTIONS.GET_ARRIVAL_ITEM.GET_ARRIVAL_ITEM_ACTION,NAME_ACTIONS.EDIT_PRODUCT.EDIT_PRODUCT_ACTIONS),
+        ofType(NAME_ACTIONS.GET_ARRIVAL_ITEM.GET_ARRIVAL_ITEM_ACTION,
+            NAME_ACTIONS.EDIT_PRODUCT.EDIT_PRODUCT_ACTIONS,
+            NAME_ACTIONS.ADD_PRODUCT.ADD_PRODUCT_ACTIONS),
         mergeMap((action) =>
             from(resolver(action)).pipe(
                 map((success) => dispatch(success)),
