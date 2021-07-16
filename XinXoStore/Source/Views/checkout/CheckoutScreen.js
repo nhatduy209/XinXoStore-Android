@@ -26,9 +26,9 @@ export class CheckoutScreen extends React.Component{
         return(
             <View backgroundColor={"#fff"}>
                 <Text>Shipping to</Text>
-                {JSON.stringify(this.props.default.data)!=='{}' ?
+                {JSON.stringify(this.props.current.data)!=='{}' ?
                 (
-                    <RenderItemAddress item={this.props.default.data} navigation={this.props.navigation}/>
+                    <RenderItemAddress item={this.props.current.data} navigation={this.props.navigation}/>
                 ):
                  (
                     <TouchableOpacity style={styles.container} 
@@ -39,7 +39,6 @@ export class CheckoutScreen extends React.Component{
                         </Text>
                     </TouchableOpacity>
                 )}
-               
                 <Text>Payment method</Text>
                 <View style={styles.containerToTal}>
                     <View style={styles.itemTotal}>
@@ -68,7 +67,7 @@ const mapStateToProps = state =>{
         address:state.AddressReducer.address,
         user:state.LoginReducer.user,
         cart:state.ShoppingCartReducer.items,
-        default:state.AddressReducer.default
+        current:state.AddressReducer.current
     }
   }
 export default connect(mapStateToProps,{getDefaultAddress,GetAllProduct})(CheckoutScreen)

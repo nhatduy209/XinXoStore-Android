@@ -36,7 +36,8 @@ export default class  PushData{
         };
     }
     addAddress=async(idAccount,data)=>{
-        console.log("hihih");
+        console.log("hihih",data.city);
+        console.log("hihih",data.city);
         console.log(idAccount);
         await firebase
         .database()

@@ -5,25 +5,44 @@ import {connect} from 'react-redux'
 import {getListAddress} from '../../redux/action/Address/AddressAction';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { RenderCurrentAddress } from './RenderCurrentAddress';
+import { setCurrentAddress } from '../../redux/action/Address/AddressAction';
 
 export class ChooseAddressScreen extends React.Component{
     componentDidMount(){
         this.props.getListAddress(this.props.user.data.key);
     }
     renderItem = ({item}) => {
+        handleClick=()=>{
+            this.props.setCurrentAddress(item);
+            this.props.navigation.goBack();
+        }
         return(
-        <RenderCurrentAddress item={item.data}/>
-            );
+            <TouchableOpacity style={{backgroundColor:"#fff",padding:10,flexDirection:"row"}} 
+            onPress={handleClick}
+            >
+                <View style={{marginHorizontal:5, maxWidth:250}}>
+                    <Text style={{fontWeight:'bold'}}>
+                        {item.data.Number+', '+item.data.Street}
+                    </Text>
+                    <Text style={{color:'gray'}}>
+                    {item.data.District+', '+item.data.City}
+                    </Text>
+                </View>
+                {item.data.Default===true ?
+                    (
+                    <View style={{justifyContent:'flex-end', marginHorizontal:10}}>
+                        <Icon name="check-circle" color={"#2f7afb"} size={20} />
+                    </View>
+                    )
+                    :null
+                }
+            </TouchableOpacity>
+        );
     }
     handleDelete=()=>{
         
     }
-    componentDidUpdate(){
-        
-    }
     render(){
-        console.log("ADDRESS  CHOOSE==========",this.props.address.data);
-        console.log("ADDRESS  CHOOSE==========",JSON.stringify(this.props.address.data.data));
         return(
             <ScrollView>
                 <TouchableOpacity style={styles.container}
@@ -67,9 +86,10 @@ function mapStateToProps(state){
         address:state.AddressReducer.address,
         user:state.LoginReducer.user,
         add:state.AddressReducer.add,
+        current:state.AddressReducer.current,
     }
 }
-export default connect(mapStateToProps,{getListAddress})(ChooseAddressScreen)
+export default connect(mapStateToProps,{getListAddress,setCurrentAddress})(ChooseAddressScreen)
 
 const styles = StyleSheet.create({
     container:{

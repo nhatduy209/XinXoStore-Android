@@ -22,7 +22,6 @@ export class AddressScreen extends React.Component{
     }
     componentDidUpdate(preProps){
         if(preProps!=this.props.add.status){
-            this.props.add.status="FAIL";
             this.props.getListAddress(this.props.user.data.key);
             this.props.navigation.goBack();
         }

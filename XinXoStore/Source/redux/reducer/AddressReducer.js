@@ -1,5 +1,6 @@
 
 import { Status } from '../../Config/dataStatus';
+import { NAME_ACTIONS } from '../action/Address/ActionName';
 import { NAME_EPICS } from '../epics/AddressEpics/ActionName';
 const addressState = {
   address: {
@@ -23,7 +24,6 @@ const addressState = {
 };
 
 const AddressReducer = (state = addressState, action) => {
-  console.log("action",action.data);
   switch (action.type) { 
     case NAME_EPICS.ADDRESS_EPICS.GET_EPICS_SUCCESS:
       state = {
@@ -48,6 +48,17 @@ const AddressReducer = (state = addressState, action) => {
         default: {
           status: Status.SUCCESS,
           data: action.data
+        },
+        current:{
+          data:action.data
+        }
+      }
+      break;
+    case NAME_ACTIONS.CHOOSE_ADDRESS_SCREEN.CHANGE_CURRENT_ADDRESS_SCREEN:
+      state = {
+        ...state,
+        current:{
+          data:action.data.address.data
         }
       }
       break;

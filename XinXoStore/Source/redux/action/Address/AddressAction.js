@@ -1,8 +1,11 @@
 import {NAME_ACTIONS} from './ActionName'
-export function changeStatusAdd(){
+import { Status } from '../../../Config/dataStatus';
+
+export function setCurrentAddress(address){
+  console.log("address in action",address);
   return{
-    type:NAME_ACTIONS.ADD_ADDRESS_SCREEN.CHANGE_STATUS_TO_FAIL_SCREEN,
-    data:{}
+    type:NAME_ACTIONS.CHOOSE_ADDRESS_SCREEN.CHANGE_CURRENT_ADDRESS_SCREEN,
+    data:{address}
   }
 }
 export function getAddress(){
