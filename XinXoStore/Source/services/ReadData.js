@@ -143,7 +143,7 @@ export default class ReadService {
       snapshot.forEach(function (child){
         if(child.key=="Address"){
           child.forEach(function(item){
-            address.push(item.toJSON());
+            address.push({key: item.key,data:item.toJSON()});
           });
         }
       });

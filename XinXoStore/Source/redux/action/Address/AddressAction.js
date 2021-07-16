@@ -1,4 +1,10 @@
 import {NAME_ACTIONS} from './ActionName'
+export function changeStatusAdd(){
+  return{
+    type:NAME_ACTIONS.ADD_ADDRESS_SCREEN.CHANGE_STATUS_TO_FAIL_SCREEN,
+    data:{}
+  }
+}
 export function getAddress(){
   return{
     type : NAME_ACTIONS.ADDRESS_ACTIONS.GET_ACTION_SCREEN,
