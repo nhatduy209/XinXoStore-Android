@@ -15,9 +15,21 @@ export const editProduct = ( data ) => {
     }
 }
 
+export const deleteProduct = ( imageNamePath,key ) => {
+  console.log('THIS IS DELETE PRODUCT --------- ' )
+  console.log(imageNamePath,key);
+    return {
+      type : NAME_ACTIONS.DELETE_PRODUCT.DELETE_PRODUCT_ACTIONS,
+      data : {
+        imageNamePath: imageNamePath,
+        key: key,
+      } ,
+    }
+}
+
 export const addProduct = (Name,img,price,ownerId,ownerShop,PathImageDevice) => {
   console.log('THIS IS ADD PRODUCT --------- ')
-  // console.log(Name,img,price,ownerId,ownerShop,PathImageDevice )
+  console.log(Name,img,price,ownerId,ownerShop,PathImageDevice )
     return {
       type : NAME_ACTIONS.ADD_PRODUCT.ADD_PRODUCT_ACTIONS,
       data : {

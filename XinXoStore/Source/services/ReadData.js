@@ -123,7 +123,7 @@ export default class ReadService {
         });
       });
     if (listItem.length > 0 ) {
-      console.log('listItem-----------------',listItem);
+      // console.log('listItem-----------------',listItem);
       listItem =  _.sortBy(listItem,'prices')
       if(!sortUp){
         listItem.reverse();

@@ -8,6 +8,7 @@ import { FilePath } from '../../Config/FilePath';
 import * as ImagePicker from "react-native-image-picker";
 import NewArrivalItem from '../homeScreenFlatlist/HomeScreenArrivalsItems.js'
 import { addProduct } from '../../redux/action/GetItemArrivalAction/GetItemArrivalAction';
+import { getListNewArrivals } from '../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 
 class AddScreen extends React.Component {
     constructor(props) {
@@ -54,18 +55,7 @@ class AddScreen extends React.Component {
         if(this.state.PathImageDevice.length > 0 ){
           imagePath = FilePath.PRODUCT_IMAGE_STORAGE + '/' + this.state.img;
         }
-        // const data = {
-        //     Name: this.state.Name,
-        //     img: imagePath,
-        //     price: this.state.prices,
-        //     ownerId: this.state.ownerId,
-        //     ownerShop: this.state.ownerShop,
-        //     PathImageDevice: this.state.PathImageDevice,
-        // }
         if(this.state.Name != "" && this.state.prices != "" && this.state.img != "") {
-            // if(this.state.Name != "" && this.state.prices != "") {
-            // console.log('add');
-            // console.log(this.state.prices);
             this.props.addProduct(this.state.Name,imagePath,this.state.prices,this.state.ownerId,this.state.ownerShop,this.state.PathImageDevice);
             this.props.getListNewArrivals();
             const changed = {changed:true};
@@ -162,7 +152,7 @@ function mapStateToProps(state) {
         userInfo : state.LoginReducer.user.data,
     };
   }
-export default connect(mapStateToProps, {addProduct})(AddScreen);
+export default connect(mapStateToProps, {getListNewArrivals,addProduct})(AddScreen);
 const styles = StyleSheet.create({
     detailInfo: {
         borderBottomWidth: 1,

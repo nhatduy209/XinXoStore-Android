@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, FlatList, ScrollView } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, FlatList, ScrollView,Alert } from 'react-native'
 import { Dimensions,LayoutAnimation, UIManager } from 'react-native';
 // import {LinearGradient} from 'react-native-linear-gradient';
 import { SliderBox } from "react-native-image-slider-box";
@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import TestAPI from '../TestAPI';
 import UrlComponent from './UrlRender';
+import { deleteProduct } from '../../redux/action/GetItemArrivalAction/GetItemArrivalAction';
 import { getListNewArrivals } from '../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 
 const options = ['Edit','Delete'];
@@ -37,6 +38,7 @@ class ManagementScreen extends React.Component {
     }
     componentDidUpdate(){
         // console.log( 'params' );
+        // console.log(this.props.route.params);
         // console.log(this.props.newArrivalsItems.data.listItem);
         if(this.props.route.params.changed){
             console.log('true')
@@ -52,6 +54,22 @@ class ManagementScreen extends React.Component {
             this.props.route.params.changed = false;
         }
         
+    }
+    deleteHandle = (item)=>{
+        var list = this.props.newArrivalsItems.data.listItem.filter((element)=>{return element.key != item.key})
+        
+        Alert.alert(
+            "Alert Title",
+            "My Alert Msg",
+            [
+              { text: "OK", onPress: () =>  {this.props.deleteProduct(item.img,item.key)
+                this.props.getListNewArrivals();
+                this.props.newArrivalsItems.data.listItem = list;
+                this.props.route.params.changed = true;
+                console.log('deleted')
+            }}
+            ]
+          );
     }
     renderItem=({ item}) => {
         
@@ -103,7 +121,7 @@ class ManagementScreen extends React.Component {
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{backgroundColor: '#ccc',justifyContent: 'center',width:70,borderTopEndRadius:10,
-                        borderBottomEndRadius:10}} >
+                        borderBottomEndRadius:10}} onPress={() => this.deleteHandle(item)}>
                             <Text style={styles.itemOption}>
                                 Delete
                             </Text>
@@ -129,7 +147,7 @@ class ManagementScreen extends React.Component {
         this.setState({list:array})
     }
     componentWillUnmount() {
-        console.log('unmounted')
+        // console.log('unmounted')
         this._isMounted = true;
     }
     render() {
@@ -179,7 +197,7 @@ function mapStateToProps(state) {
       userInfo : state.LoginReducer.user.data,
     };
   }
-export default connect(mapStateToProps, {getListNewArrivals})(ManagementScreen);
+export default connect(mapStateToProps, {getListNewArrivals,deleteProduct})(ManagementScreen);
   
 const styles = StyleSheet.create({
     item: {
