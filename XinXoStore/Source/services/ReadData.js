@@ -175,7 +175,6 @@ export default class ReadService {
         }
       });
     });
-    console.log("read data",address)
     if(!!address){
       return {
         status: Status.SUCCESS,
@@ -192,9 +191,9 @@ export default class ReadService {
   }
   
   getShoppingCart(idAccount) {
-    //$('#meetingsTable').empty();
     return firebase.database().ref("Account/"+idAccount).once('value').then(function(snapshot) {
         var reads = [];
+        let totalBill=0;
         snapshot.forEach(function(childSnapshot) {
             if(childSnapshot.key=="Cart"){
               childSnapshot.forEach(function(child){
@@ -222,10 +221,9 @@ export default class ReadService {
         // The Promise was rejected.
         console.error(error);
     }).then(function(values) { 
-      if(values.length>0){
+      if(values.length>=0){
         return {
-          data : {values
-          },
+          data : values,
           status : Status.SUCCESS,
         }
       }
@@ -237,5 +235,54 @@ export default class ReadService {
       }
     });
 }
-  
+  getListIDItemShoppingCart=async(idAccount)=>{
+    let listItem=[];
+    await firebase.database().ref('Account/'+idAccount).once('value',function(snap){
+      snap.forEach(function(child){
+        if(child.key=="Cart"){
+          child.forEach(function(id){
+            listItem.push(id.toJSON().ItemID);
+          });
+          return;
+        }
+      })
+    })
+    
+    if(listItem.length>0){
+      return {
+        data:listItem,
+        status:Status.SUCCESS
+      }
+    }
+    else{
+      return {
+        data:{},
+        status:Status.FAIL
+      }
+    }
+  }
+  getListItemShoppingCart = async(listItemID)=>{
+    let listItem=[];
+    listItemID.forEach(async function(id){
+      console.log("id",id);
+      await firebase.database().ref('NewArrivals/'+id).once('value',function(snap){
+        listItem.push({key:id,data:snap.toJSON()});
+        
+      })
+      console.log(listItem);
+    })
+    console.log(listItem);
+    if(listItem.length>0){
+      return {
+        data:listItem,
+        status:Status.SUCCESS
+      }
+    }
+    else{
+      return {
+        data:{},
+        status:Status.FAIL
+      }
+    }
+  }
 }

@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../Views/LoginScreen'
 import RootDrawer from './DrawerNavigation/RootDrawer';
 import SignUpScreen from '../Views/SignUpScreen';
+import ShoppingCart from '../Views/shoppingCart/ShoppingCart';
 
 const Stack = createStackNavigator();
 class Root extends React.Component {

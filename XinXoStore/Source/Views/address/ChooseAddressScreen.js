@@ -39,9 +39,13 @@ export class ChooseAddressScreen extends React.Component{
             </TouchableOpacity>
         );
     }
-    handleDelete=()=>{
-        
-    }
+    renderHiddenItem = () => (
+        <View style={styles.rowBack}>
+            <View style={[styles.backRightBtn, styles.backRightBtnRight]}>
+                <Text style={styles.backTextWhite}>Delete</Text>
+            </View>
+        </View>
+    );
     render(){
         return(
             <ScrollView>
@@ -54,25 +58,17 @@ export class ChooseAddressScreen extends React.Component{
                 </TouchableOpacity>
                 {JSON.stringify(this.props.address.data)!='{}'?
                 <SwipeListView
-                          data={this.props.address.data}
-                          renderItem={this.renderItem}
-                          keyExtractor={data =>data.key}
-                          renderHiddenItem={ (data, rowMap) => (
-                            <View style={styles.btnDelete}>
-                                <Icon.Button name="trash" 
-                                    paddingLeft={15}
-                                    paddingVertical={15}
-                                    borderRadius={30}
-                                    alignItems={"center"}
-                                    justifyContent={"center"}
-                                    onPress={()=>this.handleDelete}
-                                    backgroundColor={"red"}
-                                >
-                                </Icon.Button>
-                            </View>
-                          )}
-                          rightOpenValue={-75}
-                          nestedScrollEnabled
+                    data={this.props.address.data}
+                    renderItem={this.renderItem}
+                    keyExtractor={data =>data.key}
+                    renderHiddenItem={this.renderHiddenItem}
+                    rightOpenValue={-Dimensions.get('window').width}
+                    previewRowKey={'0'}
+                    previewOpenValue={-40}
+                    previewOpenDelay={3000}
+                    onSwipeValueChange={this.onSwipeValueChange}
+                    useNativeDriver={false}
+                    nestedScrollEnabled
                         />
                 : null
                 }
@@ -106,5 +102,36 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignSelf:'flex-end',
         alignItems:'center',
+    },
+    backTextWhite: {
+        color: '#FFF',
+    },
+    rowFront: {
+        alignItems: 'center',
+        backgroundColor: '#CCC',
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        justifyContent: 'center',
+        height: 50,
+    },
+    rowBack: {
+        alignItems: 'center',
+        backgroundColor: 'red',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 15,
+    },
+    backRightBtn: {
+        alignItems: 'center',
+        bottom: 0,
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        width: 75,
+    },
+    backRightBtnRight: {
+        backgroundColor: 'red',
+        right: 0,
     },
 });

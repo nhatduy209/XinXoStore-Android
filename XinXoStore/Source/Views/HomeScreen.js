@@ -21,6 +21,8 @@ export class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
+    console.log("componentDidMount============");
+
     // var  a = new TestAPI();
     // a.myPromise().then(res => this.setState({imgUrl : res})).catch(err => console.log(err));
     this.props.getListNewArrivals();
@@ -43,7 +45,6 @@ export class HomeScreen extends React.Component {
   
 
   render() {
-    console.log("RENDER PROP ",this.props.newArrivalsItems.data.listItem);
     return (
       <View style={styles.container}>
         {/* header  */}

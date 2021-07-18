@@ -31,3 +31,12 @@ export function DeleteCart(payload){
         payload
     }
 }
+export function DeleteItem(idAccount,id){
+    return {
+        type: NAME_ACTIONS.SHOPPING_CART_ACTIONS.REMOVE_ITEM_SCREEN,
+        data: {
+            idAccount: idAccount,
+            id: id,
+          }
+    }
+}

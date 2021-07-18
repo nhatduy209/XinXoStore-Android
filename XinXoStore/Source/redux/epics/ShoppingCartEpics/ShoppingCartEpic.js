@@ -15,12 +15,12 @@ const resolver = (action) => {
             case NAME_ACTIONS.SHOPPING_CART_ACTIONS.ADD_SCREEN:
                 shoppingCartBusiness.addToShoppingCart(action.data,success => {
                     resolve({
-                        actionType: NAME_ACTIONS.SHOPPING_CART_ACTIONS.SHOPPING_CART_ACTIONS_SUCCESS,
+                        actionType: NAME_ACTIONS.SHOPPING_CART_ACTIONS.ADD_SUCCESS,
                         data: success
                     });
                 }, failed => {
                     messageError = failed;
-                    reject(new Error(NAME_ACTIONS.SHOPPING_CART_ACTIONS.SHOPPING_CART_ACTIONS_FAIL));
+                    reject(new Error(NAME_ACTIONS.SHOPPING_CART_ACTIONS.ADD_FAIL));
                 })
                 break;
             case NAME_ACTIONS.SHOPPING_CART_ACTIONS.GET_ALL_SCREEN:
@@ -32,6 +32,17 @@ const resolver = (action) => {
                 }, failed => {
                     messageError = failed;
                     reject(new Error(NAME_ACTIONS.SHOPPING_CART_ACTIONS.GET_ALL_FAIL));
+                })
+                break;
+             case NAME_ACTIONS.SHOPPING_CART_ACTIONS.REMOVE_ITEM_SCREEN:
+                shoppingCartBusiness.deleteItem(action.data,success => {
+                    resolve({
+                        actionType: NAME_ACTIONS.SHOPPING_CART_ACTIONS.REMOVE_ITEM_SUCCESS,
+                        data: success
+                    });
+                }, failed => {
+                    messageError = failed;
+                    reject(new Error(NAME_ACTIONS.SHOPPING_CART_ACTIONS.REMOVE_ITEM_FAIL));
                 })
                 break;
             default:
@@ -53,6 +64,11 @@ const dispatch = (data) => {
                 type: NAME_EPICS.SHOPPING_CART_EPICS.GET_ALL_EPICS_SUCCESS,
                 data: data.data.data
             };
+        case NAME_ACTIONS.SHOPPING_CART_ACTIONS.REMOVE_ITEM_SUCCESS:
+            return {
+                type: NAME_EPICS.SHOPPING_CART_EPICS.REMOVE_ITEM_EPIC_SUCCESS,
+                data: data.data.data
+            };
         default:
             console.error('Error when dispatch ShoppingCart  Epic.');
             return new Error('Error when dispatch  ShoppingCart  Epic.');
@@ -71,6 +87,11 @@ const dispatchError = (error, action) => {
                 type: NAME_EPICS.SHOPPING_CART_EPICS.GET_ALL_EPICS_FAIL,
                 data: messageError
             }
+        case NAME_ACTIONS.SHOPPING_CART_ACTIONS.REMOVE_ITEM_FAIL:
+            return {
+                type: NAME_EPICS.SHOPPING_CART_EPICS.REMOVE_ITEM_EPIC_FAIL,
+                data: messageError
+            }
         default:
             console.error('Error when dispatch error  ShoppingCart  Epic.');
             return new Error('Error when dispatch error  ShoppingCart  Epic.'); 
@@ -80,7 +101,8 @@ const dispatchError = (error, action) => {
 const ShoppingCartEpic = (action$) =>
     action$.pipe(
         ofType(NAME_ACTIONS.SHOPPING_CART_ACTIONS.GET_ALL_SCREEN,
-            NAME_ACTIONS.SHOPPING_CART_ACTIONS.ADD_SCREEN),
+            NAME_ACTIONS.SHOPPING_CART_ACTIONS.ADD_SCREEN,
+            NAME_ACTIONS.SHOPPING_CART_ACTIONS.REMOVE_ITEM_SCREEN),
         mergeMap((action) =>
             from(resolver(action)).pipe(
                 map((success) => dispatch(success)),

@@ -14,15 +14,30 @@ const shoppingCartState = {
 const ShoppingCartReducer=(state = shoppingCartState,action)=>{
     switch(action.type){
         case NAME_EPICS.SHOPPING_CART_EPICS.GET_ALL_EPICS_SUCCESS:
+          let totalBill=0;
+          action.data.forEach(element => {
+            totalBill+=parseInt(element.data.prices);
+          });
             state = {
                 ...state,
                 items: {
                   status: Status.SUCCESS,
                   data: action.data,
-                }
+                },
+                totalBill:totalBill
               }
             break;
         case NAME_EPICS.SHOPPING_CART_EPICS.ADD_EPICS_SUCCESS:
+          console.log("state",state.items.data);
+            state = {
+                ...state,
+                items: {
+                  status: Status.SUCCESS,
+                  data: state.items.data,
+                }
+              }
+            break;
+        case NAME_EPICS.SHOPPING_CART_EPICS.REMOVE_ITEM_EPIC_SUCCESS:
             state = {
                 ...state,
                 items: {
@@ -31,15 +46,7 @@ const ShoppingCartReducer=(state = shoppingCartState,action)=>{
                 }
               }
             break;
-        // case NAME_ACTIONS.SHOPPING_CART_ACTIONS.DELETE_CART:
-        //     let quantity_ = 1;
-        //     console.log("minux",state.totalBill-action.payload.price);
-        //     return{
-        //         ...state,
-        //         numberCart:state.numberCart - quantity_,
-        //         Carts:state.Carts.filter(cartItem => cartItem.name !== action.payload.name),
-        //         totalBill:state.totalBill-action.payload.price
-        //     }
+       
         default:
             break;
        
