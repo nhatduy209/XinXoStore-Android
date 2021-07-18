@@ -1,11 +1,10 @@
 import { Status } from '../Config/dataStatus';
 import UpdateService from '../services/UpdateData';
 
-export default class EditProfileBusiness {
-  editProfile = async ( data , success , fail ) => {
-    
+export default class EditProductBusiness {
+  editProduct = async ( data , success , fail ) => {
       var updateDataService = new UpdateService();
-      const result  =await updateDataService.updateProfileAPI(data)
+      const result  =await updateDataService.updateProductAPI(data)
       if( result.status  == Status.SUCCESS){
         success(result);
       }

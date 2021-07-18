@@ -32,7 +32,6 @@ class EditProfileScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log("OKI" , );
     if (this.props.user.status !==  prevProps.user.status) {
       this.props.user.status = Status.FAIL;
         this.setState({isModalVisible : true })
@@ -71,6 +70,7 @@ class EditProfileScreen extends React.Component {
       Key: this.props.user.data.key,
       Avatar: avatarPath,
       PathImageDevice: this.state.PathImageDevice,
+      Password : this.props.user.data.user.Password,
     }
     this.props.editProfile(data)
   }

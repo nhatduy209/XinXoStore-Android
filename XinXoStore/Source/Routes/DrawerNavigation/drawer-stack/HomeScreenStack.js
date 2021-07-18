@@ -5,7 +5,7 @@ import { Image, View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-na
 import { createStackNavigator } from '@react-navigation/stack';
 import AllNewArrivalsItem from '../../../Views/ListItemScreen/AllNewArrivalsItems';
 import DetailItem from '../../../Views/DetailItemScreen/DetailItemArrival';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import RNRestart from 'react-native-restart';
 import ShoppingCart from '../../../Views/shoppingCart/ShoppingCart';
 import CheckoutScreen from '../../../Views/checkout/CheckoutScreen';
@@ -15,7 +15,12 @@ import ChooseAddressScreen from '../../../Views/address/ChooseAddressScreen';
 import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 import { connect } from 'react-redux';
 import EditProfileScreen from '../../../Views/EditProfileScreen';
+import ManagementScreen from '../../../Views/ManagementScreen/ManagementScreen';
+import AddScreen from '../../../Views/ManagementScreen/AddProductScreen';
+import EditScreen from '../../../Views/ManagementScreen/EditProductScreen';
 
+import SettingScreens from '../../../Views/SettingScreen';
+import SettingScreenStack from './SettingScreenStack';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -128,19 +133,30 @@ class HomeScreenStack extends React.Component {
                 navigationProps={this.props.navigation}
               />
           }}
-             
+      />
+      <Stack.Screen
+          name="AddScreen"
+          component={AddScreen}
+          options={{headerShown: false,
+            title: "",
+            headerLeft: () =>
+              <NavigationDrawerStructureLeft
+                navigationProps={this.props.navigation}
+              />
+          }}
+            
       />
       <Stack.Screen
       name="DetailItemScreen"
       component={DetailItem}
-      options={{ title: ' Detail ',
+      options={{ title: ' Detail ',headerShown: false,
         headerRight: ()=> {
           return (
             <View style={{flexDirection: 'row'}}>
               <TouchableOpacity>
                     <Icon
                       size={25}
-                      name="ellipsis-vertical"
+                      name="ellipsis-v"
                       style = {{ paddingRight : 15 }}
                       color = "#000"
                     >
@@ -153,7 +169,7 @@ class HomeScreenStack extends React.Component {
           // backgroundColor: '#',
           height: 56,
           elevation: null,
-          backgroundColor: '#FFF'
+          backgroundColor: '#FFF',
         }
       }}
       >
@@ -214,6 +230,20 @@ class HomeScreenStack extends React.Component {
     }}
       >
       </Stack.Screen>
+      />
+      <Stack.Screen
+        name="ManagementScreen"
+        component={ManagementScreen}
+        options={{title: "",headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="EditScreen"
+        component={EditScreen}
+        options={{title: "",headerShown: false,
+        }}
+      />
+
     </Stack.Navigator>
     );
   }

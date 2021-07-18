@@ -31,6 +31,7 @@ class AllNewArrivalsItem extends React.Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state.NewArrivalsReducer.items.data.listItem)
   return {
     newArrivalsItems: state.NewArrivalsReducer.items
   };

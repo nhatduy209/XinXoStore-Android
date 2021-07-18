@@ -2,7 +2,6 @@
 import { NAME_ACTIONS } from './ActionName';
 export function Login(username, password) {
   console.log(username, password);
-  // CALL API FIREBASE HERE 
     return {
       type: NAME_ACTIONS.LOGIN_SCREEN.LOGIN_SCREEN,
       data: {
@@ -12,10 +11,17 @@ export function Login(username, password) {
     }
 }
 
-export const editProfile = ( data ) => {
+export const editProfile = ( data, changePasswords = false  ) => {
   console.log('THIS IS EDIT PROFILE --------- ', data )
     return {
       type : NAME_ACTIONS.LOGIN_SCREEN.EDIT_PROFILE_ACTIONS ,
-      data : {data } ,
+      data : {data , changePasswords } ,
     }
+}
+
+export const Logout = () => {
+  return {
+    type : NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_ACTIONS ,
+    data : {} ,
+  }
 }

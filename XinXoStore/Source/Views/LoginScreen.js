@@ -2,49 +2,51 @@ import React from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Login} from '../redux/action/LoginAction/LoginAction'
+import { Login } from '../redux/action/LoginAction/LoginAction'
 import { connect } from 'react-redux';
 import { Status } from '../Config/dataStatus';
 import auth, { firebase } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-community/google-signin';
-import Authentication  from '../Config/Component/Authentication';
+import Authentication from '../Config/Component/Authentication';
+import axios from 'axios';
+import { ServerKey } from '../Config/ServerKey';
 
 export class LoginScreen extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
-      email : "",
-      password : ""
+      email: "",
+      password: ""
     }
   }
 
   //handle input 
   handleEmail = (value) => {
-    this.setState({ email : value });
+    this.setState({ email: value });
   }
   //handle input 
-    handlePassword = (value) => {
-      this.setState({ password : value });
-    }
+  handlePassword = (value) => {
+    this.setState({ password: value });
+  }
 
   //handle login 
-  handleLogin =async () => {
-    this.props.Login(this.state.email , this.state.password);  
+  handleLogin = async () => {
+    this.props.Login(this.state.email, this.state.password);
   }
-  
+
   componentDidMount() {
-    console.log("USER : "  , this.props.user);
+    console.log("USER : ", this.props.user);
   }
   _signIn = async () => {
     try {
       GoogleSignin.configure(
-      {
-        //webClientId is required if you need offline access
-        offlineAccess: false,
-        webClientId:'1020094745628-l6k4731ug31m72vvjv8kd1ksejn441d0.apps.googleusercontent.com',
-        scopes: ['profile', 'email']
-      });
+        {
+          //webClientId is required if you need offline access
+          offlineAccess: false,
+          webClientId: '1020094745628-l6k4731ug31m72vvjv8kd1ksejn441d0.apps.googleusercontent.com',
+          scopes: ['profile', 'email']
+        });
       await GoogleSignin.hasPlayServices();
       console.log("reached google sign in");
       const userInfo = await GoogleSignin.signIn();
@@ -69,10 +71,39 @@ export class LoginScreen extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
-    if(this.props.user.status != prevProps.user.status){
-      this.props.navigation.navigate('HomeScreen');
-    }    
+    if (this.props.user.status != prevProps.user.status) {
+      this.props.navigation.navigate('RootDrawer');
+    }
   }
+
+  Test = () => {
+    var body = {
+      to: "eYyUHJZVTMW-S8B4Ev7kMy:APA91bFSargyzR_AMSN-0ffoGwYRA9cmRsqssnrvKwtctnRMfCV_aPKIV851-YS4q-12RX7OBRuL4Tc2dwnLVgi3N1hwcDHc0grJzWW7dVP-58VWIqzIoTVMLB_2TDk6tQTsoHOK1yqw",
+         notification: {
+          title: "Check this Mobile (title)",
+          body: "Rich Notification testing (body)",
+          mutable_content: true,
+          sound: "Tri-tone",
+          color : "red",
+          invokeApp : true,
+      }
+    }
+
+    axios({
+      method: 'post', //you can set what request you want to be
+      url: 'https://fcm.googleapis.com/fcm/send',
+      data: body,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "key=" + ServerKey
+      }
+    }).then((res) => {
+      console.log('RESULT -----------------' , res)
+    }).catch((e) => {
+      console.log("ERORR--------------------", e)
+    })
+  }
+
 
   render() {
     return (
@@ -81,52 +112,52 @@ export class LoginScreen extends React.Component {
           <Text
             style={styles.headerText}>
             Sign in
-            </Text>
+          </Text>
           <TextInput style={styles.InputText}
             placeholder="Email"
-            onChangeText = { value => this.handleEmail(value)}>
+            onChangeText={value => this.handleEmail(value)}>
           </TextInput>
 
           <TextInput style={styles.InputText}
             placeholder="Password"
             secureTextEntry={true}
-            onChangeText = { value => this.handlePassword(value)} >
+            onChangeText={value => this.handlePassword(value)} >
           </TextInput>
 
           <TouchableOpacity
             style={styles.LoginBtn}
-            onPress = {this.handleLogin.bind(this)}>
+            onPress={this.handleLogin.bind(this)}>
             <Text style={styles.loginText}>
               Login
             </Text>
           </TouchableOpacity>
 
-        <View style = {{ padding : 10 , flexDirection : 'row', justifyContent : 'center'}}>
-          <View style = {{ marginRight : 50}}> 
-          <Icon.Button name="facebook" backgroundColor="#3b5998">
-            <Text style={{ fontFamily: 'Arial', fontSize: 15 }}>
-              Facebook
-            </Text>
-          </Icon.Button>
-          </View>
-         
-        </View>
-         
-         
-        </View>
-        
+          <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={{ marginRight: 50 }}>
+              <Icon.Button name="facebook" backgroundColor="#3b5998">
+                <Text style={{ fontFamily: 'Arial', fontSize: 15 }}>
+                  Facebook
+                </Text>
+              </Icon.Button>
+            </View>
 
-        <TouchableOpacity>
+          </View>
+
+
+        </View>
+
+
+        <TouchableOpacity onPress={this.Test}>
           <Text style={{ fontSize: 18, color: '#bbbbbb', textAlign: 'center', marginTop: 20 }}>Forgot your password ?</Text>
         </TouchableOpacity>
 
         <View style={styles.bottom}>
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
             <Text style={{ fontSize: 18, color: '#bbbbbb' }}> Don't have account ?</Text>
-            <TouchableOpacity  onPress={() => this.props.navigation.navigate('SignUp')}>
-              <Text style={{ textDecorationLine: 'underline', textAlign: 'center', fontSize: 18, color: '#bbbbbb' }}> 
-              Sign up
-               </Text>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
+              <Text style={{ textDecorationLine: 'underline', textAlign: 'center', fontSize: 18, color: '#bbbbbb' }}>
+                Sign up
+              </Text>
             </TouchableOpacity>
 
           </View>
@@ -137,13 +168,13 @@ export class LoginScreen extends React.Component {
   }
 }
 
-function mapStateToProps(state) {  
+function mapStateToProps(state) {
   return {
-    user : state.LoginReducer.user,
+    user: state.LoginReducer.user,
     // user: firebase.auth().currentUser,
   };
 }
-export default connect(mapStateToProps, {Login})(LoginScreen);
+export default connect(mapStateToProps, { Login })(LoginScreen);
 
 const styles = StyleSheet.create(
   {

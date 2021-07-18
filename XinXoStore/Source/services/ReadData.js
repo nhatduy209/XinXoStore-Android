@@ -6,7 +6,7 @@ import {PushData} from './PushData';
 import { async } from 'rxjs';
 
 export default class ReadService {
-  verifyLoginApi = async (username , password) => {
+  verifyLoginApi = async(username , password) => {
     let canLogin = false ; 
     let Email = "";
     let key = "";
@@ -75,6 +75,8 @@ export default class ReadService {
 
   // truyền đô đây nè mẹ
   getArrivalItemAPI = async (Name) => {
+    let key = "";
+    let item = {};
     var listItem = [];
     await firebase
       .database()
@@ -85,7 +87,9 @@ export default class ReadService {
           var myJson = child.toJSON();
           if(myJson.Name === Name) {
             console.log('MY JSON -----------' , myJson);
-            listItem.push(myJson);
+            key = child.key;
+            item= myJson;
+            listItem.push({key,item});
           }
         });
       });
@@ -103,6 +107,8 @@ export default class ReadService {
     }
   }
   getListArrivalsAPI = async (sortUp) => {
+    let key = "";
+    let item = {};
     var listItem = [];
     await firebase
       .database()
@@ -111,15 +117,13 @@ export default class ReadService {
         snapshot.forEach(function (child) {
           //đặt ddieuf kiện
           var myJson = child.toJSON();
-          var item= {
-            key:child.key,
-            data:myJson
-          };
-          listItem.push(item);
+          key = child.key;
+          item= myJson;
+          listItem.push({key: key,...item});
         });
       });
     if (listItem.length > 0 ) {
-      console.log('listItem-----------------',listItem);
+      // console.log('listItem-----------------',listItem);
       listItem =  _.sortBy(listItem,'prices')
       if(!sortUp){
         listItem.reverse();

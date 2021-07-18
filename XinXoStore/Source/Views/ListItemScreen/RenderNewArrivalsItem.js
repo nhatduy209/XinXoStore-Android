@@ -15,7 +15,7 @@ export  class RenderNewArrivalsItem extends React.Component {
   }
   componentDidMount() {
     var testApi = new TestAPI()
-    testApi.myPromise(this.props.item.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
+    testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
   addItem=async()=>{
     this.props.AddCart(this.props.user.data.key,this.props.item.key)
@@ -42,13 +42,13 @@ export  class RenderNewArrivalsItem extends React.Component {
         <View style={styles.detailView}>
           <View style={{ flexDirection: 'row' }}>
             <View>
-              <Text style={{ fontSize: 17 }}>{this.props.item.data.Name}</Text>
-              <Text style={{ color: "#bbbbbb" }}>{this.props.item.data.prices}VNĐ</Text>
+              <Text style={{ fontSize: 17 }}>{this.props.item.Name}</Text>
+              <Text style={{ color: "#bbbbbb" }}>{this.props.item.prices}VNĐ</Text>
               <Text style={{ color: "#bbbbbb", fontStyle: 'italic' }}>
                 <Text>
                   Ngày đăng bán {" "}
                 </Text>
-                {this.props.item.data.publicDate}</Text>
+                {this.props.item.publicDate}</Text>
             </View>
 
             <TouchableOpacity  style={styles.iconStyle}>

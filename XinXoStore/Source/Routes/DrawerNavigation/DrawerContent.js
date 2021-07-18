@@ -15,13 +15,24 @@ export class DrawerContent extends React.Component {
 
   componentDidMount() {
     var testApi = new TestAPI()
-    testApi.myPromise(this.props.user.data.user.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
+    try{
+      testApi.myPromise(this.props.user.data.user.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
+    }
+    catch(err){
+      console.log(err);
+    }
   }
 
   // handle navigate home 
   onHomePress = () => {
     this.props.navigation.push('Home');
     this.props.navigation.navigate('Home');
+  }
+  // handle navigate management 
+  onManagementPress = () => {
+    let changed = {changed: false};
+    this.props.navigation.push('ManagementScreen', changed);
+    this.props.navigation.navigate('ManagementScreen', changed);
   }
   onShoppingCartPress=()=>{
     this.props.navigation.navigate('ShoppingCart');
@@ -32,7 +43,19 @@ export class DrawerContent extends React.Component {
     this.props.navigation.navigate('EditProfileScreen');
   }
 
+  goToSettingScreen = () => {
+    this.props.navigation.navigate('SettingsScreensStack');
+  }
+
   render() {
+    let username  = "" , email = "" ; 
+    try {
+      username = this.props.user.data.user.Username ; 
+      email = this.props.user.data.user.Email ; 
+    }catch(err) {
+        username = "" ;
+        email = "";
+    }
     return (
       <View>
         <TouchableOpacity onPress = {this.goToEditProfile}>
@@ -43,10 +66,10 @@ export class DrawerContent extends React.Component {
             </Image>
             <View>
               <Text style={{ fontSize: 25 }}>
-                {this.props.user.data.user.Username}
+                {username}  
               </Text>
               <Text style={{ color: '#bbbbbb' }}>
-                {this.props.user.data.user.Email}
+                {email}
               </Text>
             </View>
           </View>
@@ -59,7 +82,7 @@ export class DrawerContent extends React.Component {
           <TouchableOpacity onPress={this.onHomePress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={35}
+                size={25}
                 name="home"
                 style={styles.iconStyle}
               >
@@ -73,7 +96,7 @@ export class DrawerContent extends React.Component {
           <TouchableOpacity onPress={this.onHomePress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={35}
+                size={25}
                 name="tags"
                 style={styles.iconStyle}
               >
@@ -87,7 +110,7 @@ export class DrawerContent extends React.Component {
           <TouchableOpacity onPress={this.onHomePress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={35}
+                size={25}
                 name="heart"
                 style={styles.iconStyle}
               >
@@ -98,11 +121,24 @@ export class DrawerContent extends React.Component {
             </View>
           </TouchableOpacity>
 
+          <TouchableOpacity onPress={this.onManagementPress}>
+            <View style={styles.itemDrawer}>
+              <Icon
+                size={25}
+                name="book"
+                style={styles.iconStyle}
+              >
+              </Icon>
+              <Text style={styles.itemText}>
+                Manage
+              </Text>
+            </View>
+          </TouchableOpacity>
 
           <TouchableOpacity onPress={this.onHomePress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={35}
+                size={25}
                 name="bell"
                 style={styles.iconStyle}
               >
@@ -113,10 +149,10 @@ export class DrawerContent extends React.Component {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.onHomePress}>
+          <TouchableOpacity onPress={this.goToSettingScreen}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={35}
+                size={25}
                 name="cog"
                 style={styles.iconStyle}
               >

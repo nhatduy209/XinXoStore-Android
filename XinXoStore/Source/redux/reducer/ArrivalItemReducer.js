@@ -9,6 +9,7 @@ const arrivalItemState = {
 };
 
 const ArrivalItemReducer = (state = arrivalItemState, action) => {
+  console.log('REDUCER -----', action);
   switch (action.type) {
     case NAME_EPICS.GET_ARRIVAL_ITEM_EPICS.GET_ARRIVAL_ITEM_EPICS_SUCCESS:
       state = {
@@ -16,6 +17,60 @@ const ArrivalItemReducer = (state = arrivalItemState, action) => {
         items: {
           status: Status.SUCCESS,
           data: action.data,
+        }
+      }
+      break;
+    case NAME_EPICS.EDIT_PRODUCT_EPICS.EDIT_PRODUCT_SUCCESS:
+      state = {
+        ...state,
+        product: {
+          status: Status.SUCCESS,
+          data: action.data,
+        }
+      }
+      break;
+
+    case NAME_EPICS.EDIT_PRODUCT_EPICS.EDIT_PRODUCT_FAIL:
+      state = {
+        ...state,
+        product: {
+          status: Status.FAIL,
+        }
+      }
+      break;
+    case NAME_EPICS.ADD_PRODUCT_EPICS.ADD_PRODUCT_SUCCESS:
+      state = {
+        ...state,
+        product: {
+          status: Status.SUCCESS,
+          data: action.data,
+        }
+      }
+      break;
+
+    case NAME_EPICS.ADD_PRODUCT_EPICS.ADD_PRODUCT_FAIL:
+      state = {
+        ...state,
+        product: {
+          status: Status.FAIL,
+        }
+      }
+      break;
+    case NAME_EPICS.DELETE_PRODUCT_EPICS.DELETE_PRODUCT_SUCCESS:
+      state = {
+        ...state,
+        product: {
+          status: Status.SUCCESS,
+          data: action.data,
+        }
+      }
+      break;
+
+    case NAME_EPICS.DELETE_PRODUCT_EPICS.DELETE_PRODUCT_FAIL:
+      state = {
+        ...state,
+        product: {
+          status: Status.FAIL,
         }
       }
       break;

@@ -36,6 +36,12 @@ const resolver = (action) => {
                     reject(new Error(NAME_ACTIONS.EDIT_PROFILE.EDIT_PROFILE_FAIL));
                 })
                 break;
+            case NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_ACTIONS:
+                resolve({
+                    actionType: NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_SUCCESS,
+                    data: {}
+                })
+                break;
             default:
                 console.error('Error when resolver User Epic.');
                 break;
@@ -54,6 +60,11 @@ const dispatch = (data) => {
             return {
                 type: NAME_EPICS.LOGIN_EPICS_SCREEN.EDIT_PROFILE_SUCCESS,
                 data: data.data.data
+            };
+        case NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_SUCCESS:
+            return {
+                type: NAME_EPICS.LOGIN_EPICS_SCREEN.LOGOUT_SUCCESS,
+                data: {}
             };
         default:
             console.error('Error when dispatch User Epic.');
@@ -81,7 +92,7 @@ const dispatchError = (error, action) => {
 
 const LoginEpic = (action$) =>
     action$.pipe(
-        ofType(NAME_ACTIONS.LOGIN_SCREEN.LOGIN_SCREEN,NAME_ACTIONS.LOGIN_SCREEN.EDIT_PROFILE_ACTIONS),
+        ofType(NAME_ACTIONS.LOGIN_SCREEN.LOGIN_SCREEN, NAME_ACTIONS.LOGIN_SCREEN.EDIT_PROFILE_ACTIONS, NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_ACTIONS),
         mergeMap((action) =>
             from(resolver(action)).pipe(
                 map((success) => dispatch(success)),
