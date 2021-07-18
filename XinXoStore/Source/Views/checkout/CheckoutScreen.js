@@ -47,7 +47,7 @@ export class CheckoutScreen extends React.Component{
                     </View>
                     <View style={styles.itemTotal}>
                         <Text>Subtotal</Text>
-                        <Text ></Text>
+                        <Text >{this.props.totalBill}</Text>
                     </View>
                     <View style={styles.itemTotal}>
                         <Text style={{fontWeight: "bold"}}>Total</Text>
@@ -67,7 +67,8 @@ const mapStateToProps = state =>{
         address:state.AddressReducer.address,
         user:state.LoginReducer.user,
         cart:state.ShoppingCartReducer.items,
-        current:state.AddressReducer.current
+        current:state.AddressReducer.current,
+        totalBill:state.ShoppingCartReducer.totalBill
     }
   }
 export default connect(mapStateToProps,{getDefaultAddress,GetAllProduct})(CheckoutScreen)

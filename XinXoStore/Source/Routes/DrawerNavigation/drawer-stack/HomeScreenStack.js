@@ -230,7 +230,6 @@ class HomeScreenStack extends React.Component {
     }}
       >
       </Stack.Screen>
-      />
       <Stack.Screen
         name="ManagementScreen"
         component={ManagementScreen}

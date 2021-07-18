@@ -40,7 +40,7 @@ const styles=StyleSheet.create({
         backgroundColor:'#f3f3f3',
         padding:10,
         borderRadius:10,
-        width:200
+        width:Dimensions.get("window").width - 20,
     },
     home:{
         backgroundColor:'#fff',
