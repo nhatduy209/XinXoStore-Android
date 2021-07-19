@@ -8,7 +8,7 @@ import NewArrivalItem from '../homeScreenFlatlist/HomeScreenArrivalsItems.js'
 import StarRating from './StarRating';
 import { editProduct } from '../../redux/action/GetItemArrivalAction/GetItemArrivalAction';
 import { getListNewArrivals } from '../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction'
-
+import {getPublisherInfo} from '../../redux/action/GetPublisherInfoAction/GetPublisherInfoAction'
 class DetailItem extends React.Component {
     constructor(props) {
         super(props);
@@ -25,6 +25,7 @@ class DetailItem extends React.Component {
     }
     componentDidMount() {
         const product = this.props.route.params.data;
+        console.log("PRODUCT----" , product);
         this.setState({isLiked: product.isLiked});
         const listProduct = this.props.newArrivalsItems.data.listItem.filter((element) => {
             return element.key != product.key;
@@ -55,10 +56,20 @@ class DetailItem extends React.Component {
         }
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
+
+        if( this.props.publisher.status !== prevProps.publisher.status){
+            console.log(' this.props.publisher------' ,  this.props.publisher);
+            this.props.navigation.navigate('PublisherProfileScreen');
+        }
     }
     componentWillUnmount(){
         this._isMounted = false;
     }
+
+    goToPublisherScreen = () => {
+        this.props.getPublisherInfo(this.props.route.params.data.ownerId);
+    }
+
     isLiked = () => {
         this.props.route.params.data.liked = !this.props.route.params.data.liked;
         console.log(this.props);
@@ -114,7 +125,7 @@ class DetailItem extends React.Component {
                                 
                         </View>
                         <View style={{marginTop:20}}>
-                            <TouchableOpacity onPress = { () => this.props.navigation.navigate('PublisherProfileScreen')}>
+                            <TouchableOpacity onPress = { this.goToPublisherScreen }>
                                 <View style={{height:70,flexDirection: 'row'}}>
                                     <Image style={{height:70,width:70,resizeMode: 'cover',borderRadius:50,}} source ={{uri : this.state.url}} />
                                     <View style={{justifyContent: 'center',paddingVertical:20,flexDirection: 'row'}}>
@@ -184,9 +195,10 @@ function mapStateToProps(state) {
     return {
         newArrivalsItems: state.NewArrivalsReducer.items,
         userInfo : state.LoginReducer.user.data,
+        publisher : state.PublisherInfoReducer.publisher ,
     };
   }
-export default connect(mapStateToProps, {editProduct})(DetailItem);
+export default connect(mapStateToProps, {editProduct, getPublisherInfo})(DetailItem);
 const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',

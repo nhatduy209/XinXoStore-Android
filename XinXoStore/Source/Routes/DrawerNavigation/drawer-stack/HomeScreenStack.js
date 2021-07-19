@@ -20,6 +20,7 @@ import AddScreen from '../../../Views/ManagementScreen/AddProductScreen';
 import SettingScreens from '../../../Views/settingScreens/SettingScreen';
 import SettingScreenStack from './SettingScreenStack';
 import PublisherProfileScreen from '../../../Views/PublisherProfileScreen';
+import UserProfileStack from '../../BottomNavigation/UserProfileScreenStack';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -130,6 +131,17 @@ class HomeScreenStack extends React.Component {
               />
           }}
       />
+      {/* <Stack.Screen
+          name="ProfileUserStack"
+          component={UserProfileStack}
+          options={{
+            title: "Edit Profile",
+            headerLeft: () =>
+              <NavigationDrawerStructureLeft
+                navigationProps={this.props.navigation}
+              />
+          }}
+      />  */}
       <Stack.Screen
           name="AddScreen"
           component={AddScreen}

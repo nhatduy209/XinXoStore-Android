@@ -13,8 +13,6 @@ export default class NewArrivalItem extends React.Component{
   }
 
   componentDidMount(){
-    console.log('item nè');
-    console.log(this.props.item);
     var testApi = new TestAPI()
     testApi.myPromise(this.props.item.img).then(res => this.setState({url : res })).catch(err => console.log(err));
   }

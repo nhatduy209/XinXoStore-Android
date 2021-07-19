@@ -83,9 +83,6 @@ class ChangePasswordScreen extends React.Component {
     return (
       <View style={styles.container}>
         <KeyboardAvoidingView style={{ flex: 1 }} behavior='position' keyboardVerticalOffset={keyboardVerticalOffset} >
-
-
-
           <Modal isVisible={this.state.isVisibleSame} animationOut="fadeOut" animationOutTiming={1000}>
             <View style={styles.viewModal}>
               <View style={{ backgroundColor: '#e63600', width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 10 }}>

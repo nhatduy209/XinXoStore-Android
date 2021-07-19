@@ -203,4 +203,25 @@ export default class ReadService {
       });
     });
   }
+
+  getPublisherInfo =async (ownerId) => {
+    var publisher = {}
+    await firebase
+    .database()
+    .ref('Account/')
+    .once('value', function (snapshot) {
+      snapshot.forEach(function (child) {
+        if(child.key === ownerId ){
+          var myJson = child.toJSON();
+          // console.log(myJson.Username + ' ' + myJson.Password);
+            publisher = myJson;
+        }
+      });
+    });
+
+    return {
+      data : publisher,
+      status : Status.SUCCESS
+    }
+  }
 }

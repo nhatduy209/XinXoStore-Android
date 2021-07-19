@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import ChangePasswordScreen from '../../../Views/settingScreens/ChangePasswordScreen';
 import SettingScreen from '../../../Views/settingScreens/SettingScreen';
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 
 const NavigationDrawerStructureLeft = props => {
   //Structure for the navigatin Drawer
@@ -30,23 +29,6 @@ const NavigationDrawerStructureLeft = props => {
 
 
 
-const NavigationBack = props => {
-  //Structure for the navigatin Drawer
-  const goBack = () => {
-    //Props to open/close the drawer
-    props.navigationProps.goBack();
-  };
-  return (
-    <View style={{ flexDirection: 'row' }}>
-      <TouchableOpacity onPress={goBack}>
-        {/*Donute Button Image */}
-        <Text>
-              Back
-        </Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
 
 
 class SettingsScreenStack extends React.Component {
@@ -89,27 +71,3 @@ function mapStateToProps(state) {
 }
 export default connect(mapStateToProps, { getListNewArrivals })(SettingsScreenStack);
 
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center"
-  }
-})

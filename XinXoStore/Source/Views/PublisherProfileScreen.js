@@ -1,7 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, Linking, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-export default class PublisherProfileScreen extends React.Component {
+import { connect } from 'react-redux';
+import Modal from 'react-native-modal';
+import TestAPI from './TestAPI';
+class PublisherProfileScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -9,20 +12,27 @@ export default class PublisherProfileScreen extends React.Component {
       isGetNotification: false,
       getNotification: 'Get notification',
       iconBellName: 'bell-slash',
+      isVisible: false,
+      url: "img"
     }
   }
 
+  componentDidMount() {
+    var testApi = new TestAPI();
+    testApi.myPromise(this.props.publisher.data.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
+  }
+
   navigateContact = () => {
-    Linking.openURL('tel:119');
+    Linking.openURL('tel:' + this.props.publisher.data.PhoneNum);
   }
 
   navigateMail = () => {
-    Linking.openURL('mailto:nhatduy20000@gmail.com');
+    Linking.openURL('mailto:' + this.props.publisher.data.Email);
   }
 
-  navigateMaps = () =>{
-    const address = 'số 269,Hà Duy Phiên,huyện Củ Chi,thành phố HCM'; 
-    Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + address );
+  navigateMaps = () => {
+    const address = this.props.publisher.data.address;
+    Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + address);
   }
 
   handleGetNotification = () => {
@@ -30,6 +40,15 @@ export default class PublisherProfileScreen extends React.Component {
       this.setState({ isGetNotification: true });
       this.setState({ getNotification: 'Already got notification' });
       this.setState({ iconBellName: 'bell' })
+      this.setState(prevState => ({
+        isVisible: true
+      }), () => {
+        setTimeout(() => {
+          this.setState(prevState => ({
+            isVisible: false
+          }));
+        }, 2500);
+      });
     } else {
       this.setState({ isGetNotification: false });
       this.setState({ getNotification: 'Get notification' });
@@ -39,14 +58,25 @@ export default class PublisherProfileScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+
+        <Modal isVisible={this.state.isVisible} animationOut="fadeOut" animationOutTiming={2000}>
+          <View style={styles.viewModal}>
+            <View style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 10 }}>
+              <Icon name="check-circle" color="#66ff33" size={40} />
+            </View>
+
+            <Text style={{ fontSize: 15, color: '#ffffff', paddingHorizontal: 30, }}>Notification comes when {this.props.publisher.data.Username} public an item </Text>
+          </View>
+        </Modal>
+
         <View style={styles.imageContent}>
 
           {/* View image and username  */}
-          <Image source={require('../Images/clothingHome.jpeg')}
+          <Image source={{ uri: this.state.url }}
             style={{ height: 100, width: 100, borderRadius: 70 }} />
           <View>
             <Text style={styles.textUsername}>
-              XinXoStore Name
+              {this.props.publisher.data.Username}
             </Text>
             <Text style={styles.textFullName}>
               Trần Nhất Duy
@@ -59,7 +89,7 @@ export default class PublisherProfileScreen extends React.Component {
           <TouchableOpacity onPress={this.navigateContact}>
             <View style={{ flexDirection: 'row', paddingVertical: 5 }}>
               <Icon name="phone-alt" color="#66b3ff" style={styles.Icon} size={20} />
-              <Text style={styles.contactText}>12312414113</Text>
+              <Text style={styles.contactText}> {this.props.publisher.data.PhoneNum}</Text>
             </View>
           </TouchableOpacity>
 
@@ -68,7 +98,7 @@ export default class PublisherProfileScreen extends React.Component {
 
             <View style={{ flexDirection: 'row', paddingVertical: 5 }}>
               <Icon name="envelope" color="#ff6666" style={styles.Icon} size={20} />
-              <Text style={styles.contactText}>nhatduy20000@gmail.com</Text>
+              <Text style={styles.contactText}>{this.props.publisher.data.Email}</Text>
             </View>
           </TouchableOpacity>
 
@@ -77,25 +107,41 @@ export default class PublisherProfileScreen extends React.Component {
 
             <View style={{ flexDirection: 'row', paddingVertical: 5 }}>
               <Icon name="map-marker" color="#ff0000" style={styles.Icon} size={20} />
-              <Text numberOfLines = {2} style={styles.contactText} > số 269,Hà Duy Phiên,huyện Củ Chi,thành phố HCM</Text>
+              <Text numberOfLines={2} style={styles.contactText} >{this.props.publisher.data.Address}</Text>
             </View>
           </TouchableOpacity>
 
         </View>
 
+
         <View style={{ marginVertical: 10, flexDirection: 'row', borderColor: '#bbbbbb', borderWidth: 0.5 }}
         >
-          <View style={{ ...styles.MessageAndNotification, borderRightColor: '#bbbbbb', borderRightWidth: 0.5 }}>
-            <Icon name="comment-dots" size={23} color="#666666" />
-            <Text>Send message</Text>
-          </View>
-
-          <TouchableOpacity onPress={this.handleGetNotification}>
-            <View style={styles.MessageAndNotification}>
-              <Icon name={this.state.iconBellName} size={23} color="#666666" />
-              <Text>{this.state.getNotification}</Text>
+          <ScrollView 
+          horizontal = {true}
+          showsHorizontalScrollIndicator = {false} 
+          >
+            <View style={{ ...styles.MessageAndNotification, borderRightColor: '#bbbbbb', borderRightWidth: 0.5 }}>
+              <Icon name="comment-dots" size={23} color="#666666" />
+              <Text>Send message</Text>
             </View>
-          </TouchableOpacity>
+
+            <TouchableOpacity onPress={this.handleGetNotification}>
+              <View style={styles.MessageAndNotification}>
+                <Icon name={this.state.iconBellName} size={23} color="#666666" />
+                <Text>{this.state.getNotification}</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={this.handleGetNotification}>
+              <View style={styles.MessageAndNotification}>
+                <Icon name="comments" size={23} color="#666666" />
+                <Text>Comments for store </Text>
+              </View>
+            </TouchableOpacity>
+
+          </ScrollView>
+
+
         </View>
 
 
@@ -111,13 +157,13 @@ export default class PublisherProfileScreen extends React.Component {
 
         <View style={styles.viewList}>
           <Icon name="thumbs-up" size={23} color="#3366ff" />
-          <Text style={styles.textList}>20 people likes</Text>
+          <Text style={styles.textList}>{this.props.publisher.data.like} people likes</Text>
         </View>
 
 
         <View style={styles.viewList}>
           <Icon name="thumbs-down" size={23} color="#bbbbbb" />
-          <Text style={styles.textList}>20 people dislikes</Text>
+          <Text style={styles.textList}>{this.props.publisher.data.dislike} people dislikes</Text>
         </View>
 
       </View>
@@ -125,6 +171,12 @@ export default class PublisherProfileScreen extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    publisher: state.PublisherInfoReducer.publisher,
+  };
+}
+export default connect(mapStateToProps, {})(PublisherProfileScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -151,10 +203,10 @@ const styles = StyleSheet.create({
   contactText: {
     marginLeft: 20,
     fontSize: 18,
-    maxWidth : 250
+    maxWidth: 250
   },
   MessageAndNotification: {
-    width: Dimensions.get('window').width / 2,
+    width: Dimensions.get('window').width / 2 - 40,
     alignItems: 'center',
     padding: 15
   },
@@ -163,5 +215,13 @@ const styles = StyleSheet.create({
   },
   viewList: {
     paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', paddingVertical: 10
+  },
+  viewModal: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#269900',
+    height: 150,
+    borderRadius: 20,
+    padding: 20
   }
 })
