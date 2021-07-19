@@ -22,6 +22,9 @@ export class CheckoutScreen extends React.Component{
             <View style={{ width: 15 }} />
         );
     }
+    handleCheckout=()=>{
+        this.props.navigation.navigate("CheckoutSuccess");
+    }
     render(){
         return(
             <View backgroundColor={"#fff"}>
@@ -53,7 +56,7 @@ export class CheckoutScreen extends React.Component{
                         <Text style={{fontWeight: "bold"}}>Total</Text>
                         <Text style={{fontWeight: "bold"}}></Text>
                     </View>
-                    <TouchableOpacity style={styles.btnCheckout}>
+                    <TouchableOpacity style={styles.btnCheckout} onPress={this.handleCheckout}>
                         <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>CHECKOUT</Text>
                     </TouchableOpacity>
                 </View>

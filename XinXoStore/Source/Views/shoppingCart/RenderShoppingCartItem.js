@@ -6,11 +6,10 @@ export default class RenderShoppingCartItem extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            url:''
+            url:'img'
           }
     }
     componentDidMount(){
-        
         var testApi = new TestAPI()
         testApi.myPromise(this.props.item.img).then(res => this.setState({url : res })).catch(err => console.log(err));
       }
@@ -18,8 +17,6 @@ export default class RenderShoppingCartItem extends React.Component{
         if(preProps.item.img!=this.props.item.img){
             var testApi = new TestAPI()
         testApi.myPromise(this.props.item.img).then(res => this.setState({url : res })).catch(err => console.log(err));
-        console.log("componentDidUpdate load image",preProps);
-        console.log("componentDidUpdate load image",this.props.item.img);
     }
         
     }

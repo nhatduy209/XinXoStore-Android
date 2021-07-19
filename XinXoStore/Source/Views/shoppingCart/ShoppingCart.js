@@ -57,18 +57,22 @@ export class ShoppingCart extends React.Component {
                     </View>
                     :
                     <View  style={{ flex: 1 }}>
-                        <ScrollView 
-                          nestedScrollEnabled>
-                            <Text style={{color:"gray", paddingHorizontal:10}}>Swipe left to remove items</Text>                     
+                        {/* <ScrollView 
+                          nestedScrollEnabled> */}
+                            <SwipeListView
+                        ListHeaderComponent={
+                          <View>
+                          <Text style={{color:"gray", paddingHorizontal:10}}>Swipe left to remove items</Text>                     
                             <Text style={{color:"gray", paddingHorizontal:10}}>{this.props._products.data.length} items</Text>                     
-                        <SwipeListView
+                          </View>
+                        }
                         disableRightSwipe
                         data={this.props._products.data}
                         renderItem={this.renderItem}
                         keyExtractor={(rowData) => {
                           return rowData.key.toString();
                         }}
-                        renderHiddenItem={this.renderHiddenItem}
+                        // renderHiddenItem={this.renderHiddenItem}
                         renderHiddenItem={ (data, rowMap) => (
                           <View style={styles.btnDelete}>
                               <Icon.Button name="trash" 
@@ -90,7 +94,7 @@ export class ShoppingCart extends React.Component {
                         previewOpenDelay={3000}
                         nestedScrollEnabled
                       />
-                      </ScrollView>
+                      {/* </ScrollView> */}
                       <View style={styles.containerToTal}>
                         <View style={styles.itemTotal}>
                             <Text>Shipping fee</Text>
@@ -105,8 +109,8 @@ export class ShoppingCart extends React.Component {
                             <Text style={{fontWeight: "bold"}}>{this.props.totalBill}</Text>
                         </View>
                         <TouchableOpacity style={styles.btnCheckout} onPress={this.handleCheckout}>
-                            <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>CHECKOUT</Text>
-                        </TouchableOpacity>
+                          <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>CHECKOUT</Text>
+                      </TouchableOpacity>
                       </View>
                     </View>
                   }

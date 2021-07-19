@@ -11,7 +11,7 @@ import ShoppingCart from '../../../Views/shoppingCart/ShoppingCart';
 import CheckoutScreen from '../../../Views/checkout/CheckoutScreen';
 import AddressScreen from '../../../Views/address/AddressScreen';
 import ChooseAddressScreen from '../../../Views/address/ChooseAddressScreen';
-
+import { CheckoutSuccess } from '../../../Views/checkout/CheckoutSuccess';
 import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 import { connect } from 'react-redux';
 import EditProfileScreen from '../../../Views/EditProfileScreen';
@@ -91,6 +91,19 @@ class HomeScreenStack extends React.Component {
       <Stack.Screen
       name="Checkout"
       component={CheckoutScreen}
+      options={{ title: ' Checkout Success ' ,
+                    headerRight: ()=> {
+                      return (
+                        <View style={{flexDirection: 'row'}}>
+                        </View>
+                      );
+                    }
+                        
+          }} 
+      />
+      <Stack.Screen
+      name="CheckoutSuccess"
+      component={CheckoutSuccess}
       options={{ title: ' Checkout ' ,
                     headerRight: ()=> {
                       return (
