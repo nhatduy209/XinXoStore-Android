@@ -27,9 +27,9 @@ export const deleteProduct = ( imageNamePath,key ) => {
     }
 }
 
-export const addProduct = (Name,img,price,ownerId,ownerShop,PathImageDevice) => {
+export const addProduct = (Name,img,price,ownerId,ownerShop,PathImageDevice,Demension,Category,Describe) => {
   console.log('THIS IS ADD PRODUCT --------- ')
-  console.log(Name,img,price,ownerId,ownerShop,PathImageDevice )
+  console.log(Name,img,price,ownerId,ownerShop,PathImageDevice,Demension,Category,Describe )
     return {
       type : NAME_ACTIONS.ADD_PRODUCT.ADD_PRODUCT_ACTIONS,
       data : {
@@ -39,6 +39,9 @@ export const addProduct = (Name,img,price,ownerId,ownerShop,PathImageDevice) => 
         ownerId: ownerId,
         ownerShop: ownerShop,
         PathImageDevice: PathImageDevice,
+        Demension: Demension,
+        Category: Category,
+        Describe: Describe,
       }
     }
 }

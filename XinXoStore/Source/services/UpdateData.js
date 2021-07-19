@@ -85,7 +85,10 @@ export default class UpdateService {
           img : data.data.img, 
           liked : data.data.liked ,
           prices : data.data.prices,
-          publicDate :  data.data.publicDate
+          publicDate :  data.data.publicDate,
+          Description : data.data.Describe,
+          Demension: data.data.Demension,
+          Category: data.data.Category,
       }).then( canUpdate = true ).catch( err => {
         console.log('Error update ' , err);
       });

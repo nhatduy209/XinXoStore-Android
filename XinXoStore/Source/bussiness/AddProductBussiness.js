@@ -7,7 +7,7 @@ export default class AddProductBusiness {
     console.log('DATA BUSINESS --------------', data);
     var pushApi= new PushData();
 
-    const pushResult= await pushApi.addProductApi(data.Name,data.img,data.price,data.ownerId,data.ownerShop,data.PathImageDevice);
+    const pushResult= await pushApi.addProductApi(data.Name,data.img,data.price,data.ownerId,data.ownerShop,data.PathImageDevice,data.Demension,data.Category,data.Describe);
     // console.log('push :',pushResult);
     if(pushResult.status==Status.SUCCESS){
       success(pushResult);

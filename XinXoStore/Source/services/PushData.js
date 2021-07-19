@@ -26,7 +26,7 @@ export default class  PushData{
         var date = new Date();
         return date.getMonth() +'/'+date.getDate()+'/'+date.getYear();
     }
-    addProductApi=  async(Name,img,price,ownerId,ownerShop,PathImageDevice)=>{
+    addProductApi=  async(Name,img,price,ownerId,ownerShop,PathImageDevice,Demension,Category,Describe)=>{
         // console.log(PathImageDevice)
         var  fileImagePath = img;
         uploadImageToStorage(PathImageDevice , fileImagePath);
@@ -44,6 +44,9 @@ export default class  PushData{
             ownerShop: ownerShop,
             img: img,
             sold: false,
+            Demension:Demension,
+            Category:Category,
+            Description: Describe,
         })
         .then(()=>console.log('Data added'));
         return {

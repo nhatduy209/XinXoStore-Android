@@ -5,6 +5,7 @@ import SignUpEpic from './SignUpEpics/SignUpEpic';
 import { combineEpics } from 'redux-observable';
 import AdressEpic from './AdressEpics/AdressEpic';
 import ShoppingCartEpic from './ShoppingCartEpics/ShoppingCartEpic';
+import ReviewsEpic from './ReviewEpics/ReviewEpics';
 
 export default combineEpics(
     DetailArrivalEpic,
@@ -12,5 +13,6 @@ export default combineEpics(
     SignUpEpic,
     NewArrivalsEpic,
     AdressEpic,
-    ShoppingCartEpic
+    ShoppingCartEpic,
+    ReviewsEpic,
 )

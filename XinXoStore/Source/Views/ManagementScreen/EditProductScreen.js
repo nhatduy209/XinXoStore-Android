@@ -24,7 +24,9 @@ class EditScreen extends React.Component {
             img:this.props.route.params.data.img,
             price: this.props.route.params.data.prices,
             publicDate:this.props.route.params.data.publicDate,
-            describe: "",
+            Describe: this.props.route.params.data.Description,
+            Category: this.props.route.params.data.Category,
+            Demension: this.props.route.params.data.Demension,
             Rating: this.props.route.params.data.Rating,
             liked: this.props.route.params.data.liked,
             PathImageDevice: "",
@@ -52,6 +54,9 @@ class EditScreen extends React.Component {
             prices: this.state.price,
             publicDate: this.state.publicDate,
             PathImageDevice: this.state.PathImageDevice,
+            Demension: this.state.Demension,
+            Description: this.state.Describe,
+            Category: this.state.Category,
         }
         this.props.editProduct(data);
         this.props.getListNewArrivals();
@@ -95,8 +100,8 @@ class EditScreen extends React.Component {
                 <View>
                 <ScrollView>
                     <View style={{backgroundColor: '#fff',borderRadius:20}}>
-                        <View>
-                        <Image style={{height:250,width:250,borderRadius:20,left:80,marginTop:50}} source={{uri : this.state.url}}></Image>
+                        <View style={{elevation:5,height:250,width:250,borderRadius:20,left:80,marginTop:50,marginBottom:10}}>
+                        <Image style={{height:250,width:250,borderRadius:20}} source={{uri : this.state.url}}></Image>
                         </View>
                         <TouchableOpacity style={styles.cameraIcon} onPress={this.handlePhotos}>
                                 <Icon
@@ -126,11 +131,29 @@ class EditScreen extends React.Component {
                                     }} style={{fontSize:16}} placeholder={'Type price here'}>{this.state.price}</TextInput>
                                 </View>
                             </View>
+
+                            <View style={styles.infoBox}>
+                                <Text style={styles.itemTitle}>Demension</Text>
+                                <View style={styles.detailInfo}>
+                                    <TextInput onChangeText={value => {
+                                        this.setState({Demension: value});
+                                    }} style={{fontSize:16}} placeholder={'Type Describe here'}>{this.state.Demension}</TextInput>
+                                </View>
+                            </View>
+
+                            <View style={styles.infoBox}>
+                                <Text style={styles.itemTitle}>Category</Text>
+                                <View style={styles.detailInfo}>
+                                    <TextInput onChangeText={value => {
+                                        this.setState({Category: value});
+                                    }} style={{fontSize:16}} placeholder={'Type Describe here'}>{this.state.Category}</TextInput>
+                                </View>
+                            </View>
                        
                             <View style={styles.infoBox}>
                                 <Text style={styles.itemTitle}>Describe</Text>
                                 <View style={styles.detailInfo}>
-                                    <TextInput style={{fontSize:16}} placeholder={'Type Describe here'}></TextInput>
+                                    <TextInput style={{fontSize:16}} placeholder={'Type Describe here'}>{this.state.Describe}</TextInput>
                                 </View>
                             </View>
                        
@@ -146,8 +169,8 @@ class EditScreen extends React.Component {
                         <View style={{backgroundColor: '#fff',paddingHorizontal:30,paddingBottom:20,alignItems: 'center',marginTop:10}}>
                             <TouchableOpacity onPress= {this.handleSave}>
                             {/* '#00a04f' */}
-                                <View style={{backgroundColor: '#bbb',padding:15,borderRadius:10,width:Dimensions.get('window').width-140}}>
-                                    <Text style={{marginHorizontal:20,fontSize:20,fontWeight:'bold',textAlign: 'center'}}>Save</Text>
+                                <View style={{backgroundColor: '#000',padding:10,marginTop:20,width:Dimensions.get('window').width-140}}>
+                                    <Text style={{marginHorizontal:20,fontSize:18,fontWeight:'bold',textAlign: 'center',color:'#fff'}}>Save</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -186,10 +209,11 @@ const styles = StyleSheet.create({
     cameraIcon: {
         alignSelf: 'center',
         position:'absolute',
-        left:180,bottom:0,
+        left:180,bottom:5,
         backgroundColor: '#eee',
         padding:10,
-        borderRadius:50
+        borderRadius:50,
+        elevation:6
     },
     navigationIcon: {
         left:20,

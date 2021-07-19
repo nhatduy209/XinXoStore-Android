@@ -25,7 +25,7 @@ export default class StarRating extends React.Component {
     }
     render() {
         // console.log('state nè');
-        const star = (this.props.item.Rating) ? this.props.item.Rating : this.state;
+        const star = (this.props.item.Rating) ? this.props.item.Rating : this.state.star;
         return (
             
             <View style={{flexDirection: 'row'}}>

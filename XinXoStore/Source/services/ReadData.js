@@ -141,6 +141,38 @@ export default class ReadService {
       }
     }
   }
+  getListReviewsAPI = async () => {
+    let key = "";
+    let item = {};
+    var listItem = [];
+    await firebase
+      .database()
+      .ref('Reviews/')
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+          //đặt ddieuf kiện
+          var myJson = child.toJSON();
+          key = child.key;
+          item= myJson;
+          listItem.push({key: key,...item});
+        });
+      });
+    console.log('listItem-----------------',listItem);
+    if (listItem.length > 0 ) {
+      // console.log('listItem-----------------',listItem);
+      return {
+        data : {
+          listItem
+        },
+        status : Status.SUCCESS
+      };
+    } else {
+      return {
+        data : {},
+        status : Status.FAIL,
+      }
+    }
+  }
   getListAdressApi= async(idAccount)=>{
     let adress=[];
     await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){

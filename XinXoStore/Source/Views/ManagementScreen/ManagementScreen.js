@@ -59,9 +59,13 @@ class ManagementScreen extends React.Component {
         var list = this.props.newArrivalsItems.data.listItem.filter((element)=>{return element.key != item.key})
         
         Alert.alert(
-            "Alert Title",
-            "My Alert Msg",
+            "Delete Product",
+            "Are you sure you want to delete this product?",
             [
+                {text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+                },
               { text: "OK", onPress: () =>  {this.props.deleteProduct(item.img,item.key)
                 this.props.getListNewArrivals();
                 this.props.newArrivalsItems.data.listItem = list;

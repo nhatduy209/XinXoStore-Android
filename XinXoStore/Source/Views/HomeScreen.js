@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import NewArrivalItem from './homeScreenFlatlist/HomeScreenArrivalsItems.js'
 import { getListNewArrivals } from '../redux/action/GetNewArrivalsAction/GetNewArrivalsAction'
+import { getListReviews } from '../redux/action/ReviewAction/ReviewAction.js';
+
 
 export class HomeScreen extends React.Component {
   constructor(props) {
@@ -24,6 +26,7 @@ export class HomeScreen extends React.Component {
     // var  a = new TestAPI();
     // a.myPromise().then(res => this.setState({imgUrl : res})).catch(err => console.log(err));
     this.props.getListNewArrivals();
+    this.props.getListReviews();
   }
 
   renderNewArrivalsItem = ({ item }) => {
@@ -137,7 +140,7 @@ function mapStateToProps(state) {
     newArrivalsItems: state.NewArrivalsReducer.items,
   };
 }
-export default connect(mapStateToProps, { getListNewArrivals })(HomeScreen);
+export default connect(mapStateToProps, { getListNewArrivals,getListReviews})(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {
