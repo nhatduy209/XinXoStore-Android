@@ -1,26 +1,18 @@
 
 import { NAME_ACTIONS } from './ActionName';
 
-/*GET_ALL_PRODUCT*/
 export function GetAllProduct(idAccount){
     return{
-        type:NAME_ACTIONS.SHOPPING_CART_ACTIONS.GET_ALL_PRODUCT,
+        type:NAME_ACTIONS.SHOPPING_CART_ACTIONS.GET_ALL_SCREEN,
         data:{
-            idAccount
+            idAccount:idAccount
         }
-    }
-}
- 
-/*GET NUMBER CART*/
-export function GetNumberCart(){
-    return{
-        type: NAME_ACTIONS.SHOPPING_CART_ACTIONS.GET_NUMBER_CART
     }
 }
  
 export function AddCart(idAccount,payload){
     return {
-        type: NAME_ACTIONS.SHOPPING_CART_ACTIONS.ADD_CART,
+        type: NAME_ACTIONS.SHOPPING_CART_ACTIONS.ADD_SCREEN,
         data: {
             idAccount: idAccount,
             itemID: payload,
@@ -37,5 +29,14 @@ export function DeleteCart(payload){
     return{
         type:NAME_ACTIONS.SHOPPING_CART_ACTIONS.DELETE_CART,
         payload
+    }
+}
+export function DeleteItem(idAccount,id){
+    return {
+        type: NAME_ACTIONS.SHOPPING_CART_ACTIONS.REMOVE_ITEM_SCREEN,
+        data: {
+            idAccount: idAccount,
+            id: id,
+          }
     }
 }

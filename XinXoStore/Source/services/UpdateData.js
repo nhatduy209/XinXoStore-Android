@@ -75,10 +75,10 @@ export default class UpdateService {
     let canUpdate = false ;
     let product = {}
     console.log("HERE UPDATE PRODUCT --------" , data.data );
-    // if(data.data.PathImageDevice.length > 0 ){
-    //   var  fileImagePath = data.data.Avatar
-    //   uploadImageToStorage(data.data.PathImageDevice , fileImagePath);
-    // }
+    if(data.data.PathImageDevice.length > 0 ){
+      var  fileImagePath = data.data.img
+      uploadImageToStorage(data.data.PathImageDevice , fileImagePath);
+    }
     await firebase
       .database()
       .ref('NewArrivals/' + data.data.Key)

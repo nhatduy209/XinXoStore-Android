@@ -123,7 +123,7 @@ export default class ReadService {
         });
       });
     if (listItem.length > 0 ) {
-      console.log('listItem-----------------',listItem);
+      // console.log('listItem-----------------',listItem);
       listItem =  _.sortBy(listItem,'prices')
       if(!sortUp){
         listItem.reverse();
@@ -141,23 +141,21 @@ export default class ReadService {
       }
     }
   }
-  getListAdressApi= async(idAccount)=>{
-    let adress=[];
+  getListAddressApi= async(idAccount)=>{
+    let address=[];
     await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){
       snapshot.forEach(function (child){
-        if(child.key=="Adress"){
-          console.log("JSON: ",child.toJSON(),child.key);
+        if(child.key=="Address"){
           child.forEach(function(item){
-            adress.push(item.toJSON());
+            address.push({key: item.key,data:item.toJSON()});
           });
         }
       });
     });
-    console.log(adress);
-    if (adress.length > 0 ) {
-      console.log('listItem-----------------',adress);
+    if (address.length > 0 ) {
       return {
-        data : {adress},
+        data : {address
+        },
         status : Status.SUCCESS
       };
     } else {
@@ -167,41 +165,129 @@ export default class ReadService {
       }
     }
   }
-  getShoppingCart= async(idAccount)=>{
-    var listItem=new Array(); 
-    console.log("SERVICE GET LIST Shopping cart",idAccount);
+  getDefaultAddress=async(idAccount)=>{
+    var address= new Object();
     await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){
       snapshot.forEach(function (child){
-        if(child.key=="Cart"){
-          child.forEach(async function(itemID){
-            //get item and return
-            await firebase.database()
-              .ref('NewArrivals/'+itemID.toJSON().ItemID)
-              .once('value', function (snapshot) {
-                var item ={
-                  key:itemID.toJSON().ItemID,
-                  data:snapshot.toJSON()
-                }
-                listItem.push(item);
-                console.log("LIST ITEM 3: ",listItem);
-            }); 
-          console.log("LIST ITEM 3: ",listItem);
-            if (listItem.length > 0 ) {
-              console.log('listItem-----------------',listItem);
-              return {
-                data : {listItem},
-                status : Status.SUCCESS
-              };
-            } else {
-              return {
-                data : {},
-                status : Status.FAIL,
-              }
-            }     
-        });
+        if(child.key=="Address"){
+          child.forEach(function(item){
+            if(item.toJSON().Default==true){
+              address=item.toJSON();
+              return;
+            }
+          });
         }
       });
     });
+    if(!!address){
+      return {
+        status: Status.SUCCESS,
+        data:{
+          address
+        }
+      }
+    }else{
+      return {
+        status: Status.FAIL,
+        data:{}
+      }
+    }
+  }
+  
+  getShoppingCart(idAccount) {
+    return firebase.database().ref("Account/"+idAccount).once('value').then(function(snapshot) {
+        var reads = [];
+        let totalBill=0;
+        snapshot.forEach(function(childSnapshot) {
+            if(childSnapshot.key=="Cart"){
+              childSnapshot.forEach(function(child){
+                var promise = firebase.database().ref('NewArrivals/'+child.toJSON().ItemID).once('value').then(function(snap) {
+                  // The Promise was fulfilled.
+                  var myJson = snap.toJSON();
+                    var item= {
+                      key:snap.key,
+                      data:myJson
+                    };
+                    reads.push(item);
+                  return item;
+                },
+                 function(error) {
+                    // The Promise was rejected.
+                    console.error(error);
+                });
+                reads.push(promise);
+              })
+            }
+            
+        });
+        return Promise.all(reads);
+    }, function(error) {
+        // The Promise was rejected.
+        console.error(error);
+    }).then(function(values) { 
+      if(values.length>=0){
+        return {
+          data : values,
+          status : Status.SUCCESS,
+        }
+      }
+      else{
+        return {
+          data : {},
+          status : Status.FAIL,
+        }
+      }
+    });
+}
+  getListIDItemShoppingCart=async(idAccount)=>{
+    let listItem=[];
+    await firebase.database().ref('Account/'+idAccount).once('value',function(snap){
+      snap.forEach(function(child){
+        if(child.key=="Cart"){
+          child.forEach(function(id){
+            listItem.push(id.toJSON().ItemID);
+          });
+          return;
+        }
+      })
+    })
+    
+    if(listItem.length>0){
+      return {
+        data:listItem,
+        status:Status.SUCCESS
+      }
+    }
+    else{
+      return {
+        data:{},
+        status:Status.FAIL
+      }
+    }
+  }
+  getListItemShoppingCart = async(listItemID)=>{
+    let listItem=[];
+    listItemID.forEach(async function(id){
+      console.log("id",id);
+      await firebase.database().ref('NewArrivals/'+id).once('value',function(snap){
+        listItem.push({key:id,data:snap.toJSON()});
+        
+      })
+      console.log(listItem);
+    })
+    console.log(listItem);
+    if(listItem.length>0){
+      return {
+        data:listItem,
+        status:Status.SUCCESS
+      }
+    }
+    else{
+      return {
+        data:{},
+        status:Status.FAIL
+      }
+    }
   }
 
   getPublisherInfo =async (ownerId) => {

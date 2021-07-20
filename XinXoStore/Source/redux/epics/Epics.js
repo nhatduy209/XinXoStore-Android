@@ -3,7 +3,7 @@ import NewArrivalsEpic from './NewArrivalsEpics/NewArrivalsEpics';
 import DetailArrivalEpic from './DetailEpics/DetailArrivalEpic';
 import SignUpEpic from './SignUpEpics/SignUpEpic';
 import { combineEpics } from 'redux-observable';
-import AdressEpic from './AdressEpics/AdressEpic';
+import AddressEpic from './AddressEpics/AddressEpic';
 import ShoppingCartEpic from './ShoppingCartEpics/ShoppingCartEpic';
 import PublisherInfoEpic from './PublserInfoEpics/PublsherInfoEpics';
 
@@ -12,7 +12,7 @@ export default combineEpics(
     LoginEpic,
     SignUpEpic,
     NewArrivalsEpic,
-    AdressEpic,
+    AddressEpic,
     ShoppingCartEpic,
     PublisherInfoEpic,
 )

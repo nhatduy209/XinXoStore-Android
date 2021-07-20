@@ -4,6 +4,7 @@ import TestAPI from '../TestAPI'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { AddCart } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
+import { GetAllProduct } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 
 export  class RenderNewArrivalsItem extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ export  class RenderNewArrivalsItem extends React.Component {
   }
   addItem=async()=>{
     this.props.AddCart(this.props.user.data.key,this.props.item.key)
+    this.props.GetAllProduct(this.props.user.data.key)
   }
   handleDetail = () => {
     const data = {data:this.props.item,
@@ -79,7 +81,7 @@ const mapStateToProps = state =>{
     user: state.LoginReducer.user,
   }
 }
-export default connect(mapStateToProps,{AddCart})(RenderNewArrivalsItem)
+export default connect(mapStateToProps,{AddCart,GetAllProduct})(RenderNewArrivalsItem)
 
 const styles = StyleSheet.create({
   container: {

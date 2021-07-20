@@ -9,13 +9,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import RNRestart from 'react-native-restart';
 import ShoppingCart from '../../../Views/shoppingCart/ShoppingCart';
 import CheckoutScreen from '../../../Views/checkout/CheckoutScreen';
+import AddressScreen from '../../../Views/address/AddressScreen';
+import ChooseAddressScreen from '../../../Views/address/ChooseAddressScreen';
 
 import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 import { connect } from 'react-redux';
 import EditProfileScreen from '../../../Views/EditProfileScreen';
 import ManagementScreen from '../../../Views/ManagementScreen/ManagementScreen';
 import AddScreen from '../../../Views/ManagementScreen/AddProductScreen';
-
+import EditScreen from '../../../Views/ManagementScreen/EditProductScreen';
 
 import SettingScreens from '../../../Views/settingScreens/SettingScreen';
 import SettingScreenStack from './SettingScreenStack';
@@ -93,10 +95,14 @@ class HomeScreenStack extends React.Component {
           name="Checkout"
           component={CheckoutScreen}
           options={{
-            headerLeft: () =>
-              <NavigationDrawerStructureLeft
-                navigationProps={this.props.navigation}
-              />
+            title: ' Checkout ',
+            headerRight: () => {
+              return (
+                <View style={{ flexDirection: 'row' }}>
+                </View>
+              );
+            }
+
           }}
         />
         <Stack.Screen
@@ -184,12 +190,78 @@ class HomeScreenStack extends React.Component {
               backgroundColor: '#FFF',
             }
           }}
-        />
+        >
+        </Stack.Screen>
+        <Stack.Screen
+          name="AddressScreen"
+          component={AddressScreen}
+          options={{
+            title: ' Address ',
+            headerRight: () => {
+              return (
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity>
+                    <Icon
+                      size={25}
+                      name="ellipsis-vertical"
+                      style={{ paddingRight: 15 }}
+                      color="#000"
+                    >
+                    </Icon>
+                  </TouchableOpacity>
+                </View>
+              );
+            },
+            headerStyle: {
+              // backgroundColor: '#',
+              height: 56,
+              elevation: null,
+              backgroundColor: '#FFF'
+            }
+          }}
+        >
+        </Stack.Screen>
+        <Stack.Screen
+          name="ChooseAddressScreen"
+          component={ChooseAddressScreen}
+          options={{
+            title: ' ChooseAddressScreen ',
+            headerRight: () => {
+              return (
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity>
+                    <Icon
+                      size={25}
+                      name="ellipsis-vertical"
+                      style={{ paddingRight: 15 }}
+                      color="#000"
+                    >
+                    </Icon>
+                  </TouchableOpacity>
+                </View>
+              );
+            },
+            headerStyle: {
+              // backgroundColor: '#',
+              height: 56,
+              elevation: null,
+              backgroundColor: '#FFF'
+            }
+          }}
+        >
+        </Stack.Screen>
         <Stack.Screen
           name="ManagementScreen"
           component={ManagementScreen}
           options={{
-            title: ""
+            title: "", headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="EditScreen"
+          component={EditScreen}
+          options={{
+            title: "", headerShown: false,
           }}
         />
 

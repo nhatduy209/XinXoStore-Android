@@ -1,74 +1,62 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {View ,Text,StyleSheet,Dimensions,TouchableOpacity} from 'react-native';
+import {View ,Text,StyleSheet,Dimensions,TouchableOpacity, FlatList} from 'react-native';
 import { connect } from 'react-redux';
-import {getListAdress} from '../../redux/action/Adress/AdressAction';
+import {getDefaultAddress} from '../../redux/action/Address/AddressAction';
+import { RenderItemAddress } from './RenderItemAdress';
+import { GetAllProduct } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 
 export class CheckoutScreen extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            isChecked:true
+            isChecked:true,
+            default:{}
         }
     }
-    componentDidMount() {
-        // this.props.getListAdress(this.props.user.data.key);
-        this.props.getListAdress("-McSVl4mVNzZPh65PqDv");
-        console.log("ADRESS",this.props.adress);
+    componentDidMount=async()=> {
+        this.props.getDefaultAddress(this.props.user.data.key);
     }
-    handleChooseAdress=()=>{
-        this.setState({isChecked:!this.state.isChecked});
-        // do something
+    itemSeparator=()=>{
+        return(
+            <View style={{ width: 15 }} />
+        );
     }
     render(){
-        console.log(this.state.isChecked);
         return(
             <View backgroundColor={"#fff"}>
                 <Text>Shipping to</Text>
-                <TouchableOpacity style={styles.iconAdd}>
-                    <Icon name="plus" size={20} color={"#2f7afb"}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.addressComponent}
-                    onPress={this.handleChooseAdress}>
-                    <View style={styles.home}>
-                        <Icon name="home" size={30} color={"#2f7afb"}/>
-                    </View>
-                   <View style={{marginHorizontal:5, maxWidth:250}}>
-                       <Text style={{fontWeight:'bold'}}>
-                           309, Nguyen Thi Ranh
-                       </Text>
-                       <Text style={{color:'gray'}}>
-                           Cu Chi, HCM
-                       </Text>
-                   </View>
-                   {this.state.isChecked===true ?
-                       (
-                        <View style={{justifyContent:'center', marginHorizontal:10}}>
-                            <Icon name="check-circle" color={"#2f7afb"} size={20} />
-                        </View>
-                       )
-                       :null
-                   }
-                   
-                </TouchableOpacity>
+                {JSON.stringify(this.props.current.data)!=='{}' ?
+                (
+                    <RenderItemAddress item={this.props.current.data} navigation={this.props.navigation}/>
+                ):
+                 (
+                    <TouchableOpacity style={styles.container} 
+                    onPress={()=>this.props.navigation.navigate("AddAddress")}>
+                        <Icon name="plus" size={20} color={"#2f7afb"}/>
+                        <Text>
+                             Thêm địa chỉ
+                        </Text>
+                    </TouchableOpacity>
+                )}
                 <Text>Payment method</Text>
                 <View style={styles.containerToTal}>
-                          <View style={styles.itemTotal}>
-                              <Text>Shipping fee</Text>
-                              <Text>0</Text>
-                          </View>
-                          <View style={styles.itemTotal}>
-                              <Text>Subtotal</Text>
-                              <Text ></Text>
-                          </View>
-                          <View style={styles.itemTotal}>
-                              <Text style={{fontWeight: "bold"}}>Total</Text>
-                              <Text style={{fontWeight: "bold"}}></Text>
-                          </View>
-                          <TouchableOpacity style={styles.btnCheckout}>
-                              <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>CHECKOUT</Text>
-                          </TouchableOpacity>
-                        </View>
+                    <View style={styles.itemTotal}>
+                        <Text>Shipping fee</Text>
+                        <Text>0</Text>
+                    </View>
+                    <View style={styles.itemTotal}>
+                        <Text>Subtotal</Text>
+                        <Text >{this.props.totalBill}</Text>
+                    </View>
+                    <View style={styles.itemTotal}>
+                        <Text style={{fontWeight: "bold"}}>Total</Text>
+                        <Text style={{fontWeight: "bold"}}></Text>
+                    </View>
+                    <TouchableOpacity style={styles.btnCheckout}>
+                        <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>CHECKOUT</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
@@ -76,11 +64,14 @@ export class CheckoutScreen extends React.Component{
 
 const mapStateToProps = state =>{
     return{
-        adress:state.AdressReducer.adress,
-        user:state.LoginReducer.user
+        address:state.AddressReducer.address,
+        user:state.LoginReducer.user,
+        cart:state.ShoppingCartReducer.items,
+        current:state.AddressReducer.current,
+        totalBill:state.ShoppingCartReducer.totalBill
     }
   }
-export default connect(mapStateToProps,{getListAdress})(CheckoutScreen)
+export default connect(mapStateToProps,{getDefaultAddress,GetAllProduct})(CheckoutScreen)
   
 const styles=StyleSheet.create({
     containerToTal:{
@@ -112,6 +103,14 @@ const styles=StyleSheet.create({
         alignItems:'center',
         borderRadius:30
     },
+    addressComponent:{
+        alignSelf:'center',
+        flexDirection:'row',
+        backgroundColor:'#f3f3f3',
+        padding:10,
+        borderRadius:10,
+        width:200
+    },
     home:{
         backgroundColor:'#fff',
         justifyContent:'center',
@@ -121,11 +120,4 @@ const styles=StyleSheet.create({
         borderRadius:10,
         marginHorizontal:5
     },
-    addressComponent:{
-        alignSelf:'center',
-        flexDirection:'row',
-        backgroundColor:'#f3f3f3',
-        padding:10,
-        borderRadius:10
-    }
 });

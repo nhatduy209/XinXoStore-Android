@@ -22,7 +22,7 @@ class AllNewArrivalsItem extends React.Component {
               <FlatList
               data={this.props.newArrivalsItems.data.listItem}
               renderItem={this.renderItem}
-              keyExtractor={item => item.Name}
+              keyExtractor={item => item.key}
               ItemSeparatorComponent={this.itemSeparator}
             />
           </View>
