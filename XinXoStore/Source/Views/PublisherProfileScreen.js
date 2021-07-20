@@ -35,6 +35,10 @@ class PublisherProfileScreen extends React.Component {
     Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + address);
   }
 
+  navigateCommentStore= () => {
+    this.props.navigation.navigate('CommentStoreScreen')
+  }
+
   handleGetNotification = () => {
     if (!this.state.isGetNotification) {
       this.setState({ isGetNotification: true });
@@ -132,7 +136,7 @@ class PublisherProfileScreen extends React.Component {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={this.handleGetNotification}>
+            <TouchableOpacity onPress={this.navigateCommentStore}>
               <View style={styles.MessageAndNotification}>
                 <Icon name="comments" size={23} color="#666666" />
                 <Text>Comments for store </Text>

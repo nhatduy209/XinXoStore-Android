@@ -21,6 +21,7 @@ import SettingScreens from '../../../Views/settingScreens/SettingScreen';
 import SettingScreenStack from './SettingScreenStack';
 import PublisherProfileScreen from '../../../Views/PublisherProfileScreen';
 import UserProfileStack from '../../BottomNavigation/UserProfileScreenStack';
+import CommentStoreScreen from '../../../Views/CommentStoreScreen';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -68,59 +69,60 @@ class HomeScreenStack extends React.Component {
   render() {
     return (
       <Stack.Navigator>
-      <Stack.Screen
-        name="Home"
-        component={HomeScreen}   
-        options={{
-          headerLeft: ()=>
-            <NavigationDrawerStructureLeft
-              navigationProps={this.props.navigation}
-            />
-        }}        
-      />
-      <Stack.Screen
-      name="ShoppingCart"
-      component={ShoppingCart}
-      options={{
-        headerLeft: ()=>
-          <NavigationDrawerStructureLeft
-            navigationProps={this.props.navigation}
-          />
-      }}
-      />
-      <Stack.Screen
-      name="Checkout"
-      component={CheckoutScreen}
-      options={{
-        headerLeft: ()=>
-          <NavigationDrawerStructureLeft
-            navigationProps={this.props.navigation}
-          />
-      }}
-      />
-      <Stack.Screen
-        name="NewArrivalsScreen"
-        component={AllNewArrivalsItem}   
-        options={{ title: ' New Arrivals ' ,
-                    headerRight: ()=> {
-                      return (
-                        <View style={{flexDirection: 'row'}}>
-                          <TouchableOpacity>
-                                <Icon
-                                  size={25}
-                                  name="filter"
-                                  style = {{ paddingRight : 15 }}
-                                  color = "#bbbbbb"
-                                >
-                                </Icon>
-                          </TouchableOpacity>
-                        </View>
-                      );
-                    }
-                        
-          }} 
-      />
-      <Stack.Screen
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            headerLeft: () =>
+              <NavigationDrawerStructureLeft
+                navigationProps={this.props.navigation}
+              />
+          }}
+        />
+        <Stack.Screen
+          name="ShoppingCart"
+          component={ShoppingCart}
+          options={{
+            headerLeft: () =>
+              <NavigationDrawerStructureLeft
+                navigationProps={this.props.navigation}
+              />
+          }}
+        />
+        <Stack.Screen
+          name="Checkout"
+          component={CheckoutScreen}
+          options={{
+            headerLeft: () =>
+              <NavigationDrawerStructureLeft
+                navigationProps={this.props.navigation}
+              />
+          }}
+        />
+        <Stack.Screen
+          name="NewArrivalsScreen"
+          component={AllNewArrivalsItem}
+          options={{
+            title: ' New Arrivals ',
+            headerRight: () => {
+              return (
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity>
+                    <Icon
+                      size={25}
+                      name="filter"
+                      style={{ paddingRight: 15 }}
+                      color="#bbbbbb"
+                    >
+                    </Icon>
+                  </TouchableOpacity>
+                </View>
+              );
+            }
+
+          }}
+        />
+        <Stack.Screen
           name="EditProfileScreen"
           component={EditProfileScreen}
           options={{
@@ -130,8 +132,8 @@ class HomeScreenStack extends React.Component {
                 navigationProps={this.props.navigation}
               />
           }}
-      />
-      {/* <Stack.Screen
+        />
+        {/* <Stack.Screen
           name="ProfileUserStack"
           component={UserProfileStack}
           options={{
@@ -142,63 +144,76 @@ class HomeScreenStack extends React.Component {
               />
           }}
       />  */}
-      <Stack.Screen
+        <Stack.Screen
           name="AddScreen"
           component={AddScreen}
-          options={{headerShown: false,
+          options={{
+            headerShown: false,
             title: "",
             headerLeft: () =>
               <NavigationDrawerStructureLeft
                 navigationProps={this.props.navigation}
               />
           }}
-            
-      />
-      <Stack.Screen
-      name="DetailItemScreen"
-      component={DetailItem}
-      options={{ title: ' Detail ',headerShown: false,
-        headerRight: ()=> {
-          return (
-            <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity>
+
+        />
+        <Stack.Screen
+          name="DetailItemScreen"
+          component={DetailItem}
+          options={{
+            title: ' Detail ', headerShown: false,
+            headerRight: () => {
+              return (
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity>
                     <Icon
                       size={25}
                       name="ellipsis-v"
-                      style = {{ paddingRight : 15 }}
-                      color = "#000"
+                      style={{ paddingRight: 15 }}
+                      color="#000"
                     >
                     </Icon>
-              </TouchableOpacity>
-            </View>
-          );
-        },
-        headerStyle: {
-          // backgroundColor: '#',
-          height: 56,
-          elevation: null,
-          backgroundColor: '#FFF',
-        }
-      }}
-      />
-      <Stack.Screen
-        name="ManagementScreen"
-        component={ManagementScreen}
-        options={{title: ""
-        }}
-      />
+                  </TouchableOpacity>
+                </View>
+              );
+            },
+            headerStyle: {
+              // backgroundColor: '#',
+              height: 56,
+              elevation: null,
+              backgroundColor: '#FFF',
+            }
+          }}
+        />
+        <Stack.Screen
+          name="ManagementScreen"
+          component={ManagementScreen}
+          options={{
+            title: ""
+          }}
+        />
 
-      <Stack.Screen
+        <Stack.Screen
           name="PublisherProfileScreen"
           component={PublisherProfileScreen}
           options={{
-            headerTitleAlign : 'center',
-            headerTitle : 'Profile'
+            headerTitleAlign: 'center',
+            headerTitle: 'Profile'
           }}
-            
-      />
 
-    </Stack.Navigator>
+        />
+
+
+        <Stack.Screen
+          name="CommentStoreScreen"
+          component={CommentStoreScreen}
+          options={{
+            headerTitleAlign: 'center',
+            headerTitle: 'Comment'
+          }}
+        />
+
+      </Stack.Navigator>
     );
   }
 
