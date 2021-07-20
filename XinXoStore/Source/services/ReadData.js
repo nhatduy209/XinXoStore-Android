@@ -86,7 +86,6 @@ export default class ReadService {
           //đặt ddieuf kiện
           var myJson = child.toJSON();
           if(myJson.Name === Name) {
-            console.log('MY JSON -----------' , myJson);
             key = child.key;
             item= myJson;
             listItem.push({key,item});
@@ -94,7 +93,6 @@ export default class ReadService {
         });
       });
     if (listItem.length > 0 ) {
-      console.log('listItem-----------------',listItem);
       return {
         data : {listItem},
         status : Status.SUCCESS
@@ -123,7 +121,6 @@ export default class ReadService {
         });
       });
     if (listItem.length > 0 ) {
-      // console.log('listItem-----------------',listItem);
       listItem =  _.sortBy(listItem,'prices')
       if(!sortUp){
         listItem.reverse();
@@ -159,7 +156,6 @@ export default class ReadService {
       });
     console.log('listItem-----------------',listItem);
     if (listItem.length > 0 ) {
-      // console.log('listItem-----------------',listItem);
       return {
         data : {
           listItem

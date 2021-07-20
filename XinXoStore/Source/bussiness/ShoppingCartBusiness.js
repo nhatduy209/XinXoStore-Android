@@ -5,9 +5,9 @@ import ReadhData from '../services/ReadData';
 export default class NewArrivalsBusiness {
   addToShoppingCart = async (data,success , fail ) => {
       var pushDataService = new PushData();
-      console.log('DATA BUSINESS --------------', data);
+      // console.log('DATA BUSINESS --------------', data);
       let result  = await pushDataService.addToShoppingCart(data.idAccount,data.itemID);
-      console.log('DATA BUSINESS --------------', data);
+      // console.log('DATA BUSINESS --------------', data);
       if( result.status  == Status.SUCCESS){
         success(result);
       }

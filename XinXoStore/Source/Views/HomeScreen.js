@@ -23,6 +23,7 @@ export class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
+    // console.log('day ne',this.props);
     // var  a = new TestAPI();
     // a.myPromise().then(res => this.setState({imgUrl : res})).catch(err => console.log(err));
     this.props.getListNewArrivals();
@@ -31,7 +32,7 @@ export class HomeScreen extends React.Component {
 
   renderNewArrivalsItem = ({ item }) => {
     return (
-      <NewArrivalItem item={item = {navigate:this.props.navigation,...item}} />
+      <NewArrivalItem item={item} navigation={this.props.navigation} />
     )
   }
 
@@ -40,8 +41,8 @@ export class HomeScreen extends React.Component {
   };
 
   handleShowAll = () => {
-    // console.log('day ne' + this.props);
-            this.props.navigation.navigate('NewArrivalsScreen');
+    
+    this.props.navigation.navigate('NewArrivalsScreen');
   }
   
 

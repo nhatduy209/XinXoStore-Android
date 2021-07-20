@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, FlatList, ScrollView,Alert } from 'react-native'
 import { Dimensions,LayoutAnimation, UIManager } from 'react-native';
-// import {LinearGradient} from 'react-native-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient';
 import { SliderBox } from "react-native-image-slider-box";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
@@ -167,8 +167,9 @@ class ManagementScreen extends React.Component {
                             </Icon>
                     </TouchableOpacity>
                         <Text style={styles.textHeader}></Text>
-                        <View style={{height:60,backgroundColor:'#eee',opacity:0.5,width:Dimensions.get('window').width}}>
                         
+                        <View style={{height:60,width:Dimensions.get('window').width}}>
+                        <LinearGradient start={{x:0.0, y:0.1}} end={{x:0.0, y:1}} colors={['rgba(43,76,105,0.8)','rgba(255,255,255,0)',]} style={{height:50}}></LinearGradient>
                         </View>
                 </View>
                 <ScrollView style={{backgroundColor: '#fff'}}>
@@ -176,10 +177,12 @@ class ManagementScreen extends React.Component {
                             <Text style={{fontSize:36,fontWeight:'bold',top:80,left:20}}>Management</Text>  
                     </View>
                     <View style={styles.AddButton}>
-                            <TouchableOpacity onPress={()=> {
-                                this.props.navigation.navigate('AddScreen');
-                            }}>
+                        <TouchableOpacity onPress={()=> {
+                            this.props.navigation.navigate('AddScreen');
+                        }}>
+                            <LinearGradient start={{x:0.0, y:0.1}} end={{x:0.0, y:1.1}} colors={['rgba(43,76,105,0.8)','rgba(255,255,255,0)',]} style={{height:50}}>
                             <Text style={styles.textButton}> Add</Text>
+                            </LinearGradient>
                         </TouchableOpacity>
                     </View>
                     <FlatList
@@ -227,17 +230,15 @@ const styles = StyleSheet.create({
         width:150
     },
     AddButton:{
-    backgroundColor:'#000',
-    width: Dimensions.get('window').width,height:50,
-    justifyContent: 'center',
-    elevation:6
+        width: Dimensions.get('window').width,height:50,
+        justifyContent: 'center',
     },
     textButton:{
         padding: 5,
         textAlign: 'center',
         fontSize:24,
         fontWeight:'bold',
-        color: '#fff'
+        color: '#000'
     },
     navigationIcon: {
         left:20,

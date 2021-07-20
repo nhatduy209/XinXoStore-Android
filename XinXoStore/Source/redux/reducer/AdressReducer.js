@@ -9,7 +9,7 @@ const adressState = {
 };
 
 const AdressReducer = (state = adressState, action) => {
-  console.log('REDUCER ADD ADRESS -----' , action);
+  // console.log('REDUCER ADD ADRESS -----' , action);
   switch (action.type) { 
     case NAME_EPICS.ADRESS_EPICS.GET_LIST_EPICS_ADRESS:
       state = {

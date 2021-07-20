@@ -9,7 +9,7 @@ export default class AdressBusiness {
       if( result.status  == Status.SUCCESS){
         var pushApi= new PushData();
         const pushResult= await pushApi.signUpApi(data.email,data.username,data.password,data.age);
-        console.log('push :',pushResult);
+        // console.log('push :',pushResult);
         if(pushResult.status==Status.SUCCESS){
           success(pushResult);
         } 

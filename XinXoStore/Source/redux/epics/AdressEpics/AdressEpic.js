@@ -11,7 +11,7 @@ let messageError = {};
 const resolver = (action) => {
     const adressBusiness = new AdressBusiness();
     return new Promise((resolve, reject) => {
-        console.log('ADRESS EPIC----------' , action);
+        // console.log('ADRESS EPIC----------' , action);
         switch (action.type) {
             case NAME_ACTIONS.ADRESS_ACTIONS.GET_LIST_ADRESS:
                 adressBusiness.getListAdress(action.data, success => {
@@ -52,9 +52,9 @@ const dispatchError = (error, action) => {
                 data: messageError
             }
         default:
-            console.error('Error when dispatch error User Epic.');
-            console.error(error.message);
-            console.error(action);
+            // console.error('Error when dispatch error User Epic.');
+            // console.error(error.message);
+            // console.error(action);
             return new Error('Error when dispatch error User Epic.'); 
     }
 };

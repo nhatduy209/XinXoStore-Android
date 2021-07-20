@@ -4,7 +4,7 @@ import ReadService from '../services/ReadData';
 
 export default class AddProductBusiness {
   addProduct = async ( data , success , failed ) => {
-    console.log('DATA BUSINESS --------------', data);
+    // console.log('DATA BUSINESS --------------', data);
     var pushApi= new PushData();
 
     const pushResult= await pushApi.addProductApi(data.Name,data.img,data.price,data.ownerId,data.ownerShop,data.PathImageDevice,data.Demension,data.Category,data.Describe);

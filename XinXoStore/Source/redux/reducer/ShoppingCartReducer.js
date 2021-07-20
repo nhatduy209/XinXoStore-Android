@@ -30,8 +30,8 @@ function ShoppingCartReducer(state = initProduct,action){
                 }
             });
             if(checkExist===false){
-                console.log("state.totalbill ",state.totalBill);
-                console.log("state.totalbill ",state.totalBill+ cart.price);
+                // console.log("state.totalbill ",state.totalBill);
+                // console.log("state.totalbill ",state.totalBill+ cart.price);
                 state.Carts.push(cart);
                 return{
                     ...state,
@@ -65,7 +65,7 @@ function ShoppingCartReducer(state = initProduct,action){
                 }
             case NAME_ACTIONS.DELETE_CART:
                 let quantity_ = 1;
-                console.log("minux",state.totalBill-action.payload.price);
+                // console.log("minux",state.totalBill-action.payload.price);
                 return{
                     ...state,
                     numberCart:state.numberCart - quantity_,

@@ -15,7 +15,7 @@ const resolver = (action) => {
     const addProductBusiness = new AddProductBusiness();
     const deleteProductBusiness = new DeleteProductBusiness();
     return new Promise((resolve, reject) => {
-        console.log('UserEPIC----------', action);
+        // console.log('UserEPIC----------', action);
         switch (action.type) {
             case NAME_ACTIONS.GET_ARRIVAL_ITEM.GET_ARRIVAL_ITEM_ACTION:
               detailItemBusiness.getArrivalItem(success => {

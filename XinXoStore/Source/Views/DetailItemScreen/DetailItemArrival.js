@@ -10,6 +10,7 @@ import { getListReviews } from '../../redux/action/ReviewAction/ReviewAction.js'
 import { getListNewArrivals } from '../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction'
 import UrlComponent from './UrlRender';
 import FeedbackComponent from './RenderFeedback';
+import { AddCart } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 
 class DetailItem extends React.Component {
     constructor(props) {
@@ -27,31 +28,11 @@ class DetailItem extends React.Component {
           };
     }
     componentDidMount() {
-        // console.log('review')
-        // console.log(this.props.listReview.data.listItem);
-        // console.log(this.props.userInfo.key);
         const product = this.props.route.params.data;
-        this.setState({isLiked: product.isLiked});
         const listProduct = this.props.newArrivalsItems.data.listItem.filter((element) => {
             return element.key != product.key;
         })
         this.setState({listItem: listProduct});
-        var testApi = new TestAPI()
-        testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
-    }
-    itemSeparator = () => {
-        return <View style={{ width: 15 }} />;
-    }
-    componentDidUpdate(prevProps) {
-        // console.log(this.state.listReview);
-        if(prevProps.route.params.data.key != this.props.route.params.data.key){
-            const product = this.props.route.params.data;
-            this.setState({isLiked: product.isLiked});
-            const listProduct = this.props.newArrivalsItems.data.listItem.filter((element) => {
-                return element.key != product.key;
-            })
-            this.setState({listItem: listProduct});
-        }
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
     }
@@ -60,13 +41,43 @@ class DetailItem extends React.Component {
             return;
         }
     }
+    componentDidUpdate(prevProps) {
+        // console.log(this.state.listReview);
+        // if(prevProps.route.params.data.key != this.props.route.params.data.key){
+        //     const product = this.props.route.params.data;
+        //     this.setState({isLiked: product.isLiked});
+        //     const listProduct = this.props.newArrivalsItems.data.listItem.filter((element) => {
+        //         return element.key != product.key;
+        //     })
+        //     this.setState({listItem: listProduct});
+        // }
+        var testApi = new TestAPI()
+        testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
+    }
+    soldHandle= ()=>{
+        return(
+            <View style={{backgroundColor: '#ccc',opacity:0.6,justifyContent: 'center',height:350,width:Dimensions.get("window").width}}>
+                                <View style={{borderWidth:10,borderColor:'#d00',borderRadius:100,width:200,height:200,alignSelf: 'center',alignContent: 'center',paddingVertical:50,transform:[{rotate:'-25deg'}]}}>
+                                    <Text style={{fontSize:56,fontWeight:'bold',textAlign: 'center',color:'#d00'}}>SOLD</Text>
+                                </View>
+                            </View>
+        )
+    }
+    itemSeparator = () => {
+        return <View style={{ width: 15 }} />;
+    }
+    
+    
+    addItem=async()=>{
+        this.props.AddCart(this.props.userInfo.key,this.props.route.params.data.key)
+      }
     getDate = () =>{
         var date = new Date();
         return date.getMonth() +'/'+date.getDate()+'/'+date.getFullYear();
     }
     render(){
         return(
-            <View style={{backgroundColor: '#ddd'}}>
+            <View style={{backgroundColor: '#fff'}}>
                 <View style={{position: 'absolute',zIndex:10,justifyContent: 'center'}}>
                     <TouchableOpacity style={styles.navigationIcon} onPress={() =>this.props.navigation.toggleDrawer()}>
                             <Icon
@@ -76,30 +87,29 @@ class DetailItem extends React.Component {
                             </Icon>
                     </TouchableOpacity>
                         <Text style={styles.textHeader}>Detail</Text>
-                        <View style={{height:60,backgroundColor:'#eee',opacity:0.5,width:Dimensions.get('window').width}}>
+                        <View style={{height:60,backgroundColor:'#fff',opacity:0.7,width:Dimensions.get('window').width}}>
                         
                         </View>
                 </View>
                 {/* add to card */}
-                <View style={styles.box}>
-                    <TouchableOpacity>
+                <View style={styles.addToCardButton}>
+                    <TouchableOpacity onPress={()=>this.addItem()}>
                                 <Text style={styles.addToCard}>
                                     Add to card
                                 </Text>
                     </TouchableOpacity> 
                 </View>
                 
-                    {/* <View style={{position:'absolute',right:30,marginTop:20,zIndex:10}}>
-                            {
-                                !this.props.route.params.data.sold ? <Image></Image> : <Image style={{height:100,width:100}} source={this.state.images[0]}></Image>
-                            }
-                                
-                    </View> */}
                 <ScrollView>
                     {/* item images */}
                     <View style={{height:320}}>
                         <Image style={{height:350,resizeMode: 'cover'}} source ={{uri : this.state.url}} />
-                        
+                        <View style={{zIndex:5,position:'absolute',}}>
+                        {
+                            !this.props.route.params.data.sold ? <View></View> : this.soldHandle()
+                            
+                        }
+                        </View>
                     </View>
                     
                     <View style={styles.boxContent}>
@@ -113,8 +123,8 @@ class DetailItem extends React.Component {
 {/* ------------------------------price and rate */}
                                 <View style={{paddingHorizontal:20,paddingVertical:10}}>
                                     <View style={{flexDirection: 'row'}}>
-                                        <Text style={{ color: "#000", fontSize: 21,width:Dimensions.get("window").width -150}}>
-                                        {this.props.route.params.data.prices} VNĐ
+                                        <Text style={{ color: "#000", fontSize: 21,width:'70%'}}>
+                                        {this.props.route.params.data.prices}VNĐ
                                     </Text>
                                     <View>
                                         <StarRating item={this.props.route.params.data}/>
@@ -152,7 +162,7 @@ class DetailItem extends React.Component {
                                     <FlatList
                                     data={this.state.listItem}
                                     renderItem={({item = {navigate:this.props.navigate,...item}}) =>
-                                        <NewArrivalItem item={item = {navigate:this.props.navigation,...item}}/>}
+                                        <NewArrivalItem item={item} navigation={this.props.navigation}/>}
                                     keyExtractor={item => item.Name}
                                     horizontal
                                     ItemSeparatorComponent={this.itemSeparator}
@@ -237,7 +247,7 @@ function mapStateToProps(state) {
         listReview: state.ReviewReducer.items,
     };
   }
-export default connect(mapStateToProps, {getListReviews})(DetailItem);
+export default connect(mapStateToProps, {getListReviews,AddCart})(DetailItem);
 const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
@@ -250,15 +260,16 @@ const styles = StyleSheet.create({
     textTitles : {
         fontSize:21,
         fontWeight: '700',
-        width:Dimensions.get("window").width-160
+        width:Dimensions.get("window").width
     },
-    box:{
+    addToCardButton:{
         paddingHorizontal:10,
         position:'absolute',
         bottom:0,
         justifyContent: 'center',
         alignSelf: 'center',
-        zIndex:10
+        zIndex:10,
+        elevation:10,
     },
     boxContent:{
         position:'relative',
@@ -266,14 +277,15 @@ const styles = StyleSheet.create({
         borderTopRightRadius:10,
         width: Dimensions.get("window").width,
         backgroundColor: "#fff",
-        marginBottom:50
+        marginBottom:50,
+        zIndex:6
     },addToCard :{
         fontSize:16,
         padding:15,
         color:'#fff',
         fontWeight: '700',
         width: Dimensions.get("window").width,
-        backgroundColor:'#111',
+        backgroundColor:'#fb2e01',
         textAlign:'center',
     },
     navigationIcon: {
