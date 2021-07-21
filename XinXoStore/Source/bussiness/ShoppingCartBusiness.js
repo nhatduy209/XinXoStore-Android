@@ -17,7 +17,6 @@ export default class NewArrivalsBusiness {
   getAllProduct= async (data,success,fail)=>{
     var readDataService= new ReadData();
       let result  = await readDataService.getShoppingCart(data.idAccount);
-      console.log("DÂT===========",result);
       if( result.status  == Status.SUCCESS){
         success(result);
       }
@@ -31,8 +30,6 @@ export default class NewArrivalsBusiness {
     let result  = await removeDataService.removeItemShoppingCart(data);
     if( result.status  == Status.SUCCESS){
       let listItem= await readDataService.getShoppingCart(data.idAccount);
-       console.log("BUSINESS",data);
-       console.log("BUSINESSlistItem",listItem);
       if(listItem.status==Status.SUCCESS){
         success(listItem);
       }

@@ -9,7 +9,6 @@ const publisherState = {
 };
 
 const PublisherInfoReducer = (state = publisherState, action) => {
-  console.log('REDUCER PUBLISHER  -----' , action);
   switch (action.type) { 
     case NAME_EPICS.GET_PUBLISHER_INFO_EPICS.GET_PUBLISHER_INFO_EPICS_SUCCESS:
       state = {

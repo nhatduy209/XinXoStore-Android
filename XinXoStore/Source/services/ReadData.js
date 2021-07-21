@@ -18,7 +18,6 @@ export default class ReadService {
       .once('value', function (snapshot) {
         snapshot.forEach(function (child) {
           var myJson = child.toJSON();
-          // console.log(myJson.Username + ' ' + myJson.Password);
           if (myJson.Username === username && myJson.Password === password) {
             canLogin = true;
             key = child.key ;
@@ -45,14 +44,12 @@ export default class ReadService {
   }
   signUpApi= async(email,username,password,age)=>{
     let canSignUp=true;
-    console.log("SERVICE ",email,username,password,age);
     await firebase
       .database()
       .ref('Account/')
       .once('value',function (snapshot){
         snapshot.forEach(function (child){
           var myJson=child.toJSON();
-          console.log(myJson.Email);
           if(myJson.Email===email ){
               canSignUp=false;
           }
@@ -154,7 +151,6 @@ export default class ReadService {
           listItem.push({key: key,...item});
         });
       });
-    console.log('listItem-----------------',listItem);
     if (listItem.length > 0 ) {
       return {
         data : {
@@ -296,7 +292,6 @@ export default class ReadService {
   getListItemShoppingCart = async(listItemID)=>{
     let listItem=[];
     listItemID.forEach(async function(id){
-      console.log("id",id);
       await firebase.database().ref('NewArrivals/'+id).once('value',function(snap){
         listItem.push({key:id,data:snap.toJSON()});
         
@@ -327,7 +322,6 @@ export default class ReadService {
       snapshot.forEach(function (child) {
         if(child.key === ownerId ){
           var myJson = child.toJSON();
-          // console.log(myJson.Username + ' ' + myJson.Password);
             publisher = myJson;
         }
       });

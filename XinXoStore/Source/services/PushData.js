@@ -27,7 +27,6 @@ export default class  PushData{
         return date.getMonth() +'/'+date.getDate()+'/'+date.getYear();
     }
     addProductApi=  async(Name,img,price,ownerId,ownerShop,PathImageDevice,Demension,Category,Describe)=>{
-        // console.log(PathImageDevice)
         var  fileImagePath = img;
         uploadImageToStorage(PathImageDevice , fileImagePath);
         await firebase
@@ -69,9 +68,6 @@ export default class  PushData{
         };
     }
     addAddress=async(idAccount,data)=>{
-        console.log("hihih",data.city);
-        console.log("hihih",data.city);
-        console.log(idAccount);
         await firebase
         .database()
         .ref('Account/'+idAccount+"/Address")

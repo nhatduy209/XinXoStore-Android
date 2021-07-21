@@ -7,12 +7,10 @@ export default class UpdateService {
   updateProfileAPI = async (data) => {
     let canUpdate = false;
     let user = {}
-    console.log("HERE UPDATE PROFILE --------", data);
     var a = data.data.PathImageDevice.length ; 
 
     if (data.changePasswords === false) {    // EDIT INFORMATION 
       if (data.data.PathImageDevice.length > 0) {
-        console.log("TUI O DAY NE======================---------------------------");
         var fileImagePath = data.data.Avatar
         uploadImageToStorage(data.data.PathImageDevice, fileImagePath);
       }
@@ -74,7 +72,6 @@ export default class UpdateService {
   updateProductAPI = async ( data ) => {
     let canUpdate = false ;
     let product = {}
-    console.log("HERE UPDATE PRODUCT --------" , data.data );
     if(data.data.PathImageDevice.length > 0 ){
       var  fileImagePath = data.data.img
       uploadImageToStorage(data.data.PathImageDevice , fileImagePath);

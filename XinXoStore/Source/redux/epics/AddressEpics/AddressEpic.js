@@ -11,7 +11,6 @@ let messageError = {};
 const resolver = (action) => {
     const addressBusiness = new AddressBusiness();
     return new Promise((resolve, reject) => {
-        console.log('Address EPIC----------' , action);
         switch (action.type) {
             case NAME_ACTIONS.ADDRESS_ACTIONS.GET_ACTION_SCREEN:
                 addressBusiness.getListAddress(action.data, success => {

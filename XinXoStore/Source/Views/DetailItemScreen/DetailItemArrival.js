@@ -200,7 +200,7 @@ class DetailItem extends React.Component {
                         </View>
 {/* ------------------------------Review */}
                         <View>
-                            <View style={{ flexDirection: 'row', paddingHorizontal:10,width:Dimensions.get("window").width-20,justifyContent: 'center'}}>
+                            <View style={{ flexDirection: 'row', paddingHorizontal:10,width:Dimensions.get("window").width,justifyContent: 'center'}}>
                                 <Text style={[styles.textTitles,{padding:10}]}>
                                         Review
                                 </Text>
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     textTitles : {
         fontSize:21,
         fontWeight: '700',
-        width:Dimensions.get("window").width
+        width:'70%'
     },
     addToCardButton:{
         paddingHorizontal:10,

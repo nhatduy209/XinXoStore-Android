@@ -5,7 +5,6 @@ import { deleteImageFromStorage } from '../Common/DeleteImageFromStorage';
 
 export default class  PushData{
     deleteProductApi=  async(imageNamePath,key)=>{
-      console.log('key',key);
         let removed=false;
         await firebase
         .database()
