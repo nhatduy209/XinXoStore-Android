@@ -29,6 +29,8 @@ class DetailItem extends React.Component {
           };
     }
     componentDidMount() {
+        const listReview= this.props.listReview.data.listItem.filter((element)=>{return element.ShopId === this.props.route.params.data.ownerId});
+        this.setState({listReview: listReview});
         const product = this.props.route.params.data;
         const listProduct = this.props.newArrivalsItems.data.listItem.filter((element) => {
             return element.key != product.key;
@@ -43,22 +45,34 @@ class DetailItem extends React.Component {
         }
     }
     componentDidUpdate(prevProps) {
-        // console.log(this.state.listReview);
-        // if(prevProps.route.params.data.key != this.props.route.params.data.key){
-        //     const product = this.props.route.params.data;
-        //     this.setState({isLiked: product.isLiked});
-        //     const listProduct = this.props.newArrivalsItems.data.listItem.filter((element) => {
-        //         return element.key != product.key;
-        //     })
-        //     this.setState({listItem: listProduct});
-        // }
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
 
-        if( this.props.publisher.status !== prevProps.publisher.status){
-            console.log(' this.props.publisher------' ,  this.props.publisher);
-            this.props.navigation.navigate('PublisherProfileScreen');
-        }
+        // if( this.props.publisher.status !== prevProps.publisher.status){
+            
+            
+        // }
+    }
+    ShowAllReview = (listReview) => {
+        this.props.navigation.navigate('AllReviews',listReview);
+    }
+    showReview =() => {
+        return (
+            <View>
+                <TouchableOpacity style={{flexDirection: 'row',alignSelf: 'center'}}
+                onPress={()=>this.ShowAllReview(this.state.listReview)}>
+                    <Text style={{paddingVertical:10,fontSize:16,color:'#b00'}}>
+                            Show all reviews
+                    </Text>
+                    <Icon
+                    size={14}
+                    name="chevron-right"
+                    style={{paddingVertical:15,paddingHorizontal:5,color:'#b00'}}
+                    >
+                    </Icon>                    
+                </TouchableOpacity>
+            </View>
+        )
     }
     soldHandle= ()=>{
         return(
@@ -84,11 +98,7 @@ class DetailItem extends React.Component {
 
     goToPublisherScreen = () => {
         this.props.getPublisherInfo(this.props.route.params.data.ownerId);
-    }
-
-    isLiked = () => {
-        this.props.route.params.data.liked = !this.props.route.params.data.liked;
-        console.log(this.props);
+        this.props.navigation.navigate('PublisherProfileScreen',this.state.listReview);
     }
     render(){
         return(
@@ -205,23 +215,13 @@ class DetailItem extends React.Component {
                                         Review
                                 </Text>
                                 <TouchableOpacity style={{flexDirection: 'row'}}>
-                                    <Text style={{paddingVertical:10,fontSize:16,color:'#b00'}}>
-                                        {
-                                            "Show all reviews"
-                                        } 
-                                    </Text>
-                                    <Icon
-                                    size={14}
-                                    name="chevron-right"
-                                    style={{paddingVertical:15,paddingHorizontal:5,color:'#b00'}}
-                                    >
-                                    </Icon>
+                                    {this.showReview()}
                                 </TouchableOpacity>
                                 
                             </View>
                             <View>
                             {
-                                this.props.listReview.data.listItem.map((element,index) => {
+                                this.state.listReview.filter((element,index)=>{return index<2}).map((element,index) => {
                                     var item = {Content: element.Content,
                                             UserName: element.UserName,
                                             Rating:element.Rating,
@@ -232,19 +232,7 @@ class DetailItem extends React.Component {
                             }
                             </View>
                             <View style={{borderTopWidth:1,borderTopColor:'#eee'}}>
-                                <TouchableOpacity style={{flexDirection: 'row',alignSelf: 'center'}}>
-                                    <Text style={{paddingVertical:10,fontSize:16,color:'#b00'}}>
-                                        {
-                                            "Show all reviews"
-                                        } 
-                                    </Text>
-                                    <Icon
-                                    size={14}
-                                    name="chevron-right"
-                                    style={{paddingVertical:15,paddingHorizontal:5,color:'#b00'}}
-                                    >
-                                    </Icon>
-                                </TouchableOpacity>
+                                {this.showReview()}
                             </View>
                         </View>
                     </View>

@@ -18,6 +18,7 @@ import EditProfileScreen from '../../../Views/EditProfileScreen';
 import ManagementScreen from '../../../Views/ManagementScreen/ManagementScreen';
 import AddScreen from '../../../Views/ManagementScreen/AddProductScreen';
 import EditScreen from '../../../Views/ManagementScreen/EditProductScreen';
+import AllReviews from '../../../Views/DetailItemScreen/AllReview';
 
 import SettingScreens from '../../../Views/settingScreens/SettingScreen';
 import SettingScreenStack from './SettingScreenStack';
@@ -260,6 +261,14 @@ class HomeScreenStack extends React.Component {
         <Stack.Screen
           name="EditScreen"
           component={EditScreen}
+          options={{
+            title: "", headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="AllReviews"
+          component={AllReviews}
           options={{
             title: "", headerShown: false,
           }}

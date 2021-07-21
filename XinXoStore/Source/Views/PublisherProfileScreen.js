@@ -18,6 +18,7 @@ class PublisherProfileScreen extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props.route.params)
     var testApi = new TestAPI();
     testApi.myPromise(this.props.publisher.data.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
@@ -36,7 +37,7 @@ class PublisherProfileScreen extends React.Component {
   }
 
   navigateCommentStore= () => {
-    this.props.navigation.navigate('CommentStoreScreen')
+    this.props.navigation.navigate('CommentStoreScreen',this.props.route.params)
   }
 
   handleGetNotification = () => {

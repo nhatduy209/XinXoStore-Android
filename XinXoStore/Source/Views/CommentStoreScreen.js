@@ -1,6 +1,7 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View,ScrollView } from 'react-native';
 import StarRating from 'react-native-star-rating';
+import FeedbackComponent from './DetailItemScreen/RenderFeedback';
 const DATA = [
   {
     id: '0',
@@ -30,6 +31,9 @@ const DATA = [
 ];
 
 export default class CommentStoreScreen extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
   renderItem = ({ item }) => {
     return (
@@ -67,6 +71,18 @@ export default class CommentStoreScreen extends React.Component {
             showsHorizontalScrollIndicator={false}
           />
         </View>
+        <ScrollView>
+          {
+            this.props.route.params.map((element,index)=>{
+              var item = {Content: element.Content,
+                  UserName: element.UserName,
+                  Rating:element.Rating,
+                  Avatar:element.Img,
+              }
+          return (<FeedbackComponent key={index} item={item}/>);
+          })
+          }
+        </ScrollView>
       </View>
     );
   }
