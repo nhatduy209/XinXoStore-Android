@@ -1,6 +1,5 @@
 import storage from '@react-native-firebase/storage'; 
-export const uploadImageToStorage = (path, imageNamePath)  => {
-  console.log(path);
+export const uploadImageToStorage =async  (path, imageNamePath)  => {
   let reference = storage().ref(imageNamePath);         // path to image on storage 
   let task = reference.putFile(path);               // path to image on devices
 

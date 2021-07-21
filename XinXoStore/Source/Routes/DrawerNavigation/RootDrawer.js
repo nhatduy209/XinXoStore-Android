@@ -3,6 +3,7 @@ import React from 'react'
 import DrawerContent from './DrawerContent';
 import HomeScreenStack from './drawer-stack/HomeScreenStack';
 import SettingScreenStack from './drawer-stack/SettingScreenStack';
+import UserProfileStack from '../BottomNavigation/UserProfileScreenStack';
 
 const Drawer = createDrawerNavigator();
 
@@ -17,6 +18,9 @@ export default class RootDrawer extends React.Component {
 
         <Drawer.Screen
           name="SettingsScreensStack" component={SettingScreenStack} />
+
+        <Drawer.Screen
+          name="ProfileUserStack" component={UserProfileStack} />
       </Drawer.Navigator>
     );
   }

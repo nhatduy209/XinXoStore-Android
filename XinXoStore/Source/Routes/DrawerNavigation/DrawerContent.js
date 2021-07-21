@@ -38,9 +38,14 @@ export class DrawerContent extends React.Component {
     this.props.navigation.navigate('ShoppingCart');
   }
 
+  // goToEditProfile = () => {
+  //   this.props.navigation.push('EditProfileScreen');
+  //   this.props.navigation.navigate('EditProfileScreen');
+  // }
+
   goToEditProfile = () => {
     this.props.navigation.push('EditProfileScreen');
-    this.props.navigation.navigate('EditProfileScreen');
+    this.props.navigation.navigate('ProfileUserStack');
   }
 
   goToSettingScreen = () => {

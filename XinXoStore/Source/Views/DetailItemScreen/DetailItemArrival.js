@@ -8,6 +8,7 @@ import NewArrivalItem from '../homeScreenFlatlist/HomeScreenArrivalsItems.js'
 import StarRating from './StarRating';
 import { getListReviews } from '../../redux/action/ReviewAction/ReviewAction.js';
 import { getListNewArrivals } from '../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction'
+import {getPublisherInfo} from '../../redux/action/GetPublisherInfoAction/GetPublisherInfoAction'
 import UrlComponent from './UrlRender';
 import FeedbackComponent from './RenderFeedback';
 import { AddCart } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
@@ -53,6 +54,11 @@ class DetailItem extends React.Component {
         // }
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
+
+        if( this.props.publisher.status !== prevProps.publisher.status){
+            console.log(' this.props.publisher------' ,  this.props.publisher);
+            this.props.navigation.navigate('PublisherProfileScreen');
+        }
     }
     soldHandle= ()=>{
         return(
@@ -74,6 +80,15 @@ class DetailItem extends React.Component {
     getDate = () =>{
         var date = new Date();
         return date.getMonth() +'/'+date.getDate()+'/'+date.getFullYear();
+    }
+
+    goToPublisherScreen = () => {
+        this.props.getPublisherInfo(this.props.route.params.data.ownerId);
+    }
+
+    isLiked = () => {
+        this.props.route.params.data.liked = !this.props.route.params.data.liked;
+        console.log(this.props);
     }
     render(){
         return(
@@ -133,7 +148,7 @@ class DetailItem extends React.Component {
                                 </View>
 {/* ------------------------------Shop profile */}
                                     <View style={{marginTop:20}}>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress = { this.goToPublisherScreen }>
                                     <View style={{height:70,flexDirection: 'row'}}>
                                         <UrlComponent item={{img:this.props.userInfo.user.Avatar,demension:70}}/>
                                         <View style={{paddingVertical:20,flexDirection: 'row',width:Dimensions.get("window").width - 120}}>
@@ -245,9 +260,10 @@ function mapStateToProps(state) {
         newArrivalsItems: state.NewArrivalsReducer.items,
         userInfo : state.LoginReducer.user.data,
         listReview: state.ReviewReducer.items,
+        publisher : state.PublisherInfoReducer.publisher ,
     };
   }
-export default connect(mapStateToProps, {getListReviews,AddCart})(DetailItem);
+export default connect(mapStateToProps, {getPublisherInfo,getListReviews,AddCart})(DetailItem);
 const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',

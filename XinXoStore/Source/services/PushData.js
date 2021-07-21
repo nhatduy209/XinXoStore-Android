@@ -68,4 +68,25 @@ export default class  PushData{
             status: Status.SUCCESS
         };
     }
+    addAddress=async(idAccount,data)=>{
+        console.log("hihih",data.city);
+        console.log("hihih",data.city);
+        console.log(idAccount);
+        await firebase
+        .database()
+        .ref('Account/'+idAccount+"/Address")
+        .push()
+        .set({
+            Street:data.street,
+            Number:data.number,
+            Commune:data.commune,
+            District:data.district,
+            City:data.city,
+        })
+        .then(()=>console.log('Data added============='));
+        return {
+            data:{},
+            status: Status.SUCCESS
+        };
+    }
 }

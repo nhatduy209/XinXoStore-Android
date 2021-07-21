@@ -8,8 +8,11 @@ export default class UpdateService {
     let canUpdate = false;
     let user = {}
     console.log("HERE UPDATE PROFILE --------", data);
-    if (data.changePassword === false) {    // EDIT INFORMATION 
+    var a = data.data.PathImageDevice.length ; 
+
+    if (data.changePasswords === false) {    // EDIT INFORMATION 
       if (data.data.PathImageDevice.length > 0) {
+        console.log("TUI O DAY NE======================---------------------------");
         var fileImagePath = data.data.Avatar
         uploadImageToStorage(data.data.PathImageDevice, fileImagePath);
       }

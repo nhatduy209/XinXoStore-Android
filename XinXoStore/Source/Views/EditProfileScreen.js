@@ -40,12 +40,16 @@ class EditProfileScreen extends React.Component {
 
   handlePhotos = () => {
     const Options = {};
-    ImagePicker.launchImageLibrary(Options, response => {
-      console.log('IMAGE CHOOSE ', response.assets[0].fileName)
-      this.setState({ url: response.assets[0].uri })
-      this.setState({ Avatar: response.assets[0].fileName })
-      this.setState({ PathImageDevice: response.assets[0].uri })
-    })
+      ImagePicker.launchImageLibrary(Options, response => {
+        try{
+          this.setState({ url: response.assets[0].uri })
+          this.setState({ Avatar: response.assets[0].fileName })
+          this.setState({ PathImageDevice: response.assets[0].uri })
+        }
+        catch ( err){
+          this.setState({ PathImageDevice: "" })
+        }
+      })
   }
 
   handleReset = () => {
