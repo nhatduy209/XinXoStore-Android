@@ -52,11 +52,11 @@ export default class FeedbackComponent extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{padding:20,width:Dimensions.get("window").width}}>
-                        <Text style={{marginHorizontal:10,fontSize:18,justifyContent: 'center'}}>{this.props.item.Content}</Text>
+                        <Text style={{marginHorizontal:10,fontSize:15,justifyContent: 'center'}}>{this.props.item.Content}</Text>
                         <View style={{flexDirection:'row'}}>
                         {
                             this.state.images.map((element)=>{
-                                return <Image key={element} style={{height: 100,width:100}} source={element}></Image>
+                                return <Image key={element} style={{height: 50,width:50}} source={element}></Image>
                             })
                         }
                         </View>
