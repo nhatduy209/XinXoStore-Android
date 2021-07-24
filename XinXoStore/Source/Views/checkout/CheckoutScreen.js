@@ -33,7 +33,7 @@ export class CheckoutScreen extends React.Component{
                 (
                     <RenderItemAddress item={this.props.current.data} navigation={this.props.navigation}/>
                 ):
-                 (
+                (
                     <TouchableOpacity style={styles.container} 
                     onPress={()=>this.props.navigation.navigate("AddAddress")}>
                         <Icon name="plus" size={20} color={"#2f7afb"}/>

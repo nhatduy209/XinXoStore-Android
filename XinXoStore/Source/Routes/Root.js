@@ -4,7 +4,9 @@ import LoginScreen from '../Views/LoginScreen'
 import RootDrawer from './DrawerNavigation/RootDrawer';
 import SignUpScreen from '../Views/SignUpScreen';
 const Stack = createStackNavigator();
-import {Image , View , Text , TouchableOpacity} from 'react-native'
+import {Image , View , Text , TouchableOpacity} from 'react-native';
+import BillScreen from '../Views/bill/BillScreen'
+import ModelAddToShoppingCartSuccess from '../Views/shoppingCart/ModelAddToShoppingCartSuccess';
 class Root extends React.Component {
 
   render(){

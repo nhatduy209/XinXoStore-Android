@@ -9,6 +9,7 @@ import StarRating from './StarRating';
 import { editProduct } from '../../redux/action/GetItemArrivalAction/GetItemArrivalAction';
 import { getListNewArrivals } from '../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction'
 import UrlComponent from './UrlRender';
+import { AddCart } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 
 class DetailItem extends React.Component {
     constructor(props) {
@@ -52,6 +53,9 @@ class DetailItem extends React.Component {
     }
     componentWillUnmount(){
         this._isMounted = false;
+    }
+    handleShoppingCart=()=>{
+        this.props.AddCart(this.props.userKey,this.props.route.params.data.key);
     }
     render(){
         return(
@@ -155,7 +159,7 @@ class DetailItem extends React.Component {
                     
                     {/* add to card */}
                     <View style={styles.box}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.handleShoppingCart}>
                             <Text style={styles.addToCard}>
                                 Add to card
                             </Text>
@@ -173,9 +177,10 @@ function mapStateToProps(state) {
     return {
         newArrivalsItems: state.NewArrivalsReducer.items,
         userInfo : state.LoginReducer.user.data.user,
+        userKey : state.LoginReducer.user.data.key
     };
   }
-export default connect(mapStateToProps, {editProduct})(DetailItem);
+export default connect(mapStateToProps, {editProduct,AddCart})(DetailItem);
 const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',

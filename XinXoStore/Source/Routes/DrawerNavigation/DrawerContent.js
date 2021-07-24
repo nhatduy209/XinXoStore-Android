@@ -35,7 +35,8 @@ export class DrawerContent extends React.Component {
     this.props.navigation.navigate('ManagementScreen', changed);
   }
   onShoppingCartPress=()=>{
-    this.props.navigation.navigate('ShoppingCart');
+    this.props.navigation.push('ShoppingCart');
+    this.props.navigation.navigate('ShoppingCartScreenStack');
   }
 
   goToEditProfile = () => {
@@ -46,7 +47,10 @@ export class DrawerContent extends React.Component {
   goToSettingScreen = () => {
     this.props.navigation.navigate('SettingsScreensStack');
   }
-
+  onBillPress=()=>{
+    this.props.navigation.push('BillScreenStack');
+    this.props.navigation.navigate('BillScreenStack');
+  }
   render() {
     let username  = "" , email = "" ; 
     try {
@@ -175,7 +179,19 @@ export class DrawerContent extends React.Component {
                       </Text>
                 </View>
             </TouchableOpacity>
-
+            <TouchableOpacity onPress = {this.onBillPress}>
+                <View style={styles.itemDrawer}>
+                      <Icon
+                        size={35}
+                        name="cog"
+                        style={styles.iconStyle}
+                      >
+                      </Icon>
+                      <Text style={styles.itemText}>
+                        Bills
+                      </Text>
+                </View>
+            </TouchableOpacity>
         </View>
 
       </View>

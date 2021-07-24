@@ -9,7 +9,6 @@ const arrivalItemState = {
 };
 
 const ArrivalItemReducer = (state = arrivalItemState, action) => {
-  console.log('REDUCER -----', action);
   switch (action.type) {
     case NAME_EPICS.GET_ARRIVAL_ITEM_EPICS.GET_ARRIVAL_ITEM_EPICS_SUCCESS:
       state = {

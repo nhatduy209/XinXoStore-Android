@@ -3,8 +3,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {View ,Text,StyleSheet,Dimensions,TouchableOpacity} from 'react-native';
 
 export class RenderItemAddress extends React.Component{
+    constructor(props){
+        super(props);
+    }
     render(){
-        console.log("propss",this.props.item);
+        console.log("propss",this.props);
         return(
             <TouchableOpacity style={styles.addressComponent}
                 onPress={()=>{this.props.navigation.navigate("ChooseAddressScreen")}}>

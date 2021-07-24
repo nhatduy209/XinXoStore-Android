@@ -4,6 +4,7 @@ import { Status } from '../Config/dataStatus';
 import _, { map } from 'underscore';
 import {PushData} from './PushData';
 import { async } from 'rxjs';
+import { isObject } from 'formik';
 
 export default class ReadService {
   verifyLoginApi = async(username , password) => {
@@ -152,18 +153,11 @@ export default class ReadService {
         }
       });
     });
-    if (address.length > 0 ) {
-      return {
-        data : {address
-        },
-        status : Status.SUCCESS
-      };
-    } else {
-      return {
-        data : {},
-        status : Status.FAIL,
-      }
-    }
+    return {
+      data : {address
+      },
+      status : Status.SUCCESS
+    };
   }
   getDefaultAddress=async(idAccount)=>{
     var address= new Object();
@@ -179,17 +173,10 @@ export default class ReadService {
         }
       });
     });
-    if(!!address){
-      return {
-        status: Status.SUCCESS,
-        data:{
-          address
-        }
-      }
-    }else{
-      return {
-        status: Status.FAIL,
-        data:{}
+    return {
+      status: Status.SUCCESS,
+      data:{
+        address
       }
     }
   }
@@ -252,41 +239,40 @@ export default class ReadService {
       })
     })
     
-    if(listItem.length>0){
-      return {
-        data:listItem,
-        status:Status.SUCCESS
-      }
-    }
-    else{
-      return {
-        data:{},
-        status:Status.FAIL
-      }
+    return {
+      data:listItem,
+      status:Status.SUCCESS
     }
   }
   getListItemShoppingCart = async(listItemID)=>{
-    let listItem=[];
-    listItemID.forEach(async function(id){
-      console.log("id",id);
-      await firebase.database().ref('NewArrivals/'+id).once('value',function(snap){
-        listItem.push({key:id,data:snap.toJSON()});
-        
-      })
-      console.log(listItem);
-    })
-    console.log(listItem);
-    if(listItem.length>0){
-      return {
-        data:listItem,
-        status:Status.SUCCESS
-      }
+
+    var obj= new Object();
+    var result= await Promise.all( listItemID.map(async (id)=>{
+      await firebase.database().ref('NewArrivals/'+id.itemID).once('value',function(snap){
+        obj= {key:id,data:snap.toJSON()};
+        console.log("=============",obj);
+      });
+      return obj;
+    }));
+    
+    return {
+      status:Status.SUCCESS,
+      data: result
     }
-    else{
-      return {
-        data:{},
-        status:Status.FAIL
-      }
+  }
+  getListIDBill=async(idAccount)=>{
+    let listID=[]
+    await firebase.database().ref('Bill').once('value',function(snap){
+      snap.forEach(child=>{
+        if(child.toJSON().UserID==idAccount){
+          listID.push({itemID:child.toJSON().ItemID,reviewID:child.toJSON().ReviewID});
+          
+        }
+      })
+    })
+    return{
+      status:Status.SUCCESS,
+      data:listID
     }
   }
 }

@@ -1,26 +1,21 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react'
 import HomeScreen from '../../../Views/HomeScreen'
-import { Image, View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native'
+import { Image, View, TouchableOpacity, StyleSheet,Text } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import AllNewArrivalsItem from '../../../Views/ListItemScreen/AllNewArrivalsItems';
 import DetailItem from '../../../Views/DetailItemScreen/DetailItemArrival';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import RNRestart from 'react-native-restart';
 import ShoppingCart from '../../../Views/shoppingCart/ShoppingCart';
-import CheckoutScreen from '../../../Views/checkout/CheckoutScreen';
-import AddressScreen from '../../../Views/address/AddressScreen';
-import ChooseAddressScreen from '../../../Views/address/ChooseAddressScreen';
-import { CheckoutSuccess } from '../../../Views/checkout/CheckoutSuccess';
 import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 import { connect } from 'react-redux';
 import EditProfileScreen from '../../../Views/EditProfileScreen';
 import ManagementScreen from '../../../Views/ManagementScreen/ManagementScreen';
 import AddScreen from '../../../Views/ManagementScreen/AddProductScreen';
 import EditScreen from '../../../Views/ManagementScreen/EditProductScreen';
+import { GetAllProduct } from '../../../redux/action/ShoppingCartAction/ShoppingCartAction';
 
-import SettingScreens from '../../../Views/SettingScreen';
-import SettingScreenStack from './SettingScreenStack';
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -54,7 +49,9 @@ class HomeScreenStack extends React.Component {
     }
 
   }
-
+  componentDidMount(){
+    this.props.GetAllProduct(this.props.user.key);
+  }
   sortUp = () => {
     this.setState({ sortUpOption: true })
     this.props.getListNewArrivals(true);
@@ -64,7 +61,9 @@ class HomeScreenStack extends React.Component {
     this.setState({ sortUpOption: false });
     this.props.getListNewArrivals();
   }
-
+  handleShoppingCart =()=>{
+    this.props.navigation.navigate("ShoppingCart");
+  }
   render() {
     return (
       <Stack.Navigator>
@@ -72,6 +71,23 @@ class HomeScreenStack extends React.Component {
         name="Home"
         component={HomeScreen}   
         options={{
+          headerRight:()=>{
+            return(
+              <View style={{position:'absolute'}}>
+                <TouchableOpacity 
+                onPress={this.handleShoppingCart}>
+                    <Text style={styles.noCart}>{this.props.noCart.length}</Text>
+                      <Icon
+                        size={25}
+                        name="shopping-cart"
+                        style = {{ paddingRight : 15 }}
+                        color = "#bbbbbb"
+                      >
+                      </Icon>
+                </TouchableOpacity>
+              </View>
+            )
+          },
           headerLeft: ()=>
             <NavigationDrawerStructureLeft
               navigationProps={this.props.navigation}
@@ -87,32 +103,6 @@ class HomeScreenStack extends React.Component {
             navigationProps={this.props.navigation}
           />
       }}
-      />
-      <Stack.Screen
-      name="Checkout"
-      component={CheckoutScreen}
-      options={{ title: ' Checkout Success ' ,
-                    headerRight: ()=> {
-                      return (
-                        <View style={{flexDirection: 'row'}}>
-                        </View>
-                      );
-                    }
-                        
-          }} 
-      />
-      <Stack.Screen
-      name="CheckoutSuccess"
-      component={CheckoutSuccess}
-      options={{ title: ' Checkout ' ,
-                    headerRight: ()=> {
-                      return (
-                        <View style={{flexDirection: 'row'}}>
-                        </View>
-                      );
-                    }
-                        
-          }} 
       />
       <Stack.Screen
         name="NewArrivalsScreen"
@@ -188,62 +178,6 @@ class HomeScreenStack extends React.Component {
       >
       </Stack.Screen>
       <Stack.Screen
-      name="AddressScreen"
-      component={AddressScreen}
-      options={{ title: ' Address ',
-      headerRight: ()=> {
-        return (
-          <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity>
-                  <Icon
-                    size={25}
-                    name="ellipsis-vertical"
-                    style = {{ paddingRight : 15 }}
-                    color = "#000"
-                  >
-                  </Icon>
-            </TouchableOpacity>
-          </View>
-        );
-      },
-      headerStyle: {
-        // backgroundColor: '#',
-        height: 56,
-        elevation: null,
-        backgroundColor: '#FFF'
-      }
-    }}
-      >
-      </Stack.Screen>
-      <Stack.Screen
-      name="ChooseAddressScreen"
-      component={ChooseAddressScreen}
-      options={{ title: ' ChooseAddressScreen ',
-      headerRight: ()=> {
-        return (
-          <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity>
-                  <Icon
-                    size={25}
-                    name="ellipsis-vertical"
-                    style = {{ paddingRight : 15 }}
-                    color = "#000"
-                  >
-                  </Icon>
-            </TouchableOpacity>
-          </View>
-        );
-      },
-      headerStyle: {
-        // backgroundColor: '#',
-        height: 56,
-        elevation: null,
-        backgroundColor: '#FFF'
-      }
-    }}
-      >
-      </Stack.Screen>
-      <Stack.Screen
         name="ManagementScreen"
         component={ManagementScreen}
         options={{title: "",headerShown: false,
@@ -265,9 +199,11 @@ class HomeScreenStack extends React.Component {
 function mapStateToProps(state) {
   return {
     newArrivalsItems: state.NewArrivalsReducer.items,
+    noCart:state.ShoppingCartReducer.items.data,
+    user:state.LoginReducer.user.data,
   };
 }
-export default connect(mapStateToProps, { getListNewArrivals })(HomeScreenStack);
+export default connect(mapStateToProps, { getListNewArrivals ,GetAllProduct})(HomeScreenStack);
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -291,5 +227,11 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
+  },
+  noCart:{
+    position:'absolute',
+    alignSelf:'flex-end',
+    color:'red',
+    fontWeight:'bold'
   }
 })

@@ -21,7 +21,7 @@ const ShoppingCartReducer=(state = shoppingCartState,action)=>{
             state = {
                 ...state,
                 items: {
-                  status: Status.SUCCESS,
+                  status: state.items.status,
                   data: action.data,
                 },
                 totalBill:totalBill

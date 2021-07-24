@@ -2,11 +2,16 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {View,Text,StyleSheet,TouchableOpacity} from 'react-native'
 
-export class CheckoutSuccess extends React.Component{
+export default class CheckoutSuccess extends React.Component{
+    constructor(props){
+        super(props);
+    }
     handleCheckout(){
-        this.props.navigation.navigate('Home');
+        console.log("PROP",this.props);
+        // this.props.navigation.navigate('Home');
     }
     render(){
+        
         return(
             <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
                 <Text style={{fontSize:25}}>Thank you!</Text>
