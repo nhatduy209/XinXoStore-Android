@@ -6,12 +6,17 @@ import { combineEpics } from 'redux-observable';
 import AddressEpic from './AddressEpics/AddressEpic';
 import ShoppingCartEpic from './ShoppingCartEpics/ShoppingCartEpic';
 import BillEpic from './BillEpics/BillEpic';
+import ReviewsEpic from './ReviewEpics/ReviewEpics';
+import PublisherInfoEpic from './PublserInfoEpics/PublsherInfoEpics';
+
 export default combineEpics(
     DetailArrivalEpic,
     LoginEpic,
     SignUpEpic,
     NewArrivalsEpic,
+    ReviewsEpic,
     AddressEpic,
     ShoppingCartEpic,
-    BillEpic
+    BillEpic,
+    PublisherInfoEpic,
 )

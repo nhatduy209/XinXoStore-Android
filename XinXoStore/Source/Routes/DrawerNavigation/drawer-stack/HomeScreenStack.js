@@ -14,8 +14,12 @@ import ManagementScreen from '../../../Views/ManagementScreen/ManagementScreen';
 import AddScreen from '../../../Views/ManagementScreen/AddProductScreen';
 import EditScreen from '../../../Views/ManagementScreen/EditProductScreen';
 import { GetAllProduct } from '../../../redux/action/ShoppingCartAction/ShoppingCartAction';
-
-
+import AllReviews from '../../../Views/DetailItemScreen/AllReview';
+import SettingScreens from '../../../Views/settingScreens/SettingScreen';
+import SettingScreenStack from './SettingScreenStack';
+import PublisherProfileScreen from '../../../Views/PublisherProfileScreen';
+import UserProfileStack from '../../BottomNavigation/UserProfileScreenStack';
+import CommentStoreScreen from '../../../Views/CommentStoreScreen';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -136,61 +140,162 @@ class HomeScreenStack extends React.Component {
                 navigationProps={this.props.navigation}
               />
           }}
-      />
-      <Stack.Screen
+        />
+        {/* <Stack.Screen
+          name="ProfileUserStack"
+          component={UserProfileStack}
+          options={{
+            title: "Edit Profile",
+            headerLeft: () =>
+              <NavigationDrawerStructureLeft
+                navigationProps={this.props.navigation}
+              />
+          }}
+      />  */}
+        <Stack.Screen
           name="AddScreen"
           component={AddScreen}
-          options={{headerShown: false,
+          options={{
+            headerShown: false,
             title: "",
             headerLeft: () =>
               <NavigationDrawerStructureLeft
                 navigationProps={this.props.navigation}
               />
           }}
-            
-      />
-      <Stack.Screen
-      name="DetailItemScreen"
-      component={DetailItem}
-      options={{ title: ' Detail ',headerShown: false,
-        headerRight: ()=> {
-          return (
-            <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity>
+
+        />
+        <Stack.Screen
+          name="DetailItemScreen"
+          component={DetailItem}
+          options={{
+            title: ' Detail ', headerShown: false,
+            headerRight: () => {
+              return (
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity>
                     <Icon
                       size={25}
                       name="ellipsis-v"
-                      style = {{ paddingRight : 15 }}
-                      color = "#000"
+                      style={{ paddingRight: 15 }}
+                      color="#000"
                     >
                     </Icon>
-              </TouchableOpacity>
-            </View>
-          );
-        },
-        headerStyle: {
-          // backgroundColor: '#',
-          height: 56,
-          elevation: null,
-          backgroundColor: '#FFF',
-        }
-      }}
-      >
-      </Stack.Screen>
-      <Stack.Screen
-        name="ManagementScreen"
-        component={ManagementScreen}
-        options={{title: "",headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="EditScreen"
-        component={EditScreen}
-        options={{title: "",headerShown: false,
-        }}
-      />
+                  </TouchableOpacity>
+                </View>
+              );
+            },
+            headerStyle: {
+              // backgroundColor: '#',
+              height: 56,
+              elevation: null,
+              backgroundColor: '#FFF',
+            }
+          }}
+        >
+        </Stack.Screen>
+        <Stack.Screen
+          name="AddressScreen"
+          component={AddressScreen}
+          options={{
+            title: ' Address ',
+            headerRight: () => {
+              return (
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity>
+                    <Icon
+                      size={25}
+                      name="ellipsis-vertical"
+                      style={{ paddingRight: 15 }}
+                      color="#000"
+                    >
+                    </Icon>
+                  </TouchableOpacity>
+                </View>
+              );
+            },
+            headerStyle: {
+              // backgroundColor: '#',
+              height: 56,
+              elevation: null,
+              backgroundColor: '#FFF'
+            }
+          }}
+        >
+        </Stack.Screen>
+        <Stack.Screen
+          name="ChooseAddressScreen"
+          component={ChooseAddressScreen}
+          options={{
+            title: ' ChooseAddressScreen ',
+            headerRight: () => {
+              return (
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity>
+                    <Icon
+                      size={25}
+                      name="ellipsis-vertical"
+                      style={{ paddingRight: 15 }}
+                      color="#000"
+                    >
+                    </Icon>
+                  </TouchableOpacity>
+                </View>
+              );
+            },
+            headerStyle: {
+              // backgroundColor: '#',
+              height: 56,
+              elevation: null,
+              backgroundColor: '#FFF'
+            }
+          }}
+        >
+        </Stack.Screen>
+        <Stack.Screen
+          name="ManagementScreen"
+          component={ManagementScreen}
+          options={{
+            title: "", headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="EditScreen"
+          component={EditScreen}
+          options={{
+            title: "", headerShown: false,
+          }}
+        />
 
-    </Stack.Navigator>
+        <Stack.Screen
+          name="AllReviews"
+          component={AllReviews}
+          options={{
+            title: "", headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="PublisherProfileScreen"
+          component={PublisherProfileScreen}
+          options={{
+            headerTitleAlign: 'center',
+            headerTitle: 'Profile'
+          }}
+
+        />
+
+
+        <Stack.Screen
+          name="CommentStoreScreen"
+          component={CommentStoreScreen}
+          options={{
+            headerTitleAlign: 'center',
+            headerTitle: 'Comment'
+          }}
+        />
+
+      </Stack.Navigator>
     );
   }
 

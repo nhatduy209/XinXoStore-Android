@@ -7,8 +7,9 @@ export default class UpdateService {
   updateProfileAPI = async (data) => {
     let canUpdate = false;
     let user = {}
-    console.log("HERE UPDATE PROFILE --------", data);
-    if (data.changePassword === false) {    // EDIT INFORMATION 
+    var a = data.data.PathImageDevice.length ; 
+
+    if (data.changePasswords === false) {    // EDIT INFORMATION 
       if (data.data.PathImageDevice.length > 0) {
         var fileImagePath = data.data.Avatar
         uploadImageToStorage(data.data.PathImageDevice, fileImagePath);
@@ -71,7 +72,6 @@ export default class UpdateService {
   updateProductAPI = async ( data ) => {
     let canUpdate = false ;
     let product = {}
-    console.log("HERE UPDATE PRODUCT --------" , data.data );
     if(data.data.PathImageDevice.length > 0 ){
       var  fileImagePath = data.data.img
       uploadImageToStorage(data.data.PathImageDevice , fileImagePath);
@@ -85,7 +85,10 @@ export default class UpdateService {
           img : data.data.img, 
           liked : data.data.liked ,
           prices : data.data.prices,
-          publicDate :  data.data.publicDate
+          publicDate :  data.data.publicDate,
+          Description : data.data.Describe,
+          Demension: data.data.Demension,
+          Category: data.data.Category,
       }).then( canUpdate = true ).catch( err => {
         console.log('Error update ' , err);
       });

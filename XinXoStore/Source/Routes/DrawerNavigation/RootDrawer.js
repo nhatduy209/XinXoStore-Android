@@ -5,6 +5,8 @@ import HomeScreenStack from './drawer-stack/HomeScreenStack';
 import SettingScreenStack from './drawer-stack/SettingScreenStack';
 import ShoppingCartScreenStack from './drawer-stack/ShoppingCartScreenStack';
 import BillScreenStack from './drawer-stack/BillScreenStack';
+import UserProfileStack from '../BottomNavigation/UserProfileScreenStack';
+
 const Drawer = createDrawerNavigator();
 
 export default class RootDrawer extends React.Component {
@@ -22,6 +24,9 @@ export default class RootDrawer extends React.Component {
           name="ShoppingCartScreenStack" component={ShoppingCartScreenStack} />
         <Drawer.Screen
           name="BillScreenStack" component={BillScreenStack} />
+
+        <Drawer.Screen
+          name="ProfileUserStack" component={UserProfileStack} />
       </Drawer.Navigator>
     );
   }

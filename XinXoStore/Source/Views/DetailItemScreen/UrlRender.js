@@ -7,10 +7,12 @@ export default class UrlComponent extends React.Component {
         super(props);
         this.state ={
             url: "img",
+            demension: 0,
         }
     }
 
     componentDidMount() {
+        this.setState({demension:this.props.item.demension})
         var testApi = new TestAPI()
         testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
     }
@@ -18,7 +20,7 @@ export default class UrlComponent extends React.Component {
     render() {
         return (
             <View style={{padding:10}}>
-                <Image style={{height:70,width:70,resizeMode: 'cover',borderRadius:50}} source ={{uri : this.state.url}} />
+                <Image style={{height:this.state.demension,width:this.state.demension,resizeMode: 'cover',borderRadius:50}} source ={{uri : this.state.url}} />
             </View>
         )
     }

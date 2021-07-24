@@ -6,7 +6,6 @@ import ReadService from '../services/ReadData';
 export default class AddressBusiness {
   addAddress = async ( data , success , failed ) => {
       var pushDataService = new PushData();
-      console.log("data  ",data);
       const result  =await pushDataService.addAddress(data.idAccount,data.data );
       if( result.status  == Status.SUCCESS){
         success(result);
@@ -28,7 +27,6 @@ export default class AddressBusiness {
   getDefaultAddress=async(data,success,failed)=>{
     var readDataService = new ReadService();
     const result  =await readDataService.getDefaultAddress(data.idAccount );
-    console.log("result business",result);
     if( result.status  == Status.SUCCESS){
       success(result); 
     }

@@ -2,8 +2,10 @@ import LoginReducer from '../reducer/LoginReducer';
 import SignUpReducer from '../reducer/SignUpReducer';
 import NewArrivalsReducer from '../reducer/NewArrivalsReducer'
 import ShoppingCartReducer from '../reducer/ShoppingCartReducer';
+import ReviewReducer from '../reducer/ReviewReducer';
 import AddressReducer from '../reducer/AddressReducer';
 import BillReducer from './BillReducer';
+import PublisherInfoReducer from '../reducer/PublisherInfoReducer'
 import ArrivalItemReducer from '../reducer/ArrivalItemReducer'
 import {combineReducers} from 'redux';
 
@@ -14,7 +16,9 @@ const RootReducer = combineReducers({
   NewArrivalsReducer,
   ShoppingCartReducer,
   AddressReducer,
-  BillReducer
+  BillReducer,
+  ReviewReducer,
+  PublisherInfoReducer,
 });
 
 export default RootReducer;

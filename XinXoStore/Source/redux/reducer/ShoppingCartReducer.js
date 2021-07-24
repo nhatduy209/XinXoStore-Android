@@ -28,8 +28,7 @@ const ShoppingCartReducer=(state = shoppingCartState,action)=>{
               }
             break;
         case NAME_EPICS.SHOPPING_CART_EPICS.ADD_EPICS_SUCCESS:
-          console.log("state",state.items.data);
-            state = {
+          state = {
                 ...state,
                 items: {
                   status: Status.SUCCESS,

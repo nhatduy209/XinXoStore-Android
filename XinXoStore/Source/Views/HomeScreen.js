@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import NewArrivalItem from './homeScreenFlatlist/HomeScreenArrivalsItems.js'
 import { getListNewArrivals } from '../redux/action/GetNewArrivalsAction/GetNewArrivalsAction'
+import { getListReviews } from '../redux/action/ReviewAction/ReviewAction.js';
+
 
 export class HomeScreen extends React.Component {
   constructor(props) {
@@ -21,16 +23,16 @@ export class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log("componentDidMount============");
-
+    // console.log('day ne',this.props);
     // var  a = new TestAPI();
     // a.myPromise().then(res => this.setState({imgUrl : res})).catch(err => console.log(err));
     this.props.getListNewArrivals();
+    this.props.getListReviews();
   }
 
   renderNewArrivalsItem = ({ item }) => {
     return (
-      <NewArrivalItem item={item = {navigate:this.props.navigation,...item}} />
+      <NewArrivalItem item={item} navigation={this.props.navigation} />
     )
   }
 
@@ -39,8 +41,8 @@ export class HomeScreen extends React.Component {
   };
 
   handleShowAll = () => {
-    // console.log('day ne' + this.props);
-            this.props.navigation.navigate('NewArrivalsScreen');
+    
+    this.props.navigation.navigate('NewArrivalsScreen');
   }
   
 
@@ -139,7 +141,7 @@ function mapStateToProps(state) {
     newArrivalsItems: state.NewArrivalsReducer.items,
   };
 }
-export default connect(mapStateToProps, { getListNewArrivals })(HomeScreen);
+export default connect(mapStateToProps, { getListNewArrivals,getListReviews})(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {

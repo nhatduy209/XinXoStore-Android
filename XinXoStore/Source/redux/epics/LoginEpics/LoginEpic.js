@@ -12,7 +12,7 @@ const resolver = (action) => {
     const loginBusiness = new LoginBusiness();
     const editProfileBusiness = new EditProfileBusiness();
     return new Promise((resolve, reject) => {
-        console.log('UserEPIC----------', action);
+        console.log('UserEPIC ----------------------------', action);
         switch (action.type) {
             case NAME_ACTIONS.LOGIN_SCREEN.LOGIN_SCREEN:
                 loginBusiness.verifyLogin(action.data, success => {
@@ -33,7 +33,7 @@ const resolver = (action) => {
                     });
                 }, failed => {
                     messageError = failed;
-                    reject(new Error(NAME_ACTIONS.EDIT_PROFILE.EDIT_PROFILE_FAIL));
+                    reject(new Error(NAME_ACTIONS.LOGIN_SCREEN.EDIT_PROFILE_FAIL));
                 })
                 break;
             case NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_ACTIONS:

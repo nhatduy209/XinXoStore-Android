@@ -10,7 +10,6 @@ let messageError={};
 const resolver=(action)=>{
     const signUpBusiness = new SignUpBusiness();
     return new Promise((resolve,reject)=>{
-        console.log('SIGNUP EPIC -----',action.type,NAME_ACTIONS.SIGNUP_SCREEN.SIGNUP_SCREEN);
         switch(action.type){
             case NAME_ACTIONS.SIGNUP_SCREEN.SIGNUP_SCREEN:
                 signUpBusiness.signUp(action.data,success=>{

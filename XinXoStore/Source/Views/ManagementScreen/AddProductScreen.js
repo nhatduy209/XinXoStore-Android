@@ -30,6 +30,8 @@ class AddScreen extends React.Component {
             ownerShop: this.props.userInfo.user.Username,
             PathImageDevice: "",
             Describe: "",
+            Category: "",
+            Demension:"",
           };
     }
     componentDidMount() {
@@ -55,13 +57,14 @@ class AddScreen extends React.Component {
         if(this.state.PathImageDevice.length > 0 ){
           imagePath = FilePath.PRODUCT_IMAGE_STORAGE + '/' + this.state.img;
         }
-        if(this.state.Name != "" && this.state.prices != "" && this.state.img != "") {
-            this.props.addProduct(this.state.Name,imagePath,this.state.prices,this.state.ownerId,this.state.ownerShop,this.state.PathImageDevice);
+        if(this.state.Name != "" && this.state.prices != ""){
+        // if(this.state.Name != "" && this.state.prices != "" && this.state.img != "" && this.state.Demension != "" && this.state.Category != "" && this.state.Describe != "") {
+            this.props.addProduct(this.state.Name,imagePath,this.state.prices,this.state.ownerId,this.state.ownerShop,this.state.PathImageDevice,this.state.Demension,this.state.Category,this.state.Describe);
             this.props.getListNewArrivals();
             const changed = {changed:true};
             Alert.alert(
-                "Alert Title",
-                "My Alert Msg",
+                "Add Product",
+                "",
                 [
                   { text: "OK", onPress: () =>  this.props.navigation.navigate('ManagementScreen', changed)}
                 ]
@@ -108,30 +111,46 @@ class AddScreen extends React.Component {
                     <View>
                         
                             <View style={styles.infoBox}>
-                                <Text style={{marginTop:10,marginHorizontal:20,fontSize:20,fontWeight:'bold'}}>Name</Text>
+                                {/* <Text style={styles.detailTitle}>Name</Text> */}
                                 <View style={styles.detailInfo}>
-                                    <TextInput onChangeText={value=> this.setState({Name: value})} style={{fontSize:18}} placeholder={'Type Name here'}></TextInput>
+                                    <TextInput onChangeText={value=> this.setState({Name: value})} style={{fontSize:16}} placeholder={'Name'}></TextInput>
                                 </View>
                             </View>
                         
                             <View style={styles.infoBox}>
-                                <Text style={{marginTop:10,marginHorizontal:20,fontSize:20,fontWeight:'bold'}}>Price</Text>
+                                {/* <Text style={styles.detailTitle}>Price</Text> */}
                                 <View style={styles.detailInfo}>
-                                    <TextInput onChangeText={value=> this.setState({prices: value})} style={{fontSize:18}} placeholder={'Type price here'}></TextInput>
+                                    <TextInput onChangeText={value=> this.setState({prices: value})} style={{fontSize:16}} placeholder={'Price'}></TextInput>
                                 </View>
                             </View>
-                       
+                            
                             <View style={styles.infoBox}>
-                                <Text style={{marginTop:10,marginHorizontal:20,fontSize:20,fontWeight:'bold'}}>Describe</Text>
+                                {/* <Text style={styles.detailTitle}>Category</Text> */}
                                 <View style={styles.detailInfo}>
-                                    <TextInput onChangeText={value=> this.setState({Describe: value})} style={{fontSize:18}} placeholder={'Type Describe here'}></TextInput>
+                                    <TextInput onChangeText={value=> this.setState({Category: value})} style={{fontSize:16}} placeholder={'Category'}></TextInput>
                                 </View>
                             </View>
+
+                            <View style={styles.infoBox}>
+                                {/* <Text style={styles.detailTitle}>Demension</Text> */}
+                                <View style={styles.detailInfo}>
+                                    <TextInput onChangeText={value=> this.setState({Demension: value})} style={{fontSize:16}} placeholder={'Demension'}></TextInput>
+                                </View>
+                            </View>
+
+                            <View style={styles.infoBox}>
+                                {/* <Text style={styles.detailTitle}>Describe</Text> */}
+                                <View style={styles.detailInfo}>
+                                    <TextInput onChangeText={value=> this.setState({Describe: value})} style={{fontSize:16}} placeholder={'Describe'}></TextInput>
+                                </View>
+                            </View>
+
+                            
                         <View style={{backgroundColor: '#fff',paddingHorizontal:30,paddingBottom:20,alignItems: 'center'}}>
                             <TouchableOpacity onPress={this.handleSave}>
                             {/* '#00a04f' */}
-                                <View style={{backgroundColor: '#ddd',padding:15,borderRadius:10,width:Dimensions.get('window').width-140}}>
-                                    <Text style={{marginHorizontal:20,fontSize:20,fontWeight:'bold',textAlign: 'center'}}>Add</Text>
+                                <View style={{backgroundColor: '#000',padding:10,marginTop:20,width:Dimensions.get('window').width-140}}>
+                                    <Text style={{marginHorizontal:20,fontSize:18,fontWeight:'bold',textAlign: 'center',color:'#fff'}}>Add</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -158,6 +177,14 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: '#eee',
         marginHorizontal: 25,
+        paddingHorizontal:10,
+        fontSize:18
+    },
+    detailTitle: {
+        marginTop:10,
+        marginHorizontal:20,
+        fontSize:18,
+        paddingVertical:10
     },
     cameraIcon: {
         alignSelf: 'center',
@@ -182,6 +209,7 @@ const styles = StyleSheet.create({
     infoBox:{
         backgroundColor: '#fff',
         padding:10,
+        paddingTop:20
         // marginBottom:10,
         // elevation:6,
     }

@@ -9,7 +9,6 @@ const signUpState = {
 };
 
 const SignUpReducer = (state = signUpState, action) => {
-  console.log('REDUCER -----' , action);
   switch (action.type) {
     case NAME_EPICS.SIGNUP_EPICS_SCREEN.SIGNUP_EPICS_SUCCESS:
       state = {

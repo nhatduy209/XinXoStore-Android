@@ -13,19 +13,14 @@ export default class NewArrivalItem extends React.Component{
   }
 
   componentDidMount(){
-    // console.log('item nè');
-    // console.log(this.props.item);
     var testApi = new TestAPI()
     testApi.myPromise(this.props.item.img).then(res => this.setState({url : res })).catch(err => console.log(err));
   }
   handleDetail = () => {
-    const data = {data:this.props.item,
-    url: this.state.url};
-    // console.log(this.props)
-    this.props.item.navigate.navigate('DetailItemScreen',data);
+    const data = {data:this.props.item};
+    this.props.navigation.push('DetailItemScreen',data);
   }
   render(){
-    // console.log(this.state.url);
         return(
           <View style = {styles.container}>
             <View>

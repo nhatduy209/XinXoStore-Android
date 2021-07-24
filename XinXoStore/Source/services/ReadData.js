@@ -19,7 +19,6 @@ export default class ReadService {
       .once('value', function (snapshot) {
         snapshot.forEach(function (child) {
           var myJson = child.toJSON();
-          // console.log(myJson.Username + ' ' + myJson.Password);
           if (myJson.Username === username && myJson.Password === password) {
             canLogin = true;
             key = child.key ;
@@ -46,14 +45,12 @@ export default class ReadService {
   }
   signUpApi= async(email,username,password,age)=>{
     let canSignUp=true;
-    console.log("SERVICE ",email,username,password,age);
     await firebase
       .database()
       .ref('Account/')
       .once('value',function (snapshot){
         snapshot.forEach(function (child){
           var myJson=child.toJSON();
-          console.log(myJson.Email);
           if(myJson.Email===email ){
               canSignUp=false;
           }
@@ -87,7 +84,6 @@ export default class ReadService {
           //đặt ddieuf kiện
           var myJson = child.toJSON();
           if(myJson.Name === Name) {
-            console.log('MY JSON -----------' , myJson);
             key = child.key;
             item= myJson;
             listItem.push({key,item});
@@ -95,7 +91,6 @@ export default class ReadService {
         });
       });
     if (listItem.length > 0 ) {
-      console.log('listItem-----------------',listItem);
       return {
         data : {listItem},
         status : Status.SUCCESS
@@ -124,11 +119,40 @@ export default class ReadService {
         });
       });
     if (listItem.length > 0 ) {
-      // console.log('listItem-----------------',listItem);
       listItem =  _.sortBy(listItem,'prices')
       if(!sortUp){
         listItem.reverse();
       }
+      return {
+        data : {
+          listItem
+        },
+        status : Status.SUCCESS
+      };
+    } else {
+      return {
+        data : {},
+        status : Status.FAIL,
+      }
+    }
+  }
+  getListReviewsAPI = async () => {
+    let key = "";
+    let item = {};
+    var listItem = [];
+    await firebase
+      .database()
+      .ref('Reviews/')
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+          //đặt ddieuf kiện
+          var myJson = child.toJSON();
+          key = child.key;
+          item= myJson;
+          listItem.push({key: key,...item});
+        });
+      });
+    if (listItem.length > 0 ) {
       return {
         data : {
           listItem
@@ -273,6 +297,26 @@ export default class ReadService {
     return{
       status:Status.SUCCESS,
       data:listID
+    }
+  }
+
+  getPublisherInfo =async (ownerId) => {
+    var publisher = {}
+    await firebase
+    .database()
+    .ref('Account/')
+    .once('value', function (snapshot) {
+      snapshot.forEach(function (child) {
+        if(child.key === ownerId ){
+          var myJson = child.toJSON();
+            publisher = myJson;
+        }
+      });
+    });
+
+    return {
+      data : publisher,
+      status : Status.SUCCESS
     }
   }
 }

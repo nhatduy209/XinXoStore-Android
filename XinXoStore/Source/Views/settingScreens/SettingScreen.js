@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DeviceInfo from 'react-native-device-info';
-import { Logout } from '../redux/action/LoginAction/LoginAction';
+import { Logout } from '../../redux/action/LoginAction/LoginAction';
 import { connect } from 'react-redux';
 
 class SettingScreens extends React.Component {

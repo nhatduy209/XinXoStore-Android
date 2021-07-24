@@ -22,9 +22,10 @@ export  class RenderNewArrivalsItem extends React.Component {
     this.props.AddCart(this.props.user.data.key,this.props.item.key)
   }
   handleDetail = () => {
-    const data = {data:this.props.item,
-    url: this.state.url};
-    this.props.item.navigate.navigate('DetailItemScreen',data);
+    const data = {data:this.props.item};
+    // console.log('props nè');
+    // console.log(this.props.item);
+    this.props.navigation.push('DetailItemScreen',data);
   }
   componentDidUpdate(preProps){
     if(preProps.numberCart.status!=this.props.numberCart.status){
