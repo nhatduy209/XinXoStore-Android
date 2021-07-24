@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View,ScrollView } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import StarRating from 'react-native-star-rating';
 import _ from 'underscore';
 import FeedbackComponent from './DetailItemScreen/RenderFeedback';
@@ -35,38 +35,60 @@ export default class CommentStoreScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      rating : 0 ,
-      listReview : this.props.route.params,
+      rating: 0,
+      listReview: this.props.route.params,
     }
   }
 
-  chooseRating = (item) =>{
-    console.log("ID--------------" , item.id )
-    this.setState({rating : item.id})
+  chooseRating = (item) => {
+    console.log("ID--------------", item.id)
+    this.setState({ rating: item.id })
 
-    if(item.id !== 0 ){
-      var filterReviews = _.filter(this.props.route.params,function(items){
-        return items.Rating ==  item.id;
+    if (item.id !== 0) {
+      var filterReviews = _.filter(this.props.route.params, function (items) {
+        return items.Rating == item.id;
       })
-     this.setState({listReview : filterReviews})
+      this.setState({ listReview: filterReviews })
     }
-    else{
-      this.setState({listReview : this.props.route.params})
+    else {
+      this.setState({ listReview: this.props.route.params })
     }
   }
 
   renderItem = ({ item }) => {
+
+    let length = 0;
+    for (let i = 0; i < this.props.route.params.length; i++) {
+      if (this.props.route.params[i].Rating === item.id) {
+        length = length + 1;
+      }
+    }
+
+    if (item.id === 0) {
+      length = this.props.route.params.length;
+    }
+
+    console.log('lengthReviews', length)
+
     return (
-      <TouchableOpacity onPress = { this.chooseRating.bind(this, item)}>
+      <TouchableOpacity onPress={this.chooseRating.bind(this, item)}>
         <View style={styles.renderItemStyle}>
-          <Text>({item.title}) {' '}</Text>
-          <StarRating
-            fullStarColor='yellow'
-            rating={item.id}
-            maxStars={item.id}
-            starSize={15}
-          />
+          <View style={{ flexDirection: 'row' }}
+          >
+            <Text>{item.title} {' '}</Text>
+            <StarRating
+              fullStarColor='yellow'
+              rating={item.id}
+              maxStars={item.id}
+              starSize={15}
+            />
+          </View>
+
+          <View>
+            <Text> ({length}) </Text>
+          </View>
         </View>
+
       </TouchableOpacity>
 
     );
@@ -93,14 +115,15 @@ export default class CommentStoreScreen extends React.Component {
         </View>
         <ScrollView>
           {
-            this.state.listReview.map((element,index)=>{
-              var item = {Content: element.Content,
-                  UserName: element.UserName,
-                  Rating:element.Rating,
-                  Avatar:element.Img,
+            this.state.listReview.map((element, index) => {
+              var item = {
+                Content: element.Content,
+                UserName: element.UserName,
+                Rating: element.Rating,
+                Avatar: element.Img,
               }
-          return (<FeedbackComponent key={index} item={item}/>);
-          })
+              return (<FeedbackComponent key={index} item={item} />);
+            })
           }
         </ScrollView>
       </View>
@@ -118,7 +141,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 7,
     elevation: 2,
-    flexDirection: 'row',
     alignItems: 'center'
   }
 })

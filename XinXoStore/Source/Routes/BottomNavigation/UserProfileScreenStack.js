@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import EditProfileScreen from '../../Views/EditProfileScreen';
 import MessageScreen from '../../Views/userMessage/MessageScreen'
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import ItemSoldScreen from '../../Views/itemSold/ItemSoldScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,6 +28,15 @@ export default class UserProfileStack extends React.Component {
           title : 'Message',
           tabBarIcon: ({ focused, horizontal, color }) => {
             return <Icon name={'comment'} size={22} color={color} />;
+          },
+          tabBarBadge : 0
+        }} 
+        />
+         <Tab.Screen name="ItemScreen" component={ItemSoldScreen}
+        options = {{
+          title : 'Item',
+          tabBarIcon: ({ focused, horizontal, color }) => {
+            return <Icon name={'shopping-basket'} size={22} color={color} />;
           },
           tabBarBadge : 0
         }} 
