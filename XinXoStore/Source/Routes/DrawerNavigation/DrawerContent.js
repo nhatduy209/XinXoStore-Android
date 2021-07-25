@@ -30,9 +30,9 @@ export class DrawerContent extends React.Component {
   }
   // handle navigate management 
   onManagementPress = () => {
-    let changed = {changed: false};
-    this.props.navigation.push('ManagementScreen', changed);
-    this.props.navigation.navigate('ManagementScreen', changed);
+    // let changed = {changed: false};
+    // this.props.navigation.push('ManagementScreen');
+    this.props.navigation.navigate('ItemManagementScreenStack');
   }
   onShoppingCartPress=()=>{
     this.props.navigation.navigate('ShoppingCart');

@@ -1,11 +1,13 @@
 import React from 'react'
-import { View, Dimensions, StyleSheet, Image, Text ,TouchableOpacity, ScrollView,FlatList} from 'react-native'
+import { View, Dimensions, StyleSheet, Image, Text ,
+    TouchableOpacity, ScrollView,FlatList,TextInput,KeyboardAvoidingView} from 'react-native'
 import TestAPI from '../TestAPI';
 import { SliderBox } from "react-native-image-slider-box";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import NewArrivalItem from '../homeScreenFlatlist/HomeScreenArrivalsItems.js'
-import StarRating from './StarRating';
+// import StarRating from './StarRating';
+import StarRating from 'react-native-star-rating';
 import { getListReviews } from '../../redux/action/ReviewAction/ReviewAction.js';
 import { getListNewArrivals } from '../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction'
 import {getPublisherInfo} from '../../redux/action/GetPublisherInfoAction/GetPublisherInfoAction'
@@ -29,13 +31,7 @@ class DetailItem extends React.Component {
           };
     }
     componentDidMount() {
-        const listReview= this.props.listReview.data.listItem.filter((element)=>{return element.ShopId === this.props.route.params.data.ownerId});
-        this.setState({listReview: listReview});
-        const product = this.props.route.params.data;
-        const listProduct = this.props.newArrivalsItems.data.listItem.filter((element) => {
-            return element.key != product.key;
-        })
-        this.setState({listItem: listProduct});
+        this.props.getListReviews(this.props.route.params.data.ownerId)
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
     }
@@ -47,25 +43,20 @@ class DetailItem extends React.Component {
     componentDidUpdate(prevProps) {
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
-
-        // if( this.props.publisher.status !== prevProps.publisher.status){
-            
-            
-        // }
     }
-    ShowAllReview = (listReview) => {
-        this.props.navigation.navigate('AllReviews',listReview);
+    ShowAllReview = () => {
+        this.props.navigation.navigate('AllReviews');
     }
     showReview =() => {
         return (
             <View>
                 <TouchableOpacity style={{flexDirection: 'row',alignSelf: 'center'}}
-                onPress={()=>this.ShowAllReview(this.state.listReview)}>
+                onPress={()=>this.ShowAllReview()}>
                     <Text style={{paddingVertical:10,fontSize:16,color:'#b00'}}>
                             Show all reviews
                     </Text>
                     <Icon
-                    size={14}
+                    size={13}
                     name="chevron-right"
                     style={{paddingVertical:15,paddingHorizontal:5,color:'#b00'}}
                     >
@@ -77,10 +68,10 @@ class DetailItem extends React.Component {
     soldHandle= ()=>{
         return(
             <View style={{backgroundColor: '#ccc',opacity:0.6,justifyContent: 'center',height:350,width:Dimensions.get("window").width}}>
-                                <View style={{borderWidth:10,borderColor:'#d00',borderRadius:100,width:200,height:200,alignSelf: 'center',alignContent: 'center',paddingVertical:50,transform:[{rotate:'-25deg'}]}}>
-                                    <Text style={{fontSize:56,fontWeight:'bold',textAlign: 'center',color:'#d00'}}>SOLD</Text>
-                                </View>
-                            </View>
+                <View style={{borderWidth:10,borderColor:'#d00',borderRadius:100,width:200,height:200,alignSelf: 'center',alignContent: 'center',paddingVertical:50,transform:[{rotate:'-25deg'}]}}>
+                    <Text style={{fontSize:56,fontWeight:'bold',textAlign: 'center',color:'#d00'}}>SOLD</Text>
+                </View>
+            </View>
         )
     }
     itemSeparator = () => {
@@ -98,11 +89,12 @@ class DetailItem extends React.Component {
 
     goToPublisherScreen = () => {
         this.props.getPublisherInfo(this.props.route.params.data.ownerId);
-        this.props.navigation.navigate('PublisherProfileScreen',this.state.listReview);
+        this.props.navigation.navigate('PublisherProfileScreen',this.props.route.params.data.ownerId);
     }
     render(){
+        
         return(
-            <View style={{backgroundColor: '#fff'}}>
+            <View style={{backgroundColor: '#eee'}}>
                 <View style={{position: 'absolute',zIndex:10,justifyContent: 'center'}}>
                     <TouchableOpacity style={styles.navigationIcon} onPress={() =>this.props.navigation.toggleDrawer()}>
                             <Icon
@@ -125,7 +117,7 @@ class DetailItem extends React.Component {
                     </TouchableOpacity> 
                 </View>
                 
-                <ScrollView>
+                <ScrollView >
                     {/* item images */}
                     <View style={{height:320}}>
                         <Image style={{height:350,resizeMode: 'cover'}} source ={{uri : this.state.url}} />
@@ -152,7 +144,14 @@ class DetailItem extends React.Component {
                                         {this.props.route.params.data.prices}VNĐ
                                     </Text>
                                     <View>
-                                        <StarRating item={this.props.route.params.data}/>
+                                        {/* <StarRating item={this.props.route.params.data}/> */}
+                                        <StarRating
+                                        fullStarColor='yellow'
+                                        rating={this.props.route.params.data.Rating}
+                                        maxStars={5}
+                                        starSize={20}
+                                        starStyle={{paddingHorizontal:3}}
+                                        />
                                     </View>
                                         
                                 </View>
@@ -185,7 +184,9 @@ class DetailItem extends React.Component {
                                 {/* flatlist item  */}
                                 <View style={{paddingHorizontal:10}}>
                                     <FlatList
-                                    data={this.state.listItem}
+                                    data={this.props.newArrivalsItems.data.listItem.filter((element) => {
+                                        return element.key != this.props.route.params.data.key;
+                                    })}
                                     renderItem={({item = {navigate:this.props.navigate,...item}}) =>
                                         <NewArrivalItem item={item} navigation={this.props.navigation}/>}
                                     keyExtractor={item => item.Name}
@@ -221,19 +222,62 @@ class DetailItem extends React.Component {
                             </View>
                             <View>
                             {
-                                this.state.listReview.filter((element,index)=>{return index<2}).map((element,index) => {
+                                this.props.listReview.data.listItem ? this.props.listReview.data.listItem.filter((element,index)=>{return index<2}).map((element,index) => {
                                     var item = {Content: element.Content,
                                             UserName: element.UserName,
                                             Rating:element.Rating,
                                             Avatar:element.Img,
                                         }
                                     return (<FeedbackComponent key={index} item={item}/>);
-                                })
+                                }) : <View/>
                             }
                             </View>
                             <View style={{borderTopWidth:1,borderTopColor:'#eee'}}>
                                 {this.showReview()}
                             </View>
+                        </View>
+                        
+
+                        <View style={{elevation:6,marginVertical:10}}>
+                            <View style={{flexDirection: 'row'}}>
+                            <Text style={[styles.textTitles,{width:'90%',padding:10}]}>Type Review</Text>
+                            <TouchableOpacity>
+                            <Icon
+                                size={20}
+                                name="paper-plane"
+                                />
+                            </TouchableOpacity>
+                            
+                            </View>
+                            <TextInput placeholder="type review" style={{borderColor:'#ccc',borderBottomWidth:0.7,width:'90%',margin:10}}></TextInput>
+                            <View style={{height:110,backgroundColor:'#eee',flexDirection: 'row'}}>
+                                {
+                                    this.state.images.map((element,index)=>{
+                                        var key = index;
+                                        return(
+                                            <View key={key}>
+                                                <Image key={key} style={{height:70,width: 70,marginVertical:20,marginHorizontal:10}} source={element}/>
+                                                <Icon
+                                                size={10}
+                                                name='minus'
+                                                style={{padding:5,backgroundColor:'rgba(255,255,255,1)',borderRadius:20, position: 'absolute',right:0,marginTop:15}}
+                                                />
+                                            </View>
+                                        
+                                    )})
+                                }
+                                <TouchableOpacity style={{padding:20,justifyContent: 'center'}}>
+                                <Icon
+                                size={30}
+                                name='camera'
+                                style={{alignSelf: 'center',opacity:0.7}}/>
+                                <Text>Thêm ảnh</Text>
+                                </TouchableOpacity>
+                                
+                                
+                            </View>
+                            
+                            
                         </View>
                     </View>
                 </ScrollView>
@@ -243,7 +287,6 @@ class DetailItem extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    // console.log(state.LoginReducer.user.data.user);
     return {
         newArrivalsItems: state.NewArrivalsReducer.items,
         userInfo : state.LoginReducer.user.data,
@@ -264,7 +307,7 @@ const styles = StyleSheet.create({
     textTitles : {
         fontSize:21,
         fontWeight: '700',
-        width:'70%'
+        width:'60%'
     },
     addToCardButton:{
         paddingHorizontal:10,

@@ -24,7 +24,7 @@ export const deleteProduct = ( imageNamePath,key ) => {
     }
 }
 
-export const addProduct = (Name,img,price,ownerId,ownerShop,PathImageDevice,Demension,Category,Describe) => {
+export const addProduct = (Name,img,price,ownerId,ownerShop,PathImageDevice,Demension,Category,Description) => {
   return {
       type : NAME_ACTIONS.ADD_PRODUCT.ADD_PRODUCT_ACTIONS,
       data : {
@@ -36,7 +36,7 @@ export const addProduct = (Name,img,price,ownerId,ownerShop,PathImageDevice,Deme
         PathImageDevice: PathImageDevice,
         Demension: Demension,
         Category: Category,
-        Describe: Describe,
+        Description: Description,
       }
     }
 }

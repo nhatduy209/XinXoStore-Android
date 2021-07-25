@@ -26,7 +26,7 @@ export default class  PushData{
         var date = new Date();
         return date.getMonth() +'/'+date.getDate()+'/'+date.getYear();
     }
-    addProductApi=  async(Name,img,price,ownerId,ownerShop,PathImageDevice,Demension,Category,Describe)=>{
+    addProductApi=  async(Name,img,price,ownerId,ownerShop,PathImageDevice,Demension,Category,Description)=>{
         var  fileImagePath = img;
         uploadImageToStorage(PathImageDevice , fileImagePath);
         await firebase
@@ -45,7 +45,7 @@ export default class  PushData{
             sold: false,
             Demension:Demension,
             Category:Category,
-            Description: Describe,
+            Description: Description,
         })
         .then(()=>console.log('Data added'));
         return {

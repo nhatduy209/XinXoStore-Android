@@ -1,12 +1,11 @@
 import React from 'react';
 import { Text, View, Dimensions,StyleSheet,TouchableOpacity,Image,ScrollView } from 'react-native';
 import TestAPI from '../TestAPI';
-import UrlComponent from './UrlRender';
-import StarRating from './StarRating';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FeedbackComponent from './RenderFeedback';
+import { connect } from 'react-redux';
 
-export default class AllReviews extends React.Component {
+class AllReviews extends React.Component {
     constructor(props) {
         super(props);
         this.state ={
@@ -42,7 +41,7 @@ export default class AllReviews extends React.Component {
                     <Text style={{alignSelf: 'center', fontSize:32,fontWeight:'bold'}}>All Review</Text>
                 </View>
                 <ScrollView style={{backgroundColor:'#fff'}}>
-                    {this.props.route.params.map((element,index)=>{
+                    {this.props.listReview.map((element,index)=>{
                             var item = {Content: element.Content,
                                 UserName: element.UserName,
                                 Rating:element.Rating,
@@ -56,6 +55,14 @@ export default class AllReviews extends React.Component {
         )
     }
 }
+
+function mapStateToProps(state) {
+    // console.log(state.NewArrivalsReducer.items.data.listItem);
+    return {
+        listReview: state.ReviewReducer.items.data.listItem,
+    };
+  }
+export default connect(mapStateToProps, { })(AllReviews);
 const styles = StyleSheet.create({
     navigationIcon: {
         left:20,
