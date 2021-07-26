@@ -5,6 +5,7 @@ import EditProfileScreen from '../../Views/EditProfileScreen';
 import MessageScreen from '../../Views/userMessage/MessageScreen'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ItemSoldScreen from '../../Views/itemSold/ItemSoldScreen';
+import ItemSoldStack from '../ItemSoldStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,7 +33,7 @@ export default class UserProfileStack extends React.Component {
           tabBarBadge : 0
         }} 
         />
-         <Tab.Screen name="ItemScreen" component={ItemSoldScreen}
+         <Tab.Screen name="ItemScreen" component={ItemSoldStack}
         options = {{
           title : 'Item',
           tabBarIcon: ({ focused, horizontal, color }) => {

@@ -335,6 +335,7 @@ export default class ReadService {
   }
   getItemForUser = async (idOwner) => {
     let listItem = [];
+    let listItemObject = [];
     await firebase
       .database()
       .ref('NewArrivals/')
@@ -362,6 +363,7 @@ export default class ReadService {
             myObject.prices = myJson.prices ;                
             myObject.sold = myJson.sold ;  
             const toArray = _.values(myObject) ;
+           listItemObject.push(myObject);
             listItem.push(toArray);
           }
         });
@@ -376,7 +378,7 @@ export default class ReadService {
       });
 
       return {
-        data : listItem,
+        data : {listItem ,listItemObject} ,
         status : Status.SUCCESS,
     };
   }

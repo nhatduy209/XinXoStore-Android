@@ -4,26 +4,38 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { DataTable } from 'react-native-paper';
 import { getItemForUsers } from '../../redux/action/GetItemsForUser/GetItemsForUserAction'
 import TestAPI from '../TestAPI';
+import { connect } from 'react-redux';
+import _ from 'underscore';
+import RenderItemsSelling from './RenderItemSelling'
+
 const DATA_HEADER = [
   'Image', 'Item', 'Category', 'Date', 'Customer', 'Prices', 'Confirm deliver'
 ]
-import { connect } from 'react-redux';
 class ItemSoldScreen extends React.Component {
-
+  constructor(props) {
+    super(props);
+  }
 
   componentDidMount() {
     this.props.getItemForUsers(this.props.user.data.key);
   }
 
-
   renderHeaderText = ({ item }) => {
     return (
-      <View>
-        <Text style={{ fontSize: 18 }}>
-          {item.title}
-        </Text>
-      </View>
+      <Text style={{ fontSize: 18 }}>
+        {item.title}
+      </Text>
+
     );
+  }
+
+  renderItemSelling = ({ item }) => {
+    if (!item.sold) {
+      return (
+        <RenderItemsSelling item={item} />
+      )
+    }
+
   }
 
   itemSeparator = () => {
@@ -43,14 +55,20 @@ class ItemSoldScreen extends React.Component {
 
 
   confirmDeliver = (item) => {
-      console.log("LOG--------------" , item)
+    console.log("LOG-------------", item)
+    this.setState({ iconDeliver: 'check-circle' })
+    this.setState({ colorDeliver: 'green' })
   }
 
+  navigateAddProduct = () => {
+    this.props.navigation.navigate('AddScreen')
+  }
 
   render() {
-    if (this.props.items.data.length === undefined) {
+    if (_.isEmpty(this.props.items.data)) {
       return null;
-    } else {
+    }
+    else {
       return (
         <View style={styles.container}>
 
@@ -60,7 +78,7 @@ class ItemSoldScreen extends React.Component {
               Recently Added
             </Text>
             <View style={styles.plus}>
-              <TouchableOpacity style={{ width: 100, alignItems: 'center' }}>
+              <TouchableOpacity onPress={this.navigateAddProduct} style={{ width: 100, alignItems: 'center' }}>
                 <Icon
                   size={24}
                   name="plus"
@@ -69,8 +87,17 @@ class ItemSoldScreen extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{ height: 250 }}></View>
 
+          <View style={styles.itemSelling}>
+            <FlatList
+              horizontal
+              data={this.props.items.data.listItemObject}
+              keyExtractor={item => item.Name}
+              renderItem={this.renderItemSelling}
+              ItemSeparatorComponent={this.itemSeparator}
+            >
+            </FlatList>
+          </View>
           {/* ITEM SOLD */}
           <View>
             <Text style={styles.headerText}>
@@ -96,33 +123,27 @@ class ItemSoldScreen extends React.Component {
               </DataTable.Header>
               <ScrollView>
                 {
-                  this.props.items.data.map(item => {
-                    console.log(item)
-                    return (
-                      <DataTable.Row style={{ height: 110 }}>
-                        <DataTable.Cell>
-                          <ImageItem img={item[0]} />
-                        </DataTable.Cell>
-                        <DataTable.Cell>{item[1]}</DataTable.Cell>
-                        <DataTable.Cell>{item[2]}</DataTable.Cell>
-                        <DataTable.Cell>{item[3]}</DataTable.Cell>
-                        <DataTable.Cell>{item[4]}</DataTable.Cell>
-                        <DataTable.Cell>{item[5]}</DataTable.Cell>
-                        <DataTable.Cell>
-                          <View>
-                            <TouchableOpacity onPress = {this.confirmDeliver.bind(this, item)}>
-                              <Icon
-                                size={24}
-                                name="times-circle"
-                                color = 'red'
-                              >
-                              </Icon>
-                            </TouchableOpacity>
-                          </View>
-                        </DataTable.Cell>
+                  this.props.items.data.listItem.map(item => {
 
-                      </DataTable.Row>
-                    )
+                    if (item[6]) {
+                      return (
+                        <DataTable.Row style={{ height: 110 }}>
+                          <DataTable.Cell>
+                            <ImageItem img={item[0]} />
+                          </DataTable.Cell>
+                          <DataTable.Cell>{item[1]}</DataTable.Cell>
+                          <DataTable.Cell>{item[2]}</DataTable.Cell>
+                          <DataTable.Cell>{item[3]}</DataTable.Cell>
+                          <DataTable.Cell>{item[4]}</DataTable.Cell>
+                          <DataTable.Cell>{item[5]}</DataTable.Cell>
+                          <DataTable.Cell>
+                            <CheckDeliverButton item={item} />
+                          </DataTable.Cell>
+
+                        </DataTable.Row>
+                      )
+                    }
+
                   })
                 }
               </ScrollView>
@@ -137,6 +158,40 @@ class ItemSoldScreen extends React.Component {
     }
   }
 }
+
+class CheckDeliverButton extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      iconDeliver: 'times-circle',
+      colorDeliver: 'red'
+    }
+  }
+  confirmDeliver = (item) => {
+    console.log("LOG--------------", item)
+    this.setState({ iconDeliver: 'check-circle' })
+    this.setState({ colorDeliver: 'green' })
+  }
+
+
+  render() {
+    return (
+      <View>
+        <TouchableOpacity onPress={this.confirmDeliver.bind(this, this.props.item)}>
+          <Icon
+            size={24}
+            name={this.state.iconDeliver}
+            color={this.state.colorDeliver}
+          >
+          </Icon>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
+
+
 
 class ImageItem extends React.Component {
 
@@ -193,5 +248,8 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     padding: 5,
     borderRadius: 10,
+  },
+  itemSelling: {
+    marginVertical: 20,
   }
 })
