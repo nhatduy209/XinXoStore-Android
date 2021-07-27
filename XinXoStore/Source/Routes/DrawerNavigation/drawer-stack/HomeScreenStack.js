@@ -195,64 +195,6 @@ class HomeScreenStack extends React.Component {
         >
         </Stack.Screen>
         <Stack.Screen
-          name="AddressScreen"
-          component={AddressScreen}
-          options={{
-            title: ' Address ',
-            headerRight: () => {
-              return (
-                <View style={{ flexDirection: 'row' }}>
-                  <TouchableOpacity>
-                    <Icon
-                      size={25}
-                      name="ellipsis-vertical"
-                      style={{ paddingRight: 15 }}
-                      color="#000"
-                    >
-                    </Icon>
-                  </TouchableOpacity>
-                </View>
-              );
-            },
-            headerStyle: {
-              // backgroundColor: '#',
-              height: 56,
-              elevation: null,
-              backgroundColor: '#FFF'
-            }
-          }}
-        >
-        </Stack.Screen>
-        <Stack.Screen
-          name="ChooseAddressScreen"
-          component={ChooseAddressScreen}
-          options={{
-            title: ' ChooseAddressScreen ',
-            headerRight: () => {
-              return (
-                <View style={{ flexDirection: 'row' }}>
-                  <TouchableOpacity>
-                    <Icon
-                      size={25}
-                      name="ellipsis-vertical"
-                      style={{ paddingRight: 15 }}
-                      color="#000"
-                    >
-                    </Icon>
-                  </TouchableOpacity>
-                </View>
-              );
-            },
-            headerStyle: {
-              // backgroundColor: '#',
-              height: 56,
-              elevation: null,
-              backgroundColor: '#FFF'
-            }
-          }}
-        >
-        </Stack.Screen>
-        <Stack.Screen
           name="ManagementScreen"
           component={ManagementScreen}
           options={{

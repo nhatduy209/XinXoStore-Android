@@ -10,6 +10,8 @@ export class BillScreen extends React.Component{
     }
     componentDidMount(){
         console.log("componentDidMount")
+        console.log(this.props.user)
+        console.log(this.props.user.key)
         this.props.getAll(this.props.user.key);
     }
     renderItem=(items)=>{
@@ -25,16 +27,15 @@ export class BillScreen extends React.Component{
     }
 
     render(){
-        console.log("this.props.bill", this.props.bill.data.length)
         return(
             <View style={styles.container}>
-                {typeof this.props.bill.data.length != "undefined"  && this.props.bill.data.length>0 ?
+                {typeof this.props.bill != "undefined" && this.props.bill.listItem.length >0 ?
                  (
                  <FlatList
                     ListHeaderComponent={
                         <Text style={styles.header}>My Bill</Text>
                     }
-                    data={this.props.bill.data}
+                    data={this.props.bill.listItem}
                     renderItem={this.renderItem}
                     keyExtractor={item => item.key.itemID}
                 >
@@ -51,9 +52,7 @@ export class BillScreen extends React.Component{
                     </View>
                     
                 </View>
-                
             }
-               
             </View>
         );
     }
@@ -61,8 +60,8 @@ export class BillScreen extends React.Component{
 
 function mapStateToProps(state){
     return{
-        user: state.LoginReducer.user,
-        bill: state.BillReducer.items
+        user: state.LoginReducer.user.data,
+        bill: state.BillReducer.items.data
     }
 }
 export default connect (mapStateToProps,{getAll})(BillScreen)

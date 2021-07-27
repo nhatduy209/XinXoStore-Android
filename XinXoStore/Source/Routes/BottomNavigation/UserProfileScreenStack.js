@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import EditProfileScreen from '../../Views/EditProfileScreen';
 import MessageScreen from '../../Views/userMessage/MessageScreen'
+import BillScreen from '../../Views/bill/BillScreen'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Tab = createBottomTabNavigator();
@@ -27,6 +28,15 @@ export default class UserProfileStack extends React.Component {
           title : 'Message',
           tabBarIcon: ({ focused, horizontal, color }) => {
             return <Icon name={'comment'} size={22} color={color} />;
+          },
+          tabBarBadge : 0
+        }} 
+        />
+         <Tab.Screen name="BillScreen" component={BillScreen}
+        options = {{
+          title : 'Bill',
+          tabBarIcon: ({ focused, horizontal, color }) => {
+            return <Icon name={'file-invoice'} size={22} color={color} />;
           },
           tabBarBadge : 0
         }} 

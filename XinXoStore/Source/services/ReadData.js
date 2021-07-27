@@ -274,7 +274,6 @@ export default class ReadService {
     var result= await Promise.all( listItemID.map(async (id)=>{
       await firebase.database().ref('NewArrivals/'+id.itemID).once('value',function(snap){
         obj= {key:id,data:snap.toJSON()};
-        console.log("=============",obj);
       });
       return obj;
     }));
@@ -285,18 +284,24 @@ export default class ReadService {
     }
   }
   getListIDBill=async(idAccount)=>{
-    let listID=[]
+    let listID=[];
+    let noNewReview=0;
     await firebase.database().ref('Bill').once('value',function(snap){
       snap.forEach(child=>{
         if(child.toJSON().UserID==idAccount){
           listID.push({itemID:child.toJSON().ItemID,reviewID:child.toJSON().ReviewID});
-          
+        }
+        if(child.toJSON().ReviewID==0){
+          noNewReview+=1;
         }
       })
     })
     return{
       status:Status.SUCCESS,
-      data:listID
+      data:{
+        listID:listID,
+        noNewReview:noNewReview
+      }
     }
   }
 

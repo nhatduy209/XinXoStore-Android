@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet,Image,Text ,Dimensions} from "react-native";
+import { View, StyleSheet,Image,Text ,Dimensions, TouchableOpacity} from "react-native";
 import TestAPI from '../TestAPI'
 
 export default class RenderBillItem extends React.Component{
@@ -17,37 +17,39 @@ export default class RenderBillItem extends React.Component{
         if(preProps.item.img!=this.props.item.data.img){
             var testApi = new TestAPI()
         testApi.myPromise(this.props.item.data.img).then(res => this.setState({url : res })).catch(err => console.log(err));
+        }
     }
+    handlePress=()=>{
         
     }
     render(){
         return(
-            <View style={styles.container}>
-                    <View style={{flex:3}}>
-                        <Image
-                            style={{ height: 100, width: 100 ,margin:5}}
-                            source={{uri:this.state.url}}>
-                        </Image>
-                    </View>
-                    <View style={styles.content}>
-                        <Text style={styles.name}>
-                            {this.props.item.data.Name}
-                        </Text>
-                        <Text style={{color:"gray"}}>
-                            {this.props.item.data.prices}
-                        </Text>
-                        {this.props.item.key.reviewID!=0 ?
-                        ( 
-                            <View style={styles.review}>
-                                <Text style={{color:"#428af5"}}>Review</Text>
-                            </View>
-                        )
-                        :null
-                        }
-                        
-                    </View>
+            <TouchableOpacity style={styles.container} onPress={this.handlePress}>
+                <View style={{flex:3}}>
+                    <Image
+                        style={{ height: 100, width: 100 ,margin:5}}
+                        source={{uri:this.state.url}}>
+                    </Image>
+                </View>
+                <View style={styles.content}>
+                    <Text style={styles.name}>
+                        {this.props.item.data.Name}
+                    </Text>
+                    <Text style={{color:"gray"}}>
+                        {this.props.item.data.prices}
+                    </Text>
+                    {this.props.item.key.reviewID!=0 ?
+                    ( 
+                        <View style={styles.review}>
+                            <Text style={{color:"#428af5"}}>Review</Text>
+                        </View>
+                    )
+                    :null
+                    }
                     
-            </View>
+                </View>
+                    
+            </TouchableOpacity>
         );
     }
 }

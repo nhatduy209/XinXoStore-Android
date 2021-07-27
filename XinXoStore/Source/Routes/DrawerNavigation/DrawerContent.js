@@ -52,10 +52,6 @@ export class DrawerContent extends React.Component {
   goToSettingScreen = () => {
     this.props.navigation.navigate('SettingsScreensStack');
   }
-  onBillPress=()=>{
-    this.props.navigation.push('BillScreenStack');
-    this.props.navigation.navigate('BillScreenStack');
-  }
   render() {
     let username  = "" , email = "" ; 
     try {
@@ -181,19 +177,6 @@ export class DrawerContent extends React.Component {
                       </Icon>
                       <Text style={styles.itemText}>
                         Shopping Cart
-                      </Text>
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress = {this.onBillPress}>
-                <View style={styles.itemDrawer}>
-                      <Icon
-                        size={35}
-                        name="cog"
-                        style={styles.iconStyle}
-                      >
-                      </Icon>
-                      <Text style={styles.itemText}>
-                        Bills
                       </Text>
                 </View>
             </TouchableOpacity>
