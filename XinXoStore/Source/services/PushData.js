@@ -67,7 +67,8 @@ export default class  PushData{
             ShopId: data.ShopId,
             UserId: data.UserId,
             Username:data.Username,
-            ProductId:data.ProductId
+            ProductId:data.ProductId,
+            Img: data.Img
         })
         .then(()=>console.log('Data added'));
         return {
