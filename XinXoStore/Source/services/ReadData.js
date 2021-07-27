@@ -12,7 +12,6 @@ export default class ReadService {
     let Email = "";
     let key = "";
     let user = {};
-    console.log("SERVICE ", username , password);
     await firebase
       .database()
       .ref('Account/')
@@ -176,12 +175,19 @@ export default class ReadService {
           });
         }
       });
-    });
-    return {
-      data : {address
-      },
-      status : Status.SUCCESS
-    };
+    }).then(res=>{
+      return {
+        data : {address
+        },
+        status : Status.SUCCESS
+      };
+    }).catch(err=>{
+      return {
+        data : {},
+        status : Status.FAIL
+      };
+    })
+    
   }
   getDefaultAddress=async(idAccount)=>{
     var address= new Object();
@@ -196,13 +202,19 @@ export default class ReadService {
           });
         }
       });
-    });
-    return {
-      status: Status.SUCCESS,
-      data:{
-        address
+    }).then(res=>{
+      return {
+        status: Status.SUCCESS,
+        data:{
+          address
+        }
       }
-    }
+    }).catch(err=>{
+      return {
+        status: Status.FAIL,
+        data:{}
+      }
+    })
   }
   
   getShoppingCart(idAccount) {
@@ -224,7 +236,6 @@ export default class ReadService {
                 },
                  function(error) {
                     // The Promise was rejected.
-                    console.error(error);
                 });
                 reads.push(promise);
               })
@@ -233,22 +244,17 @@ export default class ReadService {
         });
         return Promise.all(reads);
     }, function(error) {
-        // The Promise was rejected.
-        console.error(error);
     }).then(function(values) { 
-      if(values.length>=0){
-        return {
-          data : values,
-          status : Status.SUCCESS,
-        }
+      return {
+        data : values,
+        status : Status.SUCCESS,
       }
-      else{
-        return {
+    }).catch(err=>{
+      return {
           data : {},
           status : Status.FAIL,
         }
-      }
-    });
+    })
 }
   getListIDItemShoppingCart=async(idAccount)=>{
     let listItem=[];
@@ -261,12 +267,19 @@ export default class ReadService {
           return;
         }
       })
+    }).then(res=>{
+      return {
+        data:listItem,
+        status:Status.SUCCESS
+      }
+    }).catch(err=>{
+      return {
+        data:{},
+        status:Status.FAIL
+      }
     })
     
-    return {
-      data:listItem,
-      status:Status.SUCCESS
-    }
+    
   }
   getListItemShoppingCart = async(listItemID)=>{
 
@@ -295,14 +308,20 @@ export default class ReadService {
           noNewReview+=1;
         }
       })
-    })
-    return{
-      status:Status.SUCCESS,
-      data:{
-        listID:listID,
-        noNewReview:noNewReview
+    }).then(res=>{
+      return{
+        status:Status.SUCCESS,
+        data:{
+          listID:listID,
+          noNewReview:noNewReview
+        }
       }
-    }
+    }).catch(err=>{
+      return{
+        status:Status.FAIL,
+        data:{}
+      }
+    })
   }
 
   getPublisherInfo =async (ownerId) => {
