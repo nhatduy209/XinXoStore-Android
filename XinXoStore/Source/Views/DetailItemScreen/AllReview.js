@@ -4,7 +4,6 @@ import TestAPI from '../TestAPI';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FeedbackComponent from './RenderFeedback';
 import { connect } from 'react-redux';
-
 class AllReviews extends React.Component {
     constructor(props) {
         super(props);
@@ -40,7 +39,7 @@ class AllReviews extends React.Component {
                 <View style={{backgroundColor:'#fff',height:60,justifyContent: 'center'}}>
                     <Text style={{alignSelf: 'center', fontSize:32,fontWeight:'bold'}}>All Review</Text>
                 </View>
-                <ScrollView style={{backgroundColor:'#fff'}}>
+                <ScrollView style={{backgroundColor:'#fff',marginBottom:50}}>
                     {this.props.listReview.map((element,index)=>{
                             var item = {Content: element.Content,
                                 UserName: element.UserName,
@@ -57,7 +56,6 @@ class AllReviews extends React.Component {
 }
 
 function mapStateToProps(state) {
-    // console.log(state.NewArrivalsReducer.items.data.listItem);
     return {
         listReview: state.ReviewReducer.items.data.listItem,
     };

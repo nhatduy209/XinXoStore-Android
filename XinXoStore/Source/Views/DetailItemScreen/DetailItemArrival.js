@@ -2,18 +2,16 @@ import React from 'react'
 import { View, Dimensions, StyleSheet, Image, Text ,
     TouchableOpacity, ScrollView,FlatList,TextInput,KeyboardAvoidingView} from 'react-native'
 import TestAPI from '../TestAPI';
-import { SliderBox } from "react-native-image-slider-box";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import NewArrivalItem from '../homeScreenFlatlist/HomeScreenArrivalsItems.js'
-// import StarRating from './StarRating';
 import StarRating from 'react-native-star-rating';
 import { getListReviews } from '../../redux/action/ReviewAction/ReviewAction.js';
-import { getListNewArrivals } from '../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction'
 import {getPublisherInfo} from '../../redux/action/GetPublisherInfoAction/GetPublisherInfoAction'
 import UrlComponent from './UrlRender';
 import FeedbackComponent from './RenderFeedback';
 import { AddCart } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
+import DoReview from './DoReview';
 
 class DetailItem extends React.Component {
     constructor(props) {
@@ -202,10 +200,10 @@ class DetailItem extends React.Component {
                                     Description
                                 </Text>
                                 <Text style={{lineHeight:20,paddingVertical:10}}>
-                                    {/* {this.props.route.params.description} */}
-                                Đây là những chiếc áo khoác được thiết kế theo phong cách hoàng gia Anh.
+                                    {this.props.route.params.description}
+                                {/* Đây là những chiếc áo khoác được thiết kế theo phong cách hoàng gia Anh.
                                 Thiết kế này giúp cho người mặc tăng thêm sự quyến rũ và duyên dáng.
-                                Dù hiện nay nó không còn phổ biến nữa nhưng vẫn được rất nhiều người yêu thích. 
+                                Dù hiện nay nó không còn phổ biến nữa nhưng vẫn được rất nhiều người yêu thích.  */}
                                 </Text>
                             </View>
                         </View>
@@ -236,49 +234,7 @@ class DetailItem extends React.Component {
                                 {this.showReview()}
                             </View>
                         </View>
-                        
-
-                        <View style={{elevation:6,marginVertical:10}}>
-                            <View style={{flexDirection: 'row'}}>
-                            <Text style={[styles.textTitles,{width:'90%',padding:10}]}>Type Review</Text>
-                            <TouchableOpacity>
-                            <Icon
-                                size={20}
-                                name="paper-plane"
-                                />
-                            </TouchableOpacity>
-                            
-                            </View>
-                            <TextInput placeholder="type review" style={{borderColor:'#ccc',borderBottomWidth:0.7,width:'90%',margin:10}}></TextInput>
-                            <View style={{height:110,backgroundColor:'#eee',flexDirection: 'row'}}>
-                                {
-                                    this.state.images.map((element,index)=>{
-                                        var key = index;
-                                        return(
-                                            <View key={key}>
-                                                <Image key={key} style={{height:70,width: 70,marginVertical:20,marginHorizontal:10}} source={element}/>
-                                                <Icon
-                                                size={10}
-                                                name='minus'
-                                                style={{padding:5,backgroundColor:'rgba(255,255,255,1)',borderRadius:20, position: 'absolute',right:0,marginTop:15}}
-                                                />
-                                            </View>
-                                        
-                                    )})
-                                }
-                                <TouchableOpacity style={{padding:20,justifyContent: 'center'}}>
-                                <Icon
-                                size={30}
-                                name='camera'
-                                style={{alignSelf: 'center',opacity:0.7}}/>
-                                <Text>Thêm ảnh</Text>
-                                </TouchableOpacity>
-                                
-                                
-                            </View>
-                            
-                            
-                        </View>
+                        <DoReview item ={this.props.route.params.data}/>
                     </View>
                 </ScrollView>
             </View>           

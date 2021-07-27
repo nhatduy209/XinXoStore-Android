@@ -5,3 +5,10 @@ export function getListReviews(ownerId){
     data : {ownerId,}
   }
 }
+
+export function addReviews(data){
+  return{
+    type : NAME_ACTIONS.ADD_REVIEWS_ITEM.ADD_REVIEWS_ITEM_ACTION,
+    data : {...data},
+  }
+}
