@@ -343,4 +343,24 @@ export default class ReadService {
       status : Status.SUCCESS
     }
   }
+  checkToAddToCart= async(idAccount,itemID)=>{
+    let canAdd=true;
+    await firebase.database().ref('Account/'+idAccount).child('Cart').once('value',snap=>{
+      snap.forEach(child=>{
+        console.log("snap===================",child.toJSON());
+        if(child.toJSON().ItemID==itemID){
+          canAdd=false;
+        }
+      })
+    });
+    if(canAdd==true){
+      return {
+        success:Status.SUCCESS
+      }
+    }else{
+      return {
+        success:Status.FAIL
+      }
+    }
+  }
 }

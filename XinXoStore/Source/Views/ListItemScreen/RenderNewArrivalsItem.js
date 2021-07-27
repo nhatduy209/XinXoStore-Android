@@ -28,13 +28,11 @@ export  class RenderNewArrivalsItem extends React.Component {
     this.props.navigation.push('DetailItemScreen',data);
   }
   componentDidUpdate(preProps){
-    if(preProps.numberCart.status!=this.props.numberCart.status){
-      console.log("ModelAddToShoppingCartSuccess")
-      return (
-        
-        <ModelAddToShoppingCartSuccess/>
-      )
-    }
+    // if(preProps.numberCart.status!=this.props.numberCart.status){
+    //   return (
+    //     <ModelAddToShoppingCartSuccess/>
+    //   )
+    // }
   }
   render() {
     return (

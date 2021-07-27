@@ -6,12 +6,19 @@ import RemoveData from '../services/RemoveData';
 export default class NewArrivalsBusiness {
   addToShoppingCart = async (data,success , fail ) => {
       var pushDataService = new PushData();
-      let result  = await pushDataService.addToShoppingCart(data.idAccount,data.itemID);
-      if( result.status  == Status.SUCCESS){
-        success(result);
+      var readDataService = new ReadData();
+      let canAdd= await readDataService.checkToAddToCart(data.idAccount,data.itemID);
+      if(canAdd.success==Status.SUCCESS){
+        let result  = await pushDataService.addToShoppingCart(data.idAccount,data.itemID);
+        if( result.status  == Status.SUCCESS){
+          success(result);
+        }
+        else{
+          fail(result)
+        }
       }
       else{
-        fail(result)
+        fail(canAdd)
       }
   }
   getAllProduct= async (data,success,fail)=>{
