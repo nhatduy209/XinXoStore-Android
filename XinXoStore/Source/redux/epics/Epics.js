@@ -7,6 +7,7 @@ import AddressEpic from './AddressEpics/AddressEpic';
 import ShoppingCartEpic from './ShoppingCartEpics/ShoppingCartEpic';
 import ReviewsEpic from './ReviewEpics/ReviewEpics';
 import PublisherInfoEpic from './PublserInfoEpics/PublsherInfoEpics';
+import GetItemForUserEpic from './GetItemForUserEpics/GetItemForUserEpics';
 
 export default combineEpics(
     DetailArrivalEpic,
@@ -17,4 +18,5 @@ export default combineEpics(
     AddressEpic,
     ShoppingCartEpic,
     PublisherInfoEpic,
+    GetItemForUserEpic,
 )
