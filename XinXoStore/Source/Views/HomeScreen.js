@@ -41,7 +41,6 @@ export class HomeScreen extends React.Component {
   };
 
   handleShowAll = () => {
-    
     this.props.navigation.navigate('NewArrivalsScreen');
   }
   

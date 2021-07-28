@@ -336,6 +336,22 @@ export default class ReadService {
   getItemForUser = async (idOwner) => {
     let listItem = [];
     let listItemObject = [];
+
+    let listItemBill = [];
+
+    await firebase
+      .database()
+      .ref('Bill/')
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+          //đặt ddieuf kiện
+          console.log('CHILD-------', child)
+          var myJson = child.toJSON();
+          listItemBill.push(myJson);
+        });
+      })
+
+
     await firebase
       .database()
       .ref('NewArrivals/')
@@ -344,7 +360,6 @@ export default class ReadService {
           //đặt ddieuf kiện
           var myJson = child.toJSON();
           if (myJson.ownerId === idOwner) {
-            console.log('myJson', myJson);
             let myObject = {
               img : "",
               Name : "",
@@ -352,23 +367,27 @@ export default class ReadService {
               publicDate : "", 
               ownerShop : "",
               prices : 0,      
-              sold : false ,       
+              sold : false ,
+              itemID : child.key,
+              isShipped : false,
             };
-            
+            const myBill = _.findWhere(listItemBill ,{ItemID : Number(myObject.itemID)});
+            console.log('MYBILL -----' , myBill);
             myObject.img = myJson.img;
             myObject.Name = myJson.Name ;
             myObject.Category = myJson.Category ;   
             myObject.publicDate = myJson.publicDate ;   
-            myObject.ownerShop = myJson.ownerShop ; 
+            myObject.ownerShop = myBill.UserID ; 
             myObject.prices = myJson.prices ;                
             myObject.sold = myJson.sold ;  
+            myObject.isShipped = myBill.isShipped;
             const toArray = _.values(myObject) ;
-           listItemObject.push(myObject);
+            listItemObject.push(myObject);
             listItem.push(toArray);
           }
         });
       }).then(res => {
-        console.log('RES', res);
+        console.log('RES', listItemObject);
       }).catch(err => {
         console.log("ERR ", err)
         return {

@@ -125,7 +125,7 @@ class ItemSoldScreen extends React.Component {
                 {
                   this.props.items.data.listItem.map(item => {
 
-                    if (item[6]) {
+                    if (item[6]) {     // check if the item is selling or is sold 
                       return (
                         <DataTable.Row style={{ height: 110 }}>
                           <DataTable.Cell>
@@ -164,8 +164,8 @@ class CheckDeliverButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      iconDeliver: 'times-circle',
-      colorDeliver: 'red'
+      iconDeliver: (this.props.item[8] === true) ? 'check-circle' : 'times-circle' ,
+      colorDeliver: (this.props.item[8] === true ) ? 'green' : 'red'
     }
   }
   confirmDeliver = (item) => {
@@ -178,7 +178,9 @@ class CheckDeliverButton extends React.Component {
   render() {
     return (
       <View>
-        <TouchableOpacity onPress={this.confirmDeliver.bind(this, this.props.item)}>
+        <TouchableOpacity onPress={this.confirmDeliver.bind(this, this.props.item)}
+        // item[8] : isShipped 
+        disabled = {  (this.props.item[8] === true ) ? true : false  }>   
           <Icon
             size={24}
             name={this.state.iconDeliver}
