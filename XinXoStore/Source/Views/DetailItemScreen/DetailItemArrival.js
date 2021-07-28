@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Dimensions, StyleSheet, Image, Text ,
-    TouchableOpacity, ScrollView,FlatList,TextInput,KeyboardAvoidingView} from 'react-native'
+    TouchableOpacity, ScrollView,FlatList,TextInput,KeyboardAvoidingView,} from 'react-native'
 import TestAPI from '../TestAPI';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
@@ -106,11 +106,11 @@ class DetailItem extends React.Component {
                         
                         </View>
                 </View>
-                {/* add to card */}
-                <View style={styles.addToCardButton}>
-                    <TouchableOpacity onPress={()=>this.addItem()}>
-                                <Text style={styles.addToCard}>
-                                    Add to card
+                {/* add to Cart */}
+                <View style={styles.addToCartButton}>
+                    <TouchableOpacity onPress={()=>{this.props.route.params.data.sold? console.log('sold'): this.addItem()}}>
+                                <Text style={[styles.addToCart,{backgroundColor:this.props.route.params.data.sold?'#d4d8d4':'#fb2e01'}]}>
+                                    Add to cart
                                 </Text>
                     </TouchableOpacity> 
                 </View>
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         width:'60%'
     },
-    addToCardButton:{
+    addToCartButton:{
         paddingHorizontal:10,
         position:'absolute',
         bottom:0,
@@ -282,13 +282,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         marginBottom:50,
         zIndex:6
-    },addToCard :{
+    },addToCart :{
         fontSize:16,
         padding:15,
         color:'#fff',
         fontWeight: '700',
         width: Dimensions.get("window").width,
-        backgroundColor:'#fb2e01',
         textAlign:'center',
     },
     navigationIcon: {
