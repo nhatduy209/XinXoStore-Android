@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Dimensions, StyleSheet,TextInput, Image, Text ,TouchableOpacity, ScrollView,Alert} from 'react-native'
+import { View, Dimensions, StyleSheet,TextInput, Image, Modal,Text ,TouchableOpacity, ScrollView,Alert} from 'react-native'
 import TestAPI from '../TestAPI';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
@@ -18,19 +18,22 @@ class EditScreen extends React.Component {
                 require("../../Images/clothingHome.jpeg"),
                 require("../../Images/clothingSlider.jpeg"),
                 require("../../Images/clothingSlider2.jpeg"),
+                require("../../Images/error.png"),
               ],
             url : "img",
             Name:this.props.route.params.data.Name,
             img:this.props.route.params.data.img,
             price: this.props.route.params.data.prices,
             publicDate:this.props.route.params.data.publicDate,
-            Describe: this.props.route.params.data.Description,
+            Description: this.props.route.params.data.Description,
             Category: this.props.route.params.data.Category,
             Demension: this.props.route.params.data.Demension,
             Rating: this.props.route.params.data.Rating,
             liked: this.props.route.params.data.liked,
             PathImageDevice: "",
             changed: false,
+            visible:true,
+            blur:Dimensions.get('window').height,
           };
     }
     componentDidMount() {
@@ -41,33 +44,32 @@ class EditScreen extends React.Component {
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
     }
     handleSave = () => {
-        let imagePath = this.state.img ;
-        if(this.state.PathImageDevice.length > 0 ){
-          imagePath = FilePath.ACCOUNT_IMAGE_STORAGE + '/' + this.state.img;
+        if(this.state.Description !== "" && this.state.Name !== "" && this.state.price !== "" && this.state.publicDate !== ""){
+            // let imagePath = this.state.img ;
+            // if(this.state.PathImageDevice.length > 0 ){
+            //   imagePath = FilePath.ACCOUNT_IMAGE_STORAGE + '/' + this.state.img;
+            // }
+            // const data = {
+            //     Name: this.state.Name,
+            //     Rating: this.state.Rating,
+            //     img: imagePath,
+            //     Key: this.props.route.params.data.key,
+            //     liked: this.state.liked,
+            //     prices: this.state.price,
+            //     publicDate: this.state.publicDate,
+            //     PathImageDevice: this.state.PathImageDevice,
+            //     Demension: this.state.Demension,
+            //     Description: this.state.Description,
+            //     Category: this.state.Category,
+            // }
+            // this.props.editProduct(data);
+            // this.props.getListNewArrivals();
+            // const changed = {changed:true};
+            // this.props.navigation.navigate('ManagementScreen', changed)
+        }else{
+            this.setState({visible: true});
+            this.setState({blur:Dimensions.get('window').height})
         }
-        const data = {
-            Name: this.state.Name,
-            Rating: this.state.Rating,
-            img: imagePath,
-            Key: this.props.route.params.data.key,
-            liked: this.state.liked,
-            prices: this.state.price,
-            publicDate: this.state.publicDate,
-            PathImageDevice: this.state.PathImageDevice,
-            Demension: this.state.Demension,
-            Description: this.state.Describe,
-            Category: this.state.Category,
-        }
-        this.props.editProduct(data);
-        this.props.getListNewArrivals();
-        const changed = {changed:true};
-        Alert.alert(
-            "Alert Title",
-            "My Alert Msg",
-            [
-              { text: "OK", onPress: () =>  this.props.navigation.navigate('ManagementScreen', changed)}
-            ]
-          );
         
       }
     handlePhotos = () => {
@@ -84,6 +86,8 @@ class EditScreen extends React.Component {
     render(){
         return(
             <View style={{backgroundColor: '#fff'}}>
+                <View style={{height:this.state.blur,backgroundColor: '#ddd',position: 'absolute',zIndex:20,width: Dimensions.get('window').width,opacity:0.8}}></View>
+
                 <View style={{position: 'absolute',zIndex:10,justifyContent: 'center'}}>
                     <TouchableOpacity style={styles.navigationIcon} onPress={() => this.props.navigation.goBack()}>
                             <Icon
@@ -99,6 +103,19 @@ class EditScreen extends React.Component {
                 </View>
                 <View>
                 <ScrollView>
+                    <Modal animationType="slide" transparent={true} visible={this.state.visible}>
+                        <View style={{backgroundColor: 'rgb(255,255,255)',width:250,alignSelf: 'center',marginTop:'50%',padding:10,borderRadius:10}}>
+                            <Text style={styles.detailTitle}>Please filling value for all fields</Text>
+                            <Image style={{height:70,width:70,alignSelf: 'center'}} source={this.state.images[3]}/>
+                                <TouchableOpacity
+                                onPress={() => {
+                                    this.setState({visible:false})
+                                    this.setState({blur:0})
+                                }}>
+                                <Text style={[styles.textButton,{padding:10}]}>Close</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
                     <View style={{backgroundColor: '#fff',borderRadius:20}}>
                         <View style={{elevation:5,height:250,width:250,borderRadius:20,left:80,marginTop:50,marginBottom:10}}>
                         <Image style={{height:250,width:250,borderRadius:20}} source={{uri : this.state.url}}></Image>
@@ -152,8 +169,10 @@ class EditScreen extends React.Component {
                        
                             <View style={styles.infoBox}>
                                 <Text style={styles.itemTitle}>Describe</Text>
-                                <View style={styles.detailInfo}>
-                                    <TextInput style={{fontSize:16}} placeholder={'Type Describe here'}>{this.state.Describe}</TextInput>
+                                <View onChangeText={value => {
+                                        this.setState({Description: value});
+                                    }} style={styles.detailInfo}>
+                                    <TextInput style={{fontSize:16}} placeholder={'Type Describe here'}>{this.state.Description}</TextInput>
                                 </View>
                             </View>
                        
@@ -230,5 +249,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         // marginBottom:10,
         // elevation:6,
-    }
+    },
+    detailTitle: {
+        fontSize:18,
+        alignSelf: 'center',
+        marginVertical:20,
+        fontWeight:'bold',
+        textAlign: 'center',
+    },
+    textButton: {
+        marginHorizontal:20,
+        fontSize:18,
+        fontWeight:'bold',
+        textAlign: 'center',
+        color:'#000'}
 });

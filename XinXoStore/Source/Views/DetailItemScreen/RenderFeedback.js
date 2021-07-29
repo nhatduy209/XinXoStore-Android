@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Dimensions, TouchableOpacity,Image } from 'react-native';
 import TestAPI from '../TestAPI';
 import UrlComponent from './UrlRender';
-import StarRating from './StarRating';
+import StarRating from 'react-native-star-rating';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class FeedbackComponent extends React.Component {
@@ -38,7 +38,14 @@ export default class FeedbackComponent extends React.Component {
                     <View>
                         <Text style={{paddingTop:10,fontSize:14,justifyContent: 'center'}}>{this.props.item.UserName}</Text>
                         <View style={{flexDirection: 'row'}}>
-                            <StarRating item={{Rating: this.props.item.Rating}}/>
+                            {/* <StarRating item={{Rating: this.props.item.Rating}}/> */}
+                            <StarRating
+                            fullStarColor='yellow'
+                            rating={this.props.item.Rating}
+                            maxStars={5}
+                            starSize={20}
+                            starStyle={{paddingHorizontal:3}}
+                            />
                             <Text style={{fontSize:12,color:'#bbb'}}>{this.props.item.Rating}/5</Text>
                         </View>
                     </View>

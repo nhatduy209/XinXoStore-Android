@@ -86,7 +86,7 @@ export default class UpdateService {
           liked : data.data.liked ,
           prices : data.data.prices,
           publicDate :  data.data.publicDate,
-          Description : data.data.Describe,
+          Description : data.data.Description,
           Demension: data.data.Demension,
           Category: data.data.Category,
       }).then( canUpdate = true ).catch( err => {

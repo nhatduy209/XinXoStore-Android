@@ -1,6 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react'
 import DrawerContent from './DrawerContent';
+import ItemManagementScreenStack from './drawer-stack/ItemManagementScreenStack'
 import HomeScreenStack from './drawer-stack/HomeScreenStack';
 import SettingScreenStack from './drawer-stack/SettingScreenStack';
 import UserProfileStack from '../BottomNavigation/UserProfileScreenStack';
@@ -15,6 +16,9 @@ export default class RootDrawer extends React.Component {
       >
         <Drawer.Screen
           name="HomeStack" component={HomeScreenStack} />
+
+        <Drawer.Screen
+          name="ItemManagementScreenStack" component={ItemManagementScreenStack} />
 
         <Drawer.Screen
           name="SettingsScreensStack" component={SettingScreenStack} />

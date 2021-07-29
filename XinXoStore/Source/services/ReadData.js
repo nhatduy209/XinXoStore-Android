@@ -137,7 +137,7 @@ export default class ReadService {
       }
     }
   }
-  getListReviewsAPI = async () => {
+  getListReviewsAPI = async (ownerId,) => {
     let key = "";
     let item = {};
     var listItem = [];
@@ -149,8 +149,11 @@ export default class ReadService {
           //đặt ddieuf kiện
           var myJson = child.toJSON();
           key = child.key;
-          item = myJson;
-          listItem.push({ key: key, ...item });
+          item= myJson;
+          if(item.ShopId === ownerId){
+            listItem.push({key: key,...item});
+          }
+          
         });
       });
     if (listItem.length > 0) {
