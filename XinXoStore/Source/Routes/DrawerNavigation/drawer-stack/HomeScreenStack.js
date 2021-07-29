@@ -140,7 +140,7 @@ class HomeScreenStack extends React.Component {
               />
           }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="ProfileUserStack"
           component={UserProfileStack}
           options={{
@@ -150,7 +150,7 @@ class HomeScreenStack extends React.Component {
                 navigationProps={this.props.navigation}
               />
           }}
-      />  */}
+      /> 
         <Stack.Screen
           name="AddScreen"
           component={AddScreen}
