@@ -9,13 +9,9 @@ export class BillScreen extends React.Component{
         super(props);
     }
     componentDidMount(){
-        console.log("componentDidMount")
-        console.log(this.props.user)
-        console.log(this.props.user.key)
         this.props.getAll(this.props.user.key);
     }
     renderItem=(items)=>{
-        console.log("items.item",items.item)
         return(
             <RenderBillItem
                 item={items.item}/>
@@ -29,7 +25,7 @@ export class BillScreen extends React.Component{
     render(){
         return(
             <View style={styles.container}>
-                {typeof this.props.bill != "undefined" && this.props.bill.listItem.length >0 ?
+                {typeof this.props.bill.listItem != "undefined" && this.props.bill.listItem.length>0  ?
                  (
                  <FlatList
                     ListHeaderComponent={

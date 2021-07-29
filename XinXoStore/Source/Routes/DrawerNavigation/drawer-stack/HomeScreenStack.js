@@ -66,7 +66,7 @@ class HomeScreenStack extends React.Component {
     this.props.getListNewArrivals();
   }
   handleShoppingCart =()=>{
-    this.props.navigation.navigate("ShoppingCart");
+    this.props.navigation.navigate("ShoppingCartScreenStack",{screen:"ShoppingCart"});
   }
   render() {
     return (
@@ -98,16 +98,7 @@ class HomeScreenStack extends React.Component {
             />
         }}        
       />
-      <Stack.Screen
-      name="ShoppingCart"
-      component={ShoppingCart}
-      options={{
-        headerLeft: ()=>
-          <NavigationDrawerStructureLeft
-            navigationProps={this.props.navigation}
-          />
-      }}
-      />
+
       <Stack.Screen
         name="NewArrivalsScreen"
         component={AllNewArrivalsItem}   

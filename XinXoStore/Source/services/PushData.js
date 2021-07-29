@@ -85,4 +85,35 @@ export default class  PushData{
             status: Status.SUCCESS
         };
     }
+    createBill=async(data)=>{
+        var canAdd=true;
+        var result=await Promise.all(data.listItem.map( async (element) => {
+            await firebase.database()
+            .ref('Bill')
+            .push()
+            .set({
+                ItemID:element.key,
+                ReviewID:0,
+                ShopID:element.data.ownerId,
+                UserID:data.user.data.key,
+                Username:data.user.data.user.Username,
+                isShipped:false,
+                Address:data.user.Address
+            }).then(res=> {canAdd=true})
+            .catch(()=> {canAdd =false});
+            return canAdd;
+        }));
+        for(let i=0;i<result.length;i++){
+            if(result[i]==false){
+                return {
+                    data:{},
+                    status:Status.FAIL
+                };
+            }
+        };
+        return {
+            data:{},
+            status:Status.SUCCESS
+        }
+    }
 }

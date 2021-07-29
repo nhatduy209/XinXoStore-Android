@@ -38,7 +38,7 @@ export default class RenderBillItem extends React.Component{
                     <Text style={{color:"gray"}}>
                         {this.props.item.data.prices}
                     </Text>
-                    {this.props.item.key.reviewID!=0 ?
+                    {this.props.item.key.reviewID==0 ?
                     ( 
                         <View style={styles.review}>
                             <Text style={{color:"#428af5"}}>Review</Text>

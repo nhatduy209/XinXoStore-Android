@@ -15,4 +15,25 @@ export default class RemoveData{
             status: Status.SUCCESS,
         }
     }
+    removeShoppingCart=async(data)=>{
+        
+        let result=await firebase.database().ref('Account/'+data.user.data.key).child("Cart").remove()
+        .then(()=>{
+            return true;
+        })
+        .catch(()=>{
+            return false;
+        });
+        if(result==true){
+            return {
+                data:{},
+                status:Status.SUCCESS
+            }
+        }else{
+            return {
+                data:{},
+                status:Status.FAIL
+            }
+        }
+    }
 }

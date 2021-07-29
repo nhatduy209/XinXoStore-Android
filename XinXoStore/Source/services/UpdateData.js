@@ -109,4 +109,42 @@ export default class UpdateService {
       }
     }
   }
+  updateStatusOfListProduct= async (data)=>{
+    var canAdd=true;
+    console.log("DATA======",data);
+    var result=await Promise.all(data.listItem.map( async (element) => {
+      console.log(element.data)
+        await firebase.database()
+        .ref('NewArrivals').child(element.key)
+        .update({
+          Name: element.data.Name,
+          Rating: element.data.Rating,
+          liked: element.data.liked,
+          prices: element.data.prices,
+          publicDate: element.data.publicDate,
+          ownerId: element.data.ownerId,
+          ownerShop: element.data.ownerShop,
+          img: element.data.img,
+          sold: true,
+          Demension:element.data.Demension,
+          Category:element.data.Category,
+          Description: element.data.Description,
+        }).then(res=> {canAdd=true})
+        .catch(()=> {canAdd =false});
+        return canAdd;
+    }));
+    console.log(result);
+    for(let i=0;i<result.length;i++){
+        if(result[i]==false){
+            return {
+                data:{},
+                status:Status.FAIL
+            };
+        }
+    };
+    return {
+        data:{},
+        status:Status.SUCCESS
+    }
+  }
 }

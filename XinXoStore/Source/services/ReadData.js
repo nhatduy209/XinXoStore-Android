@@ -216,7 +216,6 @@ export default class ReadService {
       }
     })
   }
-  
   getShoppingCart(idAccount) {
     return firebase.database().ref("Account/"+idAccount).once('value').then(function(snapshot) {
         var reads = [];
@@ -282,7 +281,6 @@ export default class ReadService {
     
   }
   getListItemShoppingCart = async(listItemID)=>{
-
     var obj= new Object();
     var result= await Promise.all( listItemID.map(async (id)=>{
       await firebase.database().ref('NewArrivals/'+id.itemID).once('value',function(snap){
@@ -299,6 +297,7 @@ export default class ReadService {
   getListIDBill=async(idAccount)=>{
     let listID=[];
     let noNewReview=0;
+    let canGet=true;
     await firebase.database().ref('Bill').once('value',function(snap){
       snap.forEach(child=>{
         if(child.toJSON().UserID==idAccount){
@@ -309,6 +308,11 @@ export default class ReadService {
         }
       })
     }).then(res=>{
+      return true;
+    }).catch(err=>{
+      return false;
+    })
+    if(canGet==true){
       return{
         status:Status.SUCCESS,
         data:{
@@ -316,12 +320,12 @@ export default class ReadService {
           noNewReview:noNewReview
         }
       }
-    }).catch(err=>{
+    }else{
       return{
         status:Status.FAIL,
         data:{}
       }
-    })
+    }
   }
 
   getPublisherInfo =async (ownerId) => {

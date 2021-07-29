@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {getDefaultAddress} from '../../redux/action/Address/AddressAction';
 import { RenderItemAddress } from './RenderItemAdress';
 import { GetAllProduct } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
+import { checkOut } from '../../redux/action/BillAction/BillAction';
 
 export class CheckoutScreen extends React.Component{
     constructor(props){
@@ -23,7 +24,7 @@ export class CheckoutScreen extends React.Component{
         );
     }
     handleCheckout=()=>{
-        this.props.navigation.navigate("CheckoutSuccess");
+        this.props.checkOut(this.props.cart.data,this.props.user);
     }
     render(){
         return(
@@ -35,7 +36,7 @@ export class CheckoutScreen extends React.Component{
                 ):
                 (
                     <TouchableOpacity style={styles.container} 
-                    onPress={()=>this.props.navigation.navigate("AddAddress")}>
+                    onPress={()=>this.props.navigation.navigate("AddressScreen")}>
                         <Icon name="plus" size={20} color={"#2f7afb"}/>
                         <Text>
                              Thêm địa chỉ
@@ -74,7 +75,7 @@ const mapStateToProps = state =>{
         totalBill:state.ShoppingCartReducer.totalBill
     }
   }
-export default connect(mapStateToProps,{getDefaultAddress,GetAllProduct})(CheckoutScreen)
+export default connect(mapStateToProps,{getDefaultAddress,GetAllProduct,checkOut})(CheckoutScreen)
   
 const styles=StyleSheet.create({
     containerToTal:{

@@ -9,9 +9,17 @@ const billState={
 }
 
 const BillReducer=(state=billState,action)=>{
-    console.log("REDUCER ===========",action.data)
     switch(action.type){
         case NAME_EPICS.BILL_SCREEN.GET_ALL_SUCCESS:{
+            return {
+                ...state,
+                items: {
+                    status: Status.SUCCESS,
+                    data: action.data
+                }
+            }
+        }
+        case NAME_EPICS.CHECKOUT_SCREEN.CHECKOUT_SUCCESS:{
             return {
                 ...state,
                 items: {

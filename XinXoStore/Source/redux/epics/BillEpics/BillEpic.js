@@ -23,6 +23,17 @@ const resolver = (action) => {
                     reject(new Error(NAME_ACTIONS.BILL_SCREEN.GET_ALL_FAIL));
                 })
                 break;
+            case NAME_ACTIONS.CHECKOUT_SCREEN.CHECKOUT_SCREEN:
+                billBusiness.checkout(action.data, success => {
+                    resolve({
+                        actionType: NAME_ACTIONS.CHECKOUT_SCREEN.CHECKOUT_SUCCESS,
+                        data: success
+                    });
+                }, failed => {
+                    messageError = failed;
+                    reject(new Error(NAME_ACTIONS.CHECKOUT_SCREEN.CHECKOUT_FAIL));
+                })
+                break;
             default:
                 console.error('Error when resolver User Epic.');
                 break;
@@ -37,6 +48,11 @@ const dispatch = (data) => {
                 type: NAME_EPICS.BILL_SCREEN.GET_ALL_SUCCESS,
                 data: data.data.data
             };
+        case NAME_ACTIONS.CHECKOUT_SCREEN.CHECKOUT_SUCCESS:
+            return {
+                type: NAME_EPICS.CHECKOUT_SCREEN.CHECKOUT_SUCCESS,
+                data: data.data.data
+            };
         default:
             return new Error('Error when dispatch User Epic.');
     }
@@ -49,6 +65,11 @@ const dispatchError = (error, action) => {
                 type: NAME_EPICS.BILL_SCREEN.GET_ALL_FAIL,
                 data: messageError
             }
+        case NAME_ACTIONS.CHECKOUT_SCREEN.CHECKOUT_FAIL:
+            return {
+                type: NAME_EPICS.CHECKOUT_SCREEN.CHECKOUT_FAIL,
+                data: messageError
+            }
         default:
             console.error('Error when dispatch error User Epic.');
             console.error(error.message);
@@ -59,7 +80,7 @@ const dispatchError = (error, action) => {
 
 const BillEpic = (action$) =>
     action$.pipe(
-        ofType(NAME_ACTIONS.BILL_SCREEN.GET_ALL_SCREEN,),
+        ofType(NAME_ACTIONS.BILL_SCREEN.GET_ALL_SCREEN,NAME_ACTIONS.CHECKOUT_SCREEN.CHECKOUT_SCREEN),
         mergeMap((action) =>
             from(resolver(action)).pipe(
                 map((success) => dispatch(success)),
