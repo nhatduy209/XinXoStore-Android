@@ -51,6 +51,8 @@ PushNotification.configure({
       channelId : notification.channelId,
       message: notification.message,
       title: notification.title,
+      largeIcon: 'logo_store',
+      smallIcon : 'logo_store',
     });
     // process the notification
 

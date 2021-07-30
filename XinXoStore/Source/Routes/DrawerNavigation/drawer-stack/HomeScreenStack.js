@@ -18,7 +18,7 @@ import EditProfileScreen from '../../../Views/EditProfileScreen';
 import AllReviews from '../../../Views/DetailItemScreen/AllReview';
 import ItemManagementScreenStack from './ItemManagementScreenStack'
 import ManagementScreen from '../../../Views/ManagementScreen/ManagementScreen';
-
+import AddScreen from '../../../Views/ManagementScreen/AddProductScreen'
 import SettingScreens from '../../../Views/settingScreens/SettingScreen';
 import SettingScreenStack from './SettingScreenStack';
 import PublisherProfileScreen from '../../../Views/PublisherProfileScreen';
@@ -161,7 +161,6 @@ class HomeScreenStack extends React.Component {
                 navigationProps={this.props.navigation}
               />
           }}
-
         />
         <Stack.Screen
           name="DetailItemScreen"
