@@ -18,7 +18,7 @@ export default class  PushData{
         })
         .then(()=>console.log('Data added'));
         return {
-            data:{},
+            data:{username},
             status: Status.SUCCESS
           };
     }

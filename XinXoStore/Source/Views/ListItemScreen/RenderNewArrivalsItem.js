@@ -6,12 +6,16 @@ import { connect } from 'react-redux';
 import { AddCart } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 import { GetAllProduct } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 import ModelAddToShoppingCartSuccess from '../shoppingCart/ModelAddToShoppingCartSuccess';
+import ModelAddFail from '../shoppingCart/ModelAddFail';
+import { getFontScaleSync } from 'react-native-device-info';
 
 export  class RenderNewArrivalsItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       url: "img",
+      isVisible:false,
+      isVisibleFail:false,
     }
   }
   componentDidMount() {
@@ -23,27 +27,43 @@ export  class RenderNewArrivalsItem extends React.Component {
   }
   handleDetail = () => {
     const data = {data:this.props.item};
-    // console.log('props nè');
-    // console.log(this.props.item);
     this.props.navigation.push('DetailItemScreen',data);
   }
   componentDidUpdate(preProps){
-    // if(preProps.numberCart.status!=this.props.numberCart.status){
-    //   return (
-    //     <ModelAddToShoppingCartSuccess/>
-    //   )
-    // }
+    if(preProps.numberCart.status!=this.props.numberCart.status){
+      this.setState({
+        isVisible: true
+      }, () => {
+        setTimeout(() => {
+          this.setState({
+            isVisible: false
+          });
+        }, 2500);
+      });
+    }
+    if(this.state.isAdd==true && this.props.numberCart.status=="FAIL"){
+      this.setState({
+        isVisibleFail: true
+      }, () => {
+        setTimeout(() => {
+          this.setState({
+            isVisibleFail: false
+          });
+        }, 2500);
+      });
+    }
   }
   render() {
     return (
       <View style={styles.container}>
+        <ModelAddToShoppingCartSuccess isVisible={this.props.isAdded}/>
+        <ModelAddFail isVisible={this.state.isVisibleFail}/>
         <View>
           <Image
             style={{ height: 150, width: 120 }}
             source={{ uri: this.state.url }}>
           </Image>
         </View>
-
         <View style={styles.detailView}>
           <View style={{ flexDirection: 'row' }}>
             <View>
@@ -84,6 +104,7 @@ const mapStateToProps = state =>{
   return{
     numberCart:state.ShoppingCartReducer.items,
     user: state.LoginReducer.user,
+    isAdded:state.ShoppingCartReducer.isAdded
   }
 }
 export default connect(mapStateToProps,{AddCart,GetAllProduct})(RenderNewArrivalsItem)

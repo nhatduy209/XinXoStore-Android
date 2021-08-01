@@ -24,3 +24,14 @@ export const Logout = () => {
     data : {} ,
   }
 }
+export function LoginInWithGoogle(email, username, password, age){
+  return{
+      type:NAME_ACTIONS.LOGIN_SCREEN.LOGIN_GG_SCREEN,
+      data:{
+          email:email,
+          username:username,
+          password:password,
+          age:age
+      }
+  }
+}

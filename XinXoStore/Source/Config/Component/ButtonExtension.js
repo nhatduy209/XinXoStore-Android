@@ -12,10 +12,10 @@ export default class ButtonExtension extends React.Component{
     render(){
         return(
             <TouchableOpacity style={styles.ButtonExtension} >
-                <Image style={{height:20,width:20}} source={this.state.logo} />
+                <Image style={{height:20,width:20}} source={this.props.logo} />
                 <Text
                     style={styles.TextExtension}>
-                    {this.state.text}
+                    {this.props.text}
                 </Text>
             </TouchableOpacity>
         );
@@ -30,7 +30,8 @@ const styles= StyleSheet.create({
         paddingVertical: 15,
         fontWeight:'bold',
         letterSpacing:1,
-        marginHorizontal:10
+        marginHorizontal:10,
+        
     },
     ButtonExtension:{
         backgroundColor:'#fff',
@@ -42,6 +43,5 @@ const styles= StyleSheet.create({
         alignItems:'center',
         flexDirection:'row',
         justifyContent:'center',
-        flex:1
     }
 });

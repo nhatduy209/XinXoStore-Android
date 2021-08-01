@@ -42,6 +42,17 @@ const resolver = (action) => {
                     data: {}
                 })
                 break;
+            case NAME_ACTIONS.LOGIN_SCREEN.LOGIN_GG_SCREEN:
+                loginBusiness.loginWithGoogle(action.data, success => {
+                    resolve({
+                        actionType: NAME_ACTIONS.LOGIN_SCREEN.LOGIN_GG_ACTION_SUCCESS,
+                        data: success
+                    });
+                }, failed => {
+                    messageError = failed;
+                    reject(new Error(NAME_ACTIONS.LOGIN_SCREEN.LOGIN_GG_ACTION_FAIL));
+                })
+                break;
             default:
                 console.error('Error when resolver User Epic.');
                 break;
@@ -66,6 +77,11 @@ const dispatch = (data) => {
                 type: NAME_EPICS.LOGIN_EPICS_SCREEN.LOGOUT_SUCCESS,
                 data: {}
             };
+        case NAME_ACTIONS.LOGIN_SCREEN.LOGIN_GG_ACTION_SUCCESS:
+            return {
+                type: NAME_EPICS.LOGIN_EPICS_SCREEN.LOGIN_GG_SUCCESS,
+                data: data.data.data
+            };
         default:
             console.error('Error when dispatch User Epic.');
             return new Error('Error when dispatch User Epic.');
@@ -84,6 +100,11 @@ const dispatchError = (error, action) => {
                 type: NAME_EPICS.LOGIN_EPICS_SCREEN.LOGIN_EPICS_FAIL,
                 data: messageError
             }
+        case NAME_ACTIONS.LOGIN_SCREEN.LOGIN_GG_ACTION_FAIL:
+            return {
+                type: NAME_EPICS.LOGIN_EPICS_SCREEN.LOGIN_GG_FAIL,
+                data: messageError
+            }
         default:
             console.error('Error when dispatch error User Epic.');
             return new Error('Error when dispatch error User Epic.');
@@ -92,7 +113,10 @@ const dispatchError = (error, action) => {
 
 const LoginEpic = (action$) =>
     action$.pipe(
-        ofType(NAME_ACTIONS.LOGIN_SCREEN.LOGIN_SCREEN, NAME_ACTIONS.LOGIN_SCREEN.EDIT_PROFILE_ACTIONS, NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_ACTIONS),
+        ofType(NAME_ACTIONS.LOGIN_SCREEN.LOGIN_SCREEN, 
+            NAME_ACTIONS.LOGIN_SCREEN.LOGIN_GG_SCREEN,
+            NAME_ACTIONS.LOGIN_SCREEN.EDIT_PROFILE_ACTIONS, 
+            NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_ACTIONS),
         mergeMap((action) =>
             from(resolver(action)).pipe(
                 map((success) => dispatch(success)),

@@ -8,7 +8,8 @@ const shoppingCartState = {
       status: Status.FAIL,
       data: {},
     },
-    totalBill:0
+    totalBill:0,
+    isAdded:false
   };
  
 const ShoppingCartReducer=(state = shoppingCartState,action)=>{
@@ -26,6 +27,7 @@ const ShoppingCartReducer=(state = shoppingCartState,action)=>{
                 },
                 totalBill:totalBill
               }
+            
             break;
         case NAME_EPICS.SHOPPING_CART_EPICS.ADD_EPICS_SUCCESS:
           state = {
@@ -33,7 +35,8 @@ const ShoppingCartReducer=(state = shoppingCartState,action)=>{
                 items: {
                   status: Status.SUCCESS,
                   data: state.items.data,
-                }
+                },
+                isAdded:true
               }
             break;
         case NAME_EPICS.SHOPPING_CART_EPICS.REMOVE_ITEM_EPIC_SUCCESS:

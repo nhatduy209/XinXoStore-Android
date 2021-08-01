@@ -1,10 +1,9 @@
 import React from 'react';
 import Modal from 'react-native-modal';
 import {View,Text,StyleSheet,TouchableOpacity} from 'react-native';
-import ButtonExtension from '../../Config/Component/ButtonExtension';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class ModelAddToShoppingCartSuccess extends React.Component{
+export default class ModelAddFail extends React.Component{
     constructor(props){
         super(props)
     }
@@ -18,12 +17,12 @@ export default class ModelAddToShoppingCartSuccess extends React.Component{
                 >
                     <View style={styles.content}>
                         <View >
-                            <Icon name="check" 
+                            <Icon name="times" 
                                 color="#fff"
                                 size={30}/>
                         </View>
                         <View>
-                            <Text style={{color:"#fff"}}>Added</Text>
+                            <Text style={{color:"#fff",marginVertical:5}}>Item was in your cart!</Text>
                         </View>
                     </View>
                 </Modal>

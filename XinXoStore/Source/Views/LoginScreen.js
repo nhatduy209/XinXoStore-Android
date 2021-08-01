@@ -10,7 +10,7 @@ import { GoogleSignin } from '@react-native-community/google-signin';
 import Authentication from '../Config/Component/Authentication';
 import axios from 'axios';
 import { ServerKey } from '../Config/ServerKey';
-
+import { LoginInWithGoogle } from '../redux/action/LoginAction/LoginAction';
 export class LoginScreen extends React.Component {
 
   constructor(props) {
@@ -21,52 +21,31 @@ export class LoginScreen extends React.Component {
     }
   }
 
-  //handle input 
   handleEmail = (value) => {
     this.setState({ email: value });
   }
-  //handle input 
+
   handlePassword = (value) => {
     this.setState({ password: value });
   }
 
-  //handle login 
   handleLogin = async () => {
     this.props.Login(this.state.email, this.state.password);
-  }
-
-  componentDidMount() {
-    console.log("USER : ", this.props.user);
   }
   _signIn = async () => {
     try {
       GoogleSignin.configure(
         {
-          //webClientId is required if you need offline access
           offlineAccess: false,
           webClientId: '1020094745628-l6k4731ug31m72vvjv8kd1ksejn441d0.apps.googleusercontent.com',
           scopes: ['profile', 'email']
         });
       await GoogleSignin.hasPlayServices();
-      console.log("reached google sign in");
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
-      this.setState({ userInfo });
-      this.props.navigation.navigate('HomeScreen');
-
+      this.props.LoginInWithGoogle(userInfo.user.email,userInfo.user.givenName+' '+userInfo.user.familyName,userInfo.user.id,0);
+      GoogleSignin.signOut();
     } catch (error) {
-      if (error.code === "SIGN_IN_CANCELLED") {
-        console.log("error occured SIGN_IN_CANCELLED");
-        // user cancelled the login flow
-      } else if (error.code === "IN_PROGRESS") {
-        console.log("error occured IN_PROGRESS");
-        // operation (f.e. sign in) is in progress already
-      } else if (error.code === "PLAY_SERVICES_NOT_AVAILABLE") {
-        console.log("error occured PLAY_SERVICES_NOT_AVAILABLE");
-      } else {
-        console.log(error)
-        console.log("error occured unknow error");
-      }
+      console.log(error)
     }
   };
 
@@ -174,7 +153,7 @@ function mapStateToProps(state) {
     // user: firebase.auth().currentUser,
   };
 }
-export default connect(mapStateToProps, { Login })(LoginScreen);
+export default connect(mapStateToProps, { Login,LoginInWithGoogle })(LoginScreen);
 
 const styles = StyleSheet.create(
   {

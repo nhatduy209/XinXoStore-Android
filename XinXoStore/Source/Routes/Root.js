@@ -6,7 +6,7 @@ import SignUpScreen from '../Views/SignUpScreen';
 const Stack = createStackNavigator();
 import {Image , View , Text , TouchableOpacity} from 'react-native';
 import BillScreen from '../Views/bill/BillScreen'
-import ModelAddToShoppingCartSuccess from '../Views/shoppingCart/ModelAddToShoppingCartSuccess';
+import ModelAddFail from '../Views/shoppingCart/ModelAddFail';
 class Root extends React.Component {
 
   render(){
@@ -15,6 +15,7 @@ class Root extends React.Component {
         screenOptions={{
           headerShown: false
         }}>
+          {/* <Stack.Screen name="ModelAddFail" component={ModelAddFail} /> */}
           <Stack.Screen name="Login" component={LoginScreen} />
          <Stack.Screen
          name="RootDrawer" component={RootDrawer} 
