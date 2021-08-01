@@ -1,4 +1,5 @@
 import { Status } from "../../Config/dataStatus";
+import { NAME_ACTIONS } from "../action/BillAction/ActionName";
 import { NAME_EPICS } from "../epics/BillEpics/ActionName";
 
 const billState={
@@ -14,7 +15,7 @@ const BillReducer=(state=billState,action)=>{
             return {
                 ...state,
                 items: {
-                    status: Status.SUCCESS,
+                    status: state.items.status,
                     data: action.data
                 }
             }
@@ -25,6 +26,15 @@ const BillReducer=(state=billState,action)=>{
                 items: {
                     status: Status.SUCCESS,
                     data: action.data
+                }
+            }
+        }
+        case NAME_ACTIONS.CHECKOUT_SCREEN.RESET_STATUS:{
+            return {
+                ...state,
+                items: {
+                    status: Status.FAIL,
+                    data: state.items.data
                 }
             }
         }

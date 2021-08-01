@@ -6,7 +6,8 @@ import {getDefaultAddress} from '../../redux/action/Address/AddressAction';
 import { RenderItemAddress } from './RenderItemAdress';
 import { GetAllProduct } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 import { checkOut } from '../../redux/action/BillAction/BillAction';
-
+import { ResetStatus } from '../../redux/action/BillAction/BillAction';
+import { Status } from '../../Config/dataStatus';
 export class CheckoutScreen extends React.Component{
     constructor(props){
         super(props);
@@ -18,15 +19,23 @@ export class CheckoutScreen extends React.Component{
     componentDidMount=async()=> {
         this.props.getDefaultAddress(this.props.user.data.key);
     }
+    componentDidUpdate(preProp){
+        if(preProp.billStatus!=this.props.billStatus){
+           this.props.navigation.navigate("CheckoutSuccess");
+           this.props.ResetStatus(); 
+        }
+        
+    }
     itemSeparator=()=>{
         return(
             <View style={{ width: 15 }} />
         );
     }
     handleCheckout=()=>{
-        this.props.checkOut(this.props.cart.data,this.props.user);
+        this.props.checkOut(this.props.cart.data,this.props.user,this.props.current);
     }
     render(){
+        
         return(
             <View backgroundColor={"#fff"}>
                 <Text>Shipping to</Text>
@@ -72,10 +81,11 @@ const mapStateToProps = state =>{
         user:state.LoginReducer.user,
         cart:state.ShoppingCartReducer.items,
         current:state.AddressReducer.current,
-        totalBill:state.ShoppingCartReducer.totalBill
+        totalBill:state.ShoppingCartReducer.totalBill,
+        billStatus: state.BillReducer.items.status
     }
   }
-export default connect(mapStateToProps,{getDefaultAddress,GetAllProduct,checkOut})(CheckoutScreen)
+export default connect(mapStateToProps,{getDefaultAddress,GetAllProduct,checkOut,ResetStatus})(CheckoutScreen)
   
 const styles=StyleSheet.create({
     containerToTal:{

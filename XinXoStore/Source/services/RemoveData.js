@@ -16,7 +16,6 @@ export default class RemoveData{
         }
     }
     removeShoppingCart=async(data)=>{
-        
         let result=await firebase.database().ref('Account/'+data.user.data.key).child("Cart").remove()
         .then(()=>{
             return true;

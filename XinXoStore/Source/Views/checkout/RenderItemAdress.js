@@ -7,7 +7,6 @@ export class RenderItemAddress extends React.Component{
         super(props);
     }
     render(){
-        console.log("propss",this.props);
         return(
             <TouchableOpacity style={styles.addressComponent}
                 onPress={()=>{this.props.navigation.navigate("ChooseAddressScreen")}}>

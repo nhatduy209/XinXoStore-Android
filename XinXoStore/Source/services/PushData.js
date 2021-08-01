@@ -98,7 +98,7 @@ export default class  PushData{
                 UserID:data.user.data.key,
                 Username:data.user.data.user.Username,
                 isShipped:false,
-                Address:data.user.Address
+                Address:data.address.data
             }).then(res=> {canAdd=true})
             .catch(()=> {canAdd =false});
             return canAdd;

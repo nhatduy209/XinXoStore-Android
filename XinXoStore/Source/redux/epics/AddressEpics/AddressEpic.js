@@ -45,17 +45,17 @@ const resolver = (action) => {
                     reject(new Error(NAME_ACTIONS.CHECKOUT_SCREEN.GET_DEFAULT_FAIL));
                 })
                 break;
-            case NAME_ACTIONS.CHECKOUT_SCREEN.GET_DEFAULT_SCREEN:
-                addressBusiness.getDefaultAddress(action.data, success => {
-                    resolve({
-                        actionType: NAME_ACTIONS.CHECKOUT_SCREEN.GET_DEFAULT_SUCCESS,
-                        data: success
-                    });
-                }, failed => {
-                    messageError = failed;
-                    reject(new Error(NAME_ACTIONS.CHECKOUT_SCREEN.GET_DEFAULT_FAIL));
-                })
-                break;
+            // case NAME_ACTIONS.CHECKOUT_SCREEN.GET_DEFAULT_SCREEN:
+            //     addressBusiness.getDefaultAddress(action.data, success => {
+            //         resolve({
+            //             actionType: NAME_ACTIONS.CHECKOUT_SCREEN.GET_DEFAULT_SUCCESS,
+            //             data: success
+            //         });
+            //     }, failed => {
+            //         messageError = failed;
+            //         reject(new Error(NAME_ACTIONS.CHECKOUT_SCREEN.GET_DEFAULT_FAIL));
+            //     })
+            //     break;
             default:
                 console.error('Error when resolver User Epic.');
                 break;

@@ -167,6 +167,7 @@ export default class ReadService {
     }
   }
   getListAddressApi= async(idAccount)=>{
+    console.log("get list address============",idAccount)
     let address=[];
     await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){
       snapshot.forEach(function (child){
@@ -192,6 +193,7 @@ export default class ReadService {
   }
   getDefaultAddress=async(idAccount)=>{
     var address= new Object();
+    let error=false;
     await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){
       snapshot.forEach(function (child){
         if(child.key=="Address"){
@@ -203,19 +205,24 @@ export default class ReadService {
           });
         }
       });
-    }).then(res=>{
+    }).catch(err=>{
+      return error=true
+    })
+    if(error==false){
       return {
         status: Status.SUCCESS,
         data:{
           address
         }
       }
-    }).catch(err=>{
+    } else{
       return {
         status: Status.FAIL,
-        data:{}
+        data:{
+          address
+        }
       }
-    })
+    }
   }
   getShoppingCart(idAccount) {
     return firebase.database().ref("Account/"+idAccount).once('value').then(function(snapshot) {

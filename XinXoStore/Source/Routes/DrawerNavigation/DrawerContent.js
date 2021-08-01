@@ -51,7 +51,6 @@ export class DrawerContent extends React.Component {
     this.props.navigation.navigate('SettingsScreensStack');
   }
   render() {
-    console.log("drawer=============",this.props.user)
     let username  = "" , email = "" ; 
     try {
       username = this.props.user.data.user.Username ; 

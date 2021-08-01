@@ -1,14 +1,18 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {View,Text,StyleSheet,TouchableOpacity} from 'react-native'
-
-export default class CheckoutSuccess extends React.Component{
+import { GetAllProduct } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
+import { connect } from 'react-redux';
+export  class CheckoutSuccess extends React.Component{
     constructor(props){
         super(props);
     }
-    handleCheckout(){
+    componentDidMount(){
+        this.props.GetAllProduct(this.props.user.data.key);
+    }
+    handleCheckout=()=>{
         console.log("PROP",this.props);
-        // this.props.navigation.navigate('Home');
+        this.props.navigation.navigate('Home');
     }
     render(){
         
@@ -23,6 +27,12 @@ export default class CheckoutSuccess extends React.Component{
         );
     }
 }
+function mapStateToProps(state){
+    return{
+        user: state.LoginReducer.user,
+    }
+}
+export default connect (mapStateToProps,{GetAllProduct})(CheckoutSuccess)
 const styles= StyleSheet.create({
     btnCheckout:{
         justifyContent:"center",

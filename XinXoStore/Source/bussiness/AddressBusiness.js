@@ -27,6 +27,7 @@ export default class AddressBusiness {
   getDefaultAddress=async(data,success,failed)=>{
     var readDataService = new ReadService();
     const result  =await readDataService.getDefaultAddress(data.idAccount );
+    console.log("result=============",result)
     if( result.status  == Status.SUCCESS){
       success(result); 
     }

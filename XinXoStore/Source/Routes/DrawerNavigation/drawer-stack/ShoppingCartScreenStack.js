@@ -49,7 +49,7 @@ export default class ShoppingCartScreenStack extends React.Component{
                       }}      
                 />
                 <Stack.Screen
-                    name="Checkout Success"
+                    name="CheckoutSuccess"
                     component={CheckoutSuccess}
                     options={{ title: ' Checkout ' ,
                         headerRight: ()=> {

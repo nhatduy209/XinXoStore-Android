@@ -5,11 +5,19 @@ export function getAll(idAccount){
         data:{idAccount}
     }
 }
-export function checkOut(listItem, user){
+export function checkOut(listItem, user,address){
     return {
         type: NAME_ACTIONS.CHECKOUT_SCREEN.CHECKOUT_SCREEN,
         data:{
-            listItem, user
+            listItem, user,address
+        }
+    }
+}
+export function ResetStatus(){
+    return {
+        type: NAME_ACTIONS.CHECKOUT_SCREEN.RESET_STATUS,
+        data:{
+            
         }
     }
 }

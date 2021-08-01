@@ -58,7 +58,7 @@ const ShoppingCartReducer=(state = shoppingCartState,action)=>{
                 }
               }
             break;
-        case NAME_EPICS.SHOPPING_CART_EPICS.RESET_STATUS:
+        case NAME_ACTIONS.SHOPPING_CART_ACTIONS.RESET_STATUS:
             state = {
                 ...state,
                 items: {
