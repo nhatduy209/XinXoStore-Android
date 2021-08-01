@@ -39,6 +39,16 @@ const ShoppingCartReducer=(state = shoppingCartState,action)=>{
                 isAdded:true
               }
             break;
+        case NAME_EPICS.SHOPPING_CART_EPICS.ADD_EPICS_FAIL:
+          state = {
+                ...state,
+                items: {
+                  status: Status.FAIL,
+                  data: state.items.data,
+                },
+                isAdded:true
+              }
+            break;
         case NAME_EPICS.SHOPPING_CART_EPICS.REMOVE_ITEM_EPIC_SUCCESS:
             state = {
                 ...state,
@@ -48,7 +58,17 @@ const ShoppingCartReducer=(state = shoppingCartState,action)=>{
                 }
               }
             break;
-       
+        case NAME_EPICS.SHOPPING_CART_EPICS.RESET_STATUS:
+            state = {
+                ...state,
+                items: {
+                  status: Status.FAIL,
+                  data: action.data,
+                },
+                isAdded:false
+              }
+            break;
+        
         default:
             break;
        

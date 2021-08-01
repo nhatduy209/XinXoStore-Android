@@ -7,8 +7,7 @@ import { AddCart } from '../../redux/action/ShoppingCartAction/ShoppingCartActio
 import { GetAllProduct } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 import ModelAddToShoppingCartSuccess from '../shoppingCart/ModelAddToShoppingCartSuccess';
 import ModelAddFail from '../shoppingCart/ModelAddFail';
-import { getFontScaleSync } from 'react-native-device-info';
-
+import { ResetStatus } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 export  class RenderNewArrivalsItem extends React.Component {
   constructor(props) {
     super(props);
@@ -30,18 +29,9 @@ export  class RenderNewArrivalsItem extends React.Component {
     this.props.navigation.push('DetailItemScreen',data);
   }
   componentDidUpdate(preProps){
-    if(preProps.numberCart.status!=this.props.numberCart.status){
-      this.setState({
-        isVisible: true
-      }, () => {
-        setTimeout(() => {
-          this.setState({
-            isVisible: false
-          });
-        }, 2500);
-      });
-    }
-    if(this.state.isAdd==true && this.props.numberCart.status=="FAIL"){
+
+    if(this.props.isAdded==true && this.props.numberCart.status=="FAIL"){
+      this.props.ResetStatus();
       this.setState({
         isVisibleFail: true
       }, () => {
@@ -52,11 +42,23 @@ export  class RenderNewArrivalsItem extends React.Component {
         }, 2500);
       });
     }
+    else if(this.props.isAdded==true && this.props.numberCart.status=="SUCCESS"){
+      this.props.ResetStatus();
+      this.setState({
+        isVisible: true
+      }, () => {
+        setTimeout(() => {
+          this.setState({
+            isVisible: false
+          });
+        }, 2500);
+      });
+    }
   }
   render() {
     return (
       <View style={styles.container}>
-        <ModelAddToShoppingCartSuccess isVisible={this.props.isAdded}/>
+        <ModelAddToShoppingCartSuccess isVisible={this.state.isVisible}/>
         <ModelAddFail isVisible={this.state.isVisibleFail}/>
         <View>
           <Image
@@ -107,7 +109,7 @@ const mapStateToProps = state =>{
     isAdded:state.ShoppingCartReducer.isAdded
   }
 }
-export default connect(mapStateToProps,{AddCart,GetAllProduct})(RenderNewArrivalsItem)
+export default connect(mapStateToProps,{AddCart,GetAllProduct,ResetStatus})(RenderNewArrivalsItem)
 
 const styles = StyleSheet.create({
   container: {

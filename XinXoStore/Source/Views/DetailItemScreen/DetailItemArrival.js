@@ -1,18 +1,18 @@
 import React from 'react'
 import { View, Dimensions, StyleSheet, Image, Text ,TouchableOpacity, ScrollView,FlatList} from 'react-native'
 import TestAPI from '../TestAPI';
-import { SliderBox } from "react-native-image-slider-box";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import NewArrivalItem from '../homeScreenFlatlist/HomeScreenArrivalsItems.js'
 import StarRating from './StarRating';
 import { getListReviews } from '../../redux/action/ReviewAction/ReviewAction.js';
-import { getListNewArrivals } from '../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction'
 import {getPublisherInfo} from '../../redux/action/GetPublisherInfoAction/GetPublisherInfoAction'
 import UrlComponent from './UrlRender';
 import FeedbackComponent from './RenderFeedback';
 import { AddCart } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
-
+import ModelAddToShoppingCartSuccess from '../shoppingCart/ModelAddToShoppingCartSuccess';
+import ModelAddFail from '../shoppingCart/ModelAddFail';
+import { ResetStatus } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 class DetailItem extends React.Component {
     constructor(props) {
         super(props);
@@ -26,6 +26,8 @@ class DetailItem extends React.Component {
             sold: false,
             listItem:[],
             listReview:[],
+            isVisible:false,
+            isVisibleFail:false,
           };
     }
     componentDidMount() {
@@ -47,11 +49,30 @@ class DetailItem extends React.Component {
     componentDidUpdate(prevProps) {
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
-
-        // if( this.props.publisher.status !== prevProps.publisher.status){
-            
-            
-        // }
+        if(this.props.isAdded==true && this.props.numberCart.status=="FAIL"){
+            this.props.ResetStatus();
+            this.setState({
+              isVisibleFail: true
+            }, () => {
+              setTimeout(() => {
+                this.setState({
+                  isVisibleFail: false
+                });
+              }, 2500);
+            });
+          }
+          else if(this.props.isAdded==true && this.props.numberCart.status=="SUCCESS"){
+            this.props.ResetStatus();
+            this.setState({
+              isVisible: true
+            }, () => {
+              setTimeout(() => {
+                this.setState({
+                  isVisible: false
+                });
+              }, 2500);
+            });
+          }
     }
     ShowAllReview = (listReview) => {
         this.props.navigation.navigate('AllReviews',listReview);
@@ -106,6 +127,8 @@ class DetailItem extends React.Component {
     render(){
         return(
             <View style={{backgroundColor: '#fff'}}>
+                <ModelAddToShoppingCartSuccess isVisible={this.state.isVisible}/>
+                <ModelAddFail isVisible={this.state.isVisibleFail}/>
                 <View style={{position: 'absolute',zIndex:10,justifyContent: 'center'}}>
                     <TouchableOpacity style={styles.navigationIcon} onPress={() =>this.props.navigation.toggleDrawer()}>
                             <Icon
@@ -253,10 +276,12 @@ function mapStateToProps(state) {
         listReview: state.ReviewReducer.items,
         publisher : state.PublisherInfoReducer.publisher ,
         // userInfoCart : state.LoginReducer.user.data.user,
-        userKey : state.LoginReducer.user.data.key
+        userKey : state.LoginReducer.user.data.key,
+        numberCart:state.ShoppingCartReducer.items,
+        isAdded:state.ShoppingCartReducer.isAdded
     };
   }
-export default connect(mapStateToProps, {getPublisherInfo,getListReviews,AddCart})(DetailItem);
+export default connect(mapStateToProps, {getPublisherInfo,getListReviews,AddCart,ResetStatus})(DetailItem);
 const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
