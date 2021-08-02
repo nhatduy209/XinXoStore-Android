@@ -345,9 +345,9 @@ export default class ReadService {
       .once('value', function (snapshot) {
         snapshot.forEach(function (child) {
           //đặt ddieuf kiện
+          const key = child.key;
           var myJson = child.toJSON();
           if (myJson.ownerId === idOwner) {
-            console.log('myJson', myJson);
             let myObject = {
               img : "",
               Name : "",
@@ -355,9 +355,14 @@ export default class ReadService {
               publicDate : "", 
               ownerShop : "",
               prices : 0,      
-              sold : false ,       
+              sold : false ,
+              Description:"",  
+              key: "",
+              Demension:"",
             };
-            
+            myObject.Demension = myJson.Demension;
+            myObject.key = key;
+            myObject.Description = myJson.Description;
             myObject.img = myJson.img;
             myObject.Name = myJson.Name ;
             myObject.Category = myJson.Category ;   

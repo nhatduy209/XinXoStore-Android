@@ -3,6 +3,7 @@ import { Text, View,Dimensions, Modal,StyleSheet, TouchableOpacity, TextInput, I
 import TestAPI from '../TestAPI';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import { FilePath } from '../../Config/FilePath';
 import StarRating from 'react-native-star-rating';
 import * as ImagePicker from "react-native-image-picker";
 import { addReviews } from '../../redux/action/ReviewAction/ReviewAction.js';
@@ -24,6 +25,7 @@ class DoReviewComponent extends React.Component {
             UserId:this.props.userInfo.key,
             UserName:this.props.userInfo.user.Username,
             Img:[],
+            Avatar:this.props.userInfo.user.Avatar,
             visible:false,
         }
     }
@@ -47,6 +49,7 @@ class DoReviewComponent extends React.Component {
             UserId: this.state.UserId,
             Username: this.state.UserName,
             Url:this.state.url,
+            Avatar:this.state.Avatar
         }
         if(this.state.Content!==""){
             this.props.addReviews(data);
@@ -62,7 +65,7 @@ class DoReviewComponent extends React.Component {
                 // console.log('IMAGE CHOOSE ', response.assets[0].fileName)
                 response.assets.forEach((element)=>{
                     Url.push(element.uri);
-                    Img.push(element.fileName)
+                    Img.push(FilePath.REVIEW_IMAGE_STORAGE + '/' +element.fileName)
                 })
                 this.setState({ url: Url })
                 this.setState({ Img: Img })
@@ -77,7 +80,7 @@ class DoReviewComponent extends React.Component {
             if(response.assets){
                 response.assets.forEach((element)=>{
                     Url.push(element.uri);
-                    Img.push(element.fileName)
+                    Img.push(FilePath.REVIEW_IMAGE_STORAGE + '/' +element.fileName)
                 })
                 this.setState({ url: Url })
                 this.setState({ Img: Img })

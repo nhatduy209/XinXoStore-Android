@@ -37,8 +37,6 @@ class AddScreen extends React.Component {
           };
     }
     componentDidMount() {
-        // console.log('userinfo')
-        // console.log(this.props.userInfo);
         // var testApi = new TestAPI()
         // testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
     }
@@ -51,7 +49,6 @@ class AddScreen extends React.Component {
         const Options = {};
         ImagePicker.launchImageLibrary(Options, response => {
             if(response.assets){
-                console.log('IMAGE CHOOSE ', response.assets[0].fileName)
                 this.setState({ url: response.assets[0].uri })
                 this.setState({ img: response.assets[0].fileName })
                 this.setState({ PathImageDevice: response.assets[0].uri })
@@ -61,9 +58,7 @@ class AddScreen extends React.Component {
       handleCamera = () => {
         const Options = {};
         ImagePicker.launchCamera(Options, response => {
-            console.log('response',response);
             if(response.assets){
-                console.log('IMAGE CHOOSE ', response.assets[0].fileName)
                 this.setState({ url: response.assets[0].uri })
                 this.setState({ img: response.assets[0].fileName })
                 this.setState({ PathImageDevice: response.assets[0].uri })
@@ -95,16 +90,18 @@ class AddScreen extends React.Component {
     }
     handleSave=() => {
         let imagePath = this.state.img ;
-        // console.log(typeof this.state.Name)
         if(this.state.PathImageDevice.length > 0 ){
           imagePath = FilePath.PRODUCT_IMAGE_STORAGE + '/' + this.state.img;
         }
         if(this.state.Name != "" && this.state.prices != ""){
         // if(this.state.Name != "" && this.state.prices != "" && this.state.img != "" && this.state.Demension != "" && this.state.Category != "" && this.state.Describe != "") {
             this.props.addProduct(this.state.Name,imagePath,this.state.prices,this.state.ownerId,this.state.ownerShop,this.state.PathImageDevice,this.state.Demension,this.state.Category,this.state.Description);
-            this.props.getListNewArrivals();
-            const changed = {changed:true};
-            this.props.navigation.navigate('ManagementScreen', changed)
+            if(this.props.route.params.prevScreen === 'ItemSoldScreen'){
+                this.props.navigation.navigate('ItemSoldScreen')
+            }
+            else{
+                this.props.navigation.navigate('ManagementScreen', {changed:true,prevScreen:'addScreen',reload:true})
+            }
         }else{
             this.setState({visible: true})
             this.setState({blur :Dimensions.get('window').height})
@@ -267,14 +264,18 @@ const styles = StyleSheet.create({
         // elevation:6,
     },
     button:{
-        backgroundColor: '#2a4d69',
+        backgroundColor: '#003333',
         padding:10,marginTop:20,
-        width:'50%',
+        width:'50%',height:50,
+        paddingVertical:10,
+        borderRadius:10
     },
     textButton: {
         marginHorizontal:20,
-        fontSize:18,
+        fontSize:24,
         fontWeight:'bold',
         textAlign: 'center',
-        color:'#000'}
+        color:'#fff',
+        
+    }
 });

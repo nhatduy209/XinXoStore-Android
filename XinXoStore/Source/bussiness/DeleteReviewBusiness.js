@@ -1,7 +1,7 @@
 import { Status } from '../Config/dataStatus';
 import DeleteData from '../services/DeleteData';
 
-export default class DeleteProductBusiness {
+export default class AddProductBusiness {
   deleteProduct = async ( data , success , failed ) => {
     var deleteApi= new DeleteData();
 

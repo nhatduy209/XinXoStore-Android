@@ -22,35 +22,65 @@ class ManagementScreen extends React.Component {
         super(props);
         this.state={
             list: [],
+            delete:false,
         }
     }
     componentDidMount() {
+        this.props.getListNewArrivals();
         const array = this.state.list;
         this.props.newArrivalsItems.data.listItem.forEach((element, index) => {
-            // console.log(this.props.userInfo.key)
             if(element.ownerId === this.props.userInfo.key)
             {
                 array.push({isExpanded: false, ...element});
             }
         });
-        
+        this.setState({list: array});
+    }
+
+    handleList=(list)=>{
+        const array = [];
+        list.forEach((element, index) => {
+            if(element.ownerId === this.props.userInfo.key)
+            {
+                array.push({isExpanded: false, ...element});
+            }
+        });
         this.setState({list: array});
     }
     componentDidUpdate(){
         if(this.props.route.params.changed){
-            
-            const array = [];
-            this.props.newArrivalsItems.data.listItem.forEach((element, index) => {
-                // console.log(this.props.userInfo.key)
+            if(this.props.route.params.prevScreen==='addScreen'){
+                if(this.props.route.params.reload){
+                    this.props.getListNewArrivals();
+                    this.props.route.params.reload=false;
+                }else
+                {
+                    this.handleList(this.props.newArrivalsItems.data.listItem);
+                    this.props.route.params.changed = false;
+                }
+            }
+            else{
+                const array = [];
+                this.props.newArrivalsItems.data.listItem.forEach((element, index) => {
                 if(element.ownerId === this.props.userInfo.key)
                 {
-                    array.push({isExpanded: false, ...element});
+                    
+                        if(this.props.route.params.data.Key===element.key){
+                            array.push({isExpanded: false, ...this.props.route.params.data});
+                        }
+                        else
+                        array.push({isExpanded: false, ...element});
                 }
-            });
-            this.setState({list: array});
-            this.props.route.params.changed = false;
+                });
+                this.setState({list: array});
+                this.props.route.params.changed = false;
+            }
+            
+            
         }
-        
+        if(this.state.delete){
+            this.setState({delete:false})
+        }
     }
     deleteHandle = (item)=>{
         var list = this.props.newArrivalsItems.data.listItem.filter((element)=>{return element.key != item.key})
@@ -65,9 +95,8 @@ class ManagementScreen extends React.Component {
                 },
               { text: "OK", onPress: () =>  {this.props.deleteProduct(item.img,item.key)
                 this.props.getListNewArrivals();
-                this.props.newArrivalsItems.data.listItem = list;
-                this.props.route.params.changed = true;
-                console.log('deleted')
+                this.handleList(list);
+                this.setState({delete:true});
             }}
             ]
           );
@@ -115,7 +144,8 @@ class ManagementScreen extends React.Component {
                         }}>
                         <TouchableOpacity style={{backgroundColor: '#ddd',justifyContent: 'center',width:50}}
                             onPress={()=> {
-                            this.props.navigation.navigate('EditScreen',data);
+                                this.setState({edit:item.key})
+                            this.props.navigation.navigate('EditScreen',{...data,prevScreen:'ManagementScreen'});
                         }}>
                             <Text style={styles.itemOption}>
                                 Edit
@@ -172,14 +202,15 @@ class ManagementScreen extends React.Component {
                 </View>
                     <View style={styles.AddButton}>
                         <TouchableOpacity onPress={()=> {
-                            this.props.navigation.navigate('AddScreen');
+                            this.props.navigation.navigate('AddScreen',{prevScreen:'ManagementScreen'});
                         }}>
-                            <LinearGradient start={{x:0.0, y:0.1}} end={{x:0.0, y:1.1}} colors={['rgba(43,76,105,0.8)','rgba(255,255,255,0)',]} style={{height:50}}>
                             <Text style={styles.textButton}> Add</Text>
-                            </LinearGradient>
+                            {/* <LinearGradient start={{x:0.0, y:0.1}} end={{x:0.0, y:1.1}} colors={['rgba(0,50,50,0.8)','rgba(255,255,255,0)',]} style={{height:50}}>
+                            
+                            </LinearGradient> */}
                         </TouchableOpacity>
                     </View>
-                    <View style={{marginBottom:260}}>
+                    <View style={{marginBottom:300}}>
                     <FlatList
                     data={this.state.list}
                     renderItem={this.renderItem}
@@ -226,15 +257,17 @@ const styles = StyleSheet.create({
         width:150
     },
     AddButton:{
-        width: Dimensions.get('window').width,height:50,
-        justifyContent: 'center',
+        width: Dimensions.get('window').width,
+        justifyContent: 'center'
     },
     textButton:{
         padding: 5,
         textAlign: 'center',
         fontSize:24,
         fontWeight:'bold',
-        color: '#000'
+        color: '#fff',
+        backgroundColor:'rgba(0,70,70,0.9)',
+        justifyContent:'center',height:70,paddingVertical:20
     },
     navigationIcon: {
         left:20,

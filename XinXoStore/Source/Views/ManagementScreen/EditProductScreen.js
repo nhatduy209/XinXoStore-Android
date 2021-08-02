@@ -28,16 +28,13 @@ class EditScreen extends React.Component {
             Description: this.props.route.params.data.Description,
             Category: this.props.route.params.data.Category,
             Demension: this.props.route.params.data.Demension,
-            Rating: this.props.route.params.data.Rating,
-            liked: this.props.route.params.data.liked,
             PathImageDevice: "",
             changed: false,
-            visible:true,
-            blur:Dimensions.get('window').height,
+            visible:false,
+            blur:0,
           };
     }
     componentDidMount() {
-        // console.log(this.props.route.params.data);
         // this.setState({})
         // console.log(this.props);
         var testApi = new TestAPI()
@@ -45,27 +42,28 @@ class EditScreen extends React.Component {
     }
     handleSave = () => {
         if(this.state.Description !== "" && this.state.Name !== "" && this.state.price !== "" && this.state.publicDate !== ""){
-            // let imagePath = this.state.img ;
-            // if(this.state.PathImageDevice.length > 0 ){
-            //   imagePath = FilePath.ACCOUNT_IMAGE_STORAGE + '/' + this.state.img;
-            // }
-            // const data = {
-            //     Name: this.state.Name,
-            //     Rating: this.state.Rating,
-            //     img: imagePath,
-            //     Key: this.props.route.params.data.key,
-            //     liked: this.state.liked,
-            //     prices: this.state.price,
-            //     publicDate: this.state.publicDate,
-            //     PathImageDevice: this.state.PathImageDevice,
-            //     Demension: this.state.Demension,
-            //     Description: this.state.Description,
-            //     Category: this.state.Category,
-            // }
-            // this.props.editProduct(data);
-            // this.props.getListNewArrivals();
-            // const changed = {changed:true};
-            // this.props.navigation.navigate('ManagementScreen', changed)
+            let imagePath = this.state.img ;
+            if(this.state.PathImageDevice.length > 0 ){
+              imagePath = FilePath.ACCOUNT_IMAGE_STORAGE + '/' + this.state.img;
+            }
+            const data = {
+                Name: this.state.Name,
+                img: imagePath,
+                Key: this.props.route.params.data.key,
+                prices: this.state.price,
+                publicDate: this.state.publicDate,
+                PathImageDevice: this.state.PathImageDevice,
+                Demension: this.state.Demension,
+                Description: this.state.Description,
+                Category: this.state.Category,
+            }
+            this.props.editProduct(data);
+            this.props.getListNewArrivals();
+            if(this.props.route.params.prevScreen==="ManagementScreen"){
+                this.props.navigation.navigate('ManagementScreen', {data,changed:true,prevScreen:'editScreen'})
+            }else{
+                this.props.navigation.navidate(this.props.route.params.prevScreen)
+            }
         }else{
             this.setState({visible: true});
             this.setState({blur:Dimensions.get('window').height})
@@ -97,7 +95,7 @@ class EditScreen extends React.Component {
                             </Icon>
                     </TouchableOpacity>
                         <Text style={styles.textHeader}>Edit Product</Text>
-                        <View style={{height:60,opacity:0.5,width:Dimensions.get('window').width}}>
+                        <View style={{height:60,backgroundColor:'#eee',opacity:0.5,width:Dimensions.get('window').width}}>
                         
                         </View>
                 </View>
@@ -168,11 +166,11 @@ class EditScreen extends React.Component {
                             </View>
                        
                             <View style={styles.infoBox}>
-                                <Text style={styles.itemTitle}>Describe</Text>
-                                <View onChangeText={value => {
+                                <Text style={styles.itemTitle}>Description</Text>
+                                <View style={styles.detailInfo}>
+                                    <TextInput onChangeText={value => {
                                         this.setState({Description: value});
-                                    }} style={styles.detailInfo}>
-                                    <TextInput style={{fontSize:16}} placeholder={'Type Describe here'}>{this.state.Description}</TextInput>
+                                    }} style={{fontSize:16}} placeholder={'Type Describe here'}>{this.state.Description}</TextInput>
                                 </View>
                             </View>
                        
@@ -188,7 +186,7 @@ class EditScreen extends React.Component {
                         <View style={{backgroundColor: '#fff',paddingHorizontal:30,paddingBottom:20,alignItems: 'center',marginTop:10}}>
                             <TouchableOpacity onPress= {this.handleSave}>
                             {/* '#00a04f' */}
-                                <View style={{backgroundColor: '#000',padding:10,marginTop:20,width:Dimensions.get('window').width-140}}>
+                                <View style={{backgroundColor: '#003333',padding:10,marginTop:20,width:Dimensions.get('window').width-140}}>
                                     <Text style={{marginHorizontal:20,fontSize:18,fontWeight:'bold',textAlign: 'center',color:'#fff'}}>Save</Text>
                                 </View>
                             </TouchableOpacity>

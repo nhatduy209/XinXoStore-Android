@@ -24,6 +24,8 @@ import SettingScreenStack from './SettingScreenStack';
 import PublisherProfileScreen from '../../../Views/PublisherProfileScreen';
 import UserProfileStack from '../../BottomNavigation/UserProfileScreenStack';
 import CommentStoreScreen from '../../../Views/CommentStoreScreen';
+
+import AllNotification from '../../../Views/Notifications/AllNotification';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -245,7 +247,13 @@ class HomeScreenStack extends React.Component {
             title: "", headerShown: false,
           }}
         />
-
+        <Stack.Screen
+          name="AllNotification"
+          component={AllNotification}
+          options={{
+            title: "",headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="PublisherProfileScreen"
           component={PublisherProfileScreen}
@@ -253,10 +261,7 @@ class HomeScreenStack extends React.Component {
             headerTitleAlign: 'center',
             headerTitle: 'Profile'
           }}
-
         />
-
-
         <Stack.Screen
           name="CommentStoreScreen"
           component={CommentStoreScreen}
@@ -265,7 +270,6 @@ class HomeScreenStack extends React.Component {
             headerTitle: 'Comment'
           }}
         />
-
       </Stack.Navigator>
     );
   }

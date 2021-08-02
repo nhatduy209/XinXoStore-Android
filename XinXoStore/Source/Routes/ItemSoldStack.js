@@ -4,6 +4,7 @@ import LoginScreen from '../Views/LoginScreen'
 import RootDrawer from './DrawerNavigation/RootDrawer';
 import SignUpScreen from '../Views/SignUpScreen';
 import AddScreen from '../Views/ManagementScreen/AddProductScreen';
+import EditScreen from '../Views/ManagementScreen/EditProductScreen';
 import ItemSoldScreen from '../Views/itemSold/ItemSoldScreen';
 const Stack = createStackNavigator();
 
@@ -18,6 +19,9 @@ class ItemSoldStack extends React.Component {
           <Stack.Screen name="ItemSoldScreen" component={ItemSoldScreen} />
          <Stack.Screen
          name="AddScreen" component={AddScreen} 
+         />
+         <Stack.Screen
+         name="EditScreen" component={EditScreen} 
          />
         </Stack.Navigator>
     );

@@ -50,13 +50,13 @@ class DetailItem extends React.Component {
             <View>
                 <TouchableOpacity style={{flexDirection: 'row',alignSelf: 'center'}}
                 onPress={()=>this.ShowAllReview()}>
-                    <Text style={{paddingVertical:10,fontSize:16,color:'#b00'}}>
+                    <Text style={{paddingVertical:10,fontSize:16,color:'#000'}}>
                             Show all reviews
                     </Text>
                     <Icon
                     size={13}
                     name="chevron-right"
-                    style={{paddingVertical:15,paddingHorizontal:5,color:'#b00'}}
+                    style={{paddingVertical:15,paddingHorizontal:5,color:'#000'}}
                     >
                     </Icon>                    
                 </TouchableOpacity>
@@ -106,16 +106,9 @@ class DetailItem extends React.Component {
                         
                         </View>
                 </View>
-                {/* add to Cart */}
-                <View style={styles.addToCartButton}>
-                    <TouchableOpacity onPress={()=>{this.props.route.params.data.sold? console.log('sold'): this.addItem()}}>
-                                <Text style={[styles.addToCart,{backgroundColor:this.props.route.params.data.sold?'#d4d8d4':'#fb2e01'}]}>
-                                    Add to cart
-                                </Text>
-                    </TouchableOpacity> 
-                </View>
                 
-                <ScrollView >
+                
+                <ScrollView style={{height:'93%'}}>
                     {/* item images */}
                     <View style={{height:320}}>
                         <Image style={{height:350,resizeMode: 'cover'}} source ={{uri : this.state.url}} />
@@ -157,7 +150,7 @@ class DetailItem extends React.Component {
                                     <View style={{marginTop:20}}>
                                 <TouchableOpacity onPress = { this.goToPublisherScreen }>
                                     <View style={{height:70,flexDirection: 'row'}}>
-                                        <UrlComponent item={{img:this.props.userInfo.user.Avatar,demension:70}}/>
+                                        <UrlComponent item={{img:this.props.userInfo.user.Avatar,demension:70,radius:50}}/>
                                         <View style={{paddingVertical:20,flexDirection: 'row',width:Dimensions.get("window").width - 120}}>
                                             <Text style={{marginHorizontal:10,fontSize:18,justifyContent: 'center'}}>{this.props.route.params.data.ownerShop}</Text>
                                             
@@ -222,9 +215,10 @@ class DetailItem extends React.Component {
                             {
                                 this.props.listReview.data.listItem ? this.props.listReview.data.listItem.filter((element,index)=>{return index<2}).map((element,index) => {
                                     var item = {Content: element.Content,
-                                            UserName: element.UserName,
+                                            UserName: element.Username,
                                             Rating:element.Rating,
-                                            Avatar:element.Img,
+                                            Img:element.Img,
+                                            Avatar:element.Avatar
                                         }
                                     return (<FeedbackComponent key={index} item={item}/>);
                                 }) : <View/>
@@ -237,12 +231,29 @@ class DetailItem extends React.Component {
                         <DoReview item ={this.props.route.params.data}/>
                     </View>
                 </ScrollView>
+                {/* add to Cart */}
+                <View style={styles.addToCartButton}>
+                    {
+                        this.props.route.params.data.sold ?
+                        <Text style={[styles.addToCart,{backgroundColor:'#aaa'}]}>
+                            Add to cart
+                        </Text> :
+                        <TouchableOpacity onPress={()=>{this.addItem()}}>
+                            <Text style={[styles.addToCart,{backgroundColor:'#003344'}]}>
+                                Add to cart
+                            </Text>
+                        </TouchableOpacity> 
+
+                    }
+                    
+                </View>
             </View>           
         
         );
     }
 }
 function mapStateToProps(state) {
+    // console.log(state.ReviewReducer.items.data.listItem)
     return {
         newArrivalsItems: state.NewArrivalsReducer.items,
         userInfo : state.LoginReducer.user.data,
@@ -266,29 +277,25 @@ const styles = StyleSheet.create({
         width:'60%'
     },
     addToCartButton:{
-        paddingHorizontal:10,
-        position:'absolute',
-        bottom:0,
         justifyContent: 'center',
-        alignSelf: 'center',
         zIndex:10,
-        elevation:10,
+        height:'7%',
+        
     },
     boxContent:{
         position:'relative',
         borderTopLeftRadius:10,
         borderTopRightRadius:10,
-        width: Dimensions.get("window").width,
+        width: '100%',
         backgroundColor: "#fff",
-        marginBottom:50,
         zIndex:6
     },addToCart :{
-        fontSize:16,
-        padding:15,
+        fontSize:21,
         color:'#fff',
         fontWeight: '700',
-        width: Dimensions.get("window").width,
+        width: '100%',
         textAlign:'center',
+        height:'100%',padding:10,
     },
     navigationIcon: {
         left:20,

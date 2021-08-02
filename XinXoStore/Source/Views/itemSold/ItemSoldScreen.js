@@ -30,9 +30,10 @@ class ItemSoldScreen extends React.Component {
   }
 
   renderItemSelling = ({ item }) => {
+    // console.log(item)
     if (!item.sold) {
       return (
-        <RenderItemsSelling item={item} />
+        <RenderItemsSelling item={item} navigation={this.props.navigation}/>
       )
     }
 
@@ -45,7 +46,6 @@ class ItemSoldScreen extends React.Component {
   }
 
   handleData = (item) => {
-    console.log(item.item)
     item.item.map(value => {
       return (
         <DataTable.Cell>{value}</DataTable.Cell>
@@ -55,13 +55,13 @@ class ItemSoldScreen extends React.Component {
 
 
   confirmDeliver = (item) => {
-    console.log("LOG-------------", item)
+    // console.log("LOG-------------", item)
     this.setState({ iconDeliver: 'check-circle' })
     this.setState({ colorDeliver: 'green' })
   }
 
   navigateAddProduct = () => {
-    this.props.navigation.navigate('AddScreen')
+    this.props.navigation.navigate('AddScreen',{prevScreen:'ItemSoldScreen'})
   }
 
   render() {
@@ -169,7 +169,7 @@ class CheckDeliverButton extends React.Component {
     }
   }
   confirmDeliver = (item) => {
-    console.log("LOG--------------", item)
+    // console.log("LOG--------------", item)
     this.setState({ iconDeliver: 'check-circle' })
     this.setState({ colorDeliver: 'green' })
   }
@@ -205,7 +205,7 @@ class ImageItem extends React.Component {
 
   componentDidMount() {
     var testApi = new TestAPI();
-    console.log("AFTER EDIT ----------------", this.props.img)
+    // console.log("AFTER EDIT ----------------", this.props)
     testApi.myPromise(this.props.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
 

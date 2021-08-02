@@ -81,9 +81,7 @@ export default class UpdateService {
       .ref('NewArrivals/' + data.data.Key)
       .update({
           Name : data.data.Name,
-          Rating : data.data.Rating,
-          img : data.data.img, 
-          liked : data.data.liked ,
+          img : data.data.img,
           prices : data.data.prices,
           publicDate :  data.data.publicDate,
           Description : data.data.Description,

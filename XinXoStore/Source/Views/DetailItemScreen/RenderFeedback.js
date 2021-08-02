@@ -16,12 +16,14 @@ export default class FeedbackComponent extends React.Component {
             ],
             url: "img",
             like: false,
+            Img:[],
         }
     }
 
     componentDidMount() {
-        // var testApi = new TestAPI()
-        // testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
+        const array = Object.values(this.props.item.Img);
+        // console.log(array);
+        this.setState({Img:array})
     }
     getDate = () =>{
         var date = new Date();
@@ -34,7 +36,7 @@ export default class FeedbackComponent extends React.Component {
         return (
             <View >
                 <View style={{height:50,flexDirection: 'row',width:Dimensions.get("window").width,borderTopWidth:1,borderTopColor:'#eee'}}>
-                    <UrlComponent item={{img:this.props.item.Avatar,demension: 40}}/>
+                <UrlComponent item={{img:this.props.item.Avatar,demension: 40,radius:50}}/>
                     <View>
                         <Text style={{paddingTop:10,fontSize:14,justifyContent: 'center'}}>{this.props.item.UserName}</Text>
                         <View style={{flexDirection: 'row'}}>
@@ -62,8 +64,8 @@ export default class FeedbackComponent extends React.Component {
                         <Text style={{marginHorizontal:10,fontSize:15,justifyContent: 'center'}}>{this.props.item.Content}</Text>
                         <View style={{flexDirection:'row'}}>
                         {
-                            this.state.images.map((element)=>{
-                                return <Image key={element} style={{height: 50,width:50}} source={element}></Image>
+                            this.state.Img.map((element,index)=>{
+                                return <UrlComponent key ={index} item={{img:element,demension: 60,radius:0}}/>
                             })
                         }
                         </View>

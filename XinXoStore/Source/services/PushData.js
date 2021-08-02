@@ -54,6 +54,11 @@ export default class  PushData{
           };
     }
     addReviewApi=  async(data)=>{
+        if(data.Url){
+            data.Url.forEach((element,index) => {
+                uploadImageToStorage(element , data.Img[index]);
+            });
+        }
         // var  fileImagePath = img;
         // uploadImageToStorage(PathImageDevice , fileImagePath);
         await firebase
@@ -68,29 +73,14 @@ export default class  PushData{
             UserId: data.UserId,
             Username:data.Username,
             ProductId:data.ProductId,
-            Img: data.Img
+            Img: data.Img,
+            Avatar:data.Avatar
         })
         .then(()=>console.log('Data added'));
         return {
             data:{},
             status: Status.SUCCESS
           };
-    }
-    addImageReviewAPI=async(key,PathImageDevice,Img)=>{
-        var  fileImagePath = Img;
-        uploadImageToStorage(PathImageDevice , fileImagePath);
-        await firebase
-        .database()
-        .ref('Account/'+key+"/Img")
-        .push()
-        .set({
-            ItemID:itemID
-        })
-        .then(()=>console.log('Data added============='));
-        return {
-            data:{},
-            status: Status.SUCCESS
-        };
     }
     addToShoppingCart=async(idAccount,itemID)=>{
         await firebase

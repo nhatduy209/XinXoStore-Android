@@ -38,6 +38,10 @@ export class DrawerContent extends React.Component {
     this.props.navigation.navigate('ShoppingCart');
   }
 
+  onNotificationPress = () => {
+    this.props.navigation.push('AllNotification');
+    this.props.navigation.navigate('AllNotification');
+  }
   // goToEditProfile = () => {
   //   this.props.navigation.push('EditProfileScreen');
   //   this.props.navigation.navigate('EditProfileScreen');
@@ -61,25 +65,27 @@ export class DrawerContent extends React.Component {
         username = "" ;
         email = "";
     }
+    const iconSize=20;
     return (
-      <View>
+      <View style={{height:'100%',}}>
+        <View style={styles.headerStyle} >
         <TouchableOpacity onPress = {this.goToEditProfile}>
-          <View style={styles.headerStyle} >
+          
             <Image
-              style={{ height: 100, width: 100, borderRadius: 60 }}
+              style={{ height: 100, width: 100, borderRadius: 60,marginHorizontal:10,alignSelf:'center' }}
               source={{ uri: this.state.url }}>
             </Image>
-            <View>
-              <Text style={{ fontSize: 25 }}>
+            <View style={{alignItems: 'center',justifyContent: 'center',}}>
+              <Text style={{ fontSize: 25,fontWeight:'bold',color:'#000' }}>
                 {username}  
               </Text>
-              <Text style={{ color: '#bbbbbb' }}>
+              <Text style={{ color: '#aaa' }}>
                 {email}
               </Text>
             </View>
-          </View>
         </TouchableOpacity>
-
+        </View>
+        
 
         {/* list item in drawer  */}
         <View>
@@ -87,7 +93,7 @@ export class DrawerContent extends React.Component {
           <TouchableOpacity onPress={this.onHomePress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={25}
+                size={iconSize}
                 name="home"
                 style={styles.iconStyle}
               >
@@ -101,7 +107,7 @@ export class DrawerContent extends React.Component {
           <TouchableOpacity onPress={this.onHomePress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={25}
+                size={iconSize}
                 name="tags"
                 style={styles.iconStyle}
               >
@@ -115,7 +121,7 @@ export class DrawerContent extends React.Component {
           <TouchableOpacity onPress={this.onHomePress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={25}
+                size={iconSize}
                 name="heart"
                 style={styles.iconStyle}
               >
@@ -129,7 +135,7 @@ export class DrawerContent extends React.Component {
           <TouchableOpacity onPress={this.onManagementPress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={25}
+                size={iconSize}
                 name="book"
                 style={styles.iconStyle}
               >
@@ -140,10 +146,10 @@ export class DrawerContent extends React.Component {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.onHomePress}>
+          <TouchableOpacity onPress={this.onNotificationPress}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={25}
+                size={iconSize}
                 name="bell"
                 style={styles.iconStyle}
               >
@@ -157,7 +163,7 @@ export class DrawerContent extends React.Component {
           <TouchableOpacity onPress={this.goToSettingScreen}>
             <View style={styles.itemDrawer}>
               <Icon
-                size={25}
+                size={iconSize}
                 name="cog"
                 style={styles.iconStyle}
               >
@@ -170,8 +176,8 @@ export class DrawerContent extends React.Component {
           <TouchableOpacity onPress = {this.onShoppingCartPress}>
                 <View style={styles.itemDrawer}>
                       <Icon
-                        size={35}
-                        name="cog"
+                        size={iconSize}
+                        name="shopping-cart"
                         style={styles.iconStyle}
                       >
                       </Icon>
@@ -190,24 +196,28 @@ export class DrawerContent extends React.Component {
 
 const styles = StyleSheet.create({
   headerStyle: {
-    height: 200,
-    borderBottomColor: '#bbbbbb',
-    borderBottomWidth: 1,
+    height: 220,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius:10
   },
   iconStyle: {
-    color: '#bbb',
+    color: '#000',
+    padding:10,
+    backgroundColor:'rgba(0,150,150,0.5)',
+    borderRadius:10
   },
   itemDrawer: {
     paddingHorizontal: 40,
-    paddingVertical: 14,
+    paddingVertical: 15,
     flexDirection: 'row',
   },
   itemText: {
     alignSelf: 'center',
-    marginLeft: 10,
-    fontSize: 15
+    marginLeft: 20,
+    fontSize: 18,
+    color:'#000',
+    fontWeight:'bold'
   }
 })
 

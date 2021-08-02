@@ -15,13 +15,14 @@ export default class RenderItemsSelling extends React.Component {
 
   componentDidMount() {
     var testApi = new TestAPI();
-    console.log("AFTER EDIT ----------------", this.props.img)
+    // console.log("AFTER EDIT ----------------", this.props.img)
     testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
 
   render() {
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=>this.props.navigation.navigate('EditScreen',{data : this.props.item,prevScreen:'ItemSoldScreen'})}>
+        
         <View style={styles.container}>
           <View style={{ alignItems: 'center' }}>
             <Image

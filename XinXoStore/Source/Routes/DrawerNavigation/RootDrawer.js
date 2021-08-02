@@ -5,6 +5,7 @@ import ItemManagementScreenStack from './drawer-stack/ItemManagementScreenStack'
 import HomeScreenStack from './drawer-stack/HomeScreenStack';
 import SettingScreenStack from './drawer-stack/SettingScreenStack';
 import UserProfileStack from '../BottomNavigation/UserProfileScreenStack';
+import { View } from 'react-native';
 
 const Drawer = createDrawerNavigator();
 
@@ -12,6 +13,7 @@ export default class RootDrawer extends React.Component {
   render() {
     return (
       <Drawer.Navigator
+      drawerStyle={{opacity:0.95,borderTopRightRadius:10,borderBottomRightRadius:10,backgroundColor:'#f7f7f7'}}
         drawerContent={(props) => <DrawerContent {...props} />}
       >
         <Drawer.Screen
