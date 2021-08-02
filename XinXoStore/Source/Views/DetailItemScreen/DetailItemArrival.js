@@ -194,9 +194,6 @@ class DetailItem extends React.Component {
                                 </Text>
                                 <Text style={{lineHeight:20,paddingVertical:10}}>
                                     {this.props.route.params.description}
-                                {/* Đây là những chiếc áo khoác được thiết kế theo phong cách hoàng gia Anh.
-                                Thiết kế này giúp cho người mặc tăng thêm sự quyến rũ và duyên dáng.
-                                Dù hiện nay nó không còn phổ biến nữa nhưng vẫn được rất nhiều người yêu thích.  */}
                                 </Text>
                             </View>
                         </View>
@@ -218,7 +215,8 @@ class DetailItem extends React.Component {
                                             UserName: element.Username,
                                             Rating:element.Rating,
                                             Img:element.Img,
-                                            Avatar:element.Avatar
+                                            Avatar:element.Avatar,
+                                            key:element.key,
                                         }
                                     return (<FeedbackComponent key={index} item={item}/>);
                                 }) : <View/>

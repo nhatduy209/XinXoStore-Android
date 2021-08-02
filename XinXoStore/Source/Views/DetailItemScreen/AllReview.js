@@ -44,7 +44,9 @@ class AllReviews extends React.Component {
                             var item = {Content: element.Content,
                                 UserName: element.UserName,
                                 Rating:element.Rating,
-                                Avatar:element.Img,
+                                Avatar:element.Avatar,
+                                Img:element.Img,
+                                key:element.key,
                             }
                         return (<FeedbackComponent key={index} item={item}/>);
                         })}

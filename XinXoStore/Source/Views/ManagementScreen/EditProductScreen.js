@@ -20,6 +20,7 @@ class EditScreen extends React.Component {
                 require("../../Images/clothingSlider2.jpeg"),
                 require("../../Images/error.png"),
               ],
+            edited:false,
             url : "img",
             Name:this.props.route.params.data.Name,
             img:this.props.route.params.data.img,
@@ -40,6 +41,11 @@ class EditScreen extends React.Component {
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
     }
+    componentDidUpdate(){
+        if(!this.state.edited){
+            this.setState({edited:true});
+        }
+    }
     handleSave = () => {
         if(this.state.Description !== "" && this.state.Name !== "" && this.state.price !== "" && this.state.publicDate !== ""){
             let imagePath = this.state.img ;
@@ -57,13 +63,19 @@ class EditScreen extends React.Component {
                 Description: this.state.Description,
                 Category: this.state.Category,
             }
-            this.props.editProduct(data);
-            this.props.getListNewArrivals();
-            if(this.props.route.params.prevScreen==="ManagementScreen"){
-                this.props.navigation.navigate('ManagementScreen', {data,changed:true,prevScreen:'editScreen'})
-            }else{
-                this.props.navigation.navidate(this.props.route.params.prevScreen)
+            if(this.state.edited){
+                this.props.editProduct(data);
+                this.props.getListNewArrivals();
+                if(this.props.route.params.prevScreen==="ManagementScreen"){
+                    this.props.navigation.navigate('ManagementScreen', {data,changed:true,prevScreen:'editScreen'})
+                }else{
+                    this.props.navigation.navidate(this.props.route.params.prevScreen)
+                }
             }
+            else{
+                this.props.navigation.goBack();
+            }
+            
         }else{
             this.setState({visible: true});
             this.setState({blur:Dimensions.get('window').height})
@@ -186,7 +198,7 @@ class EditScreen extends React.Component {
                         <View style={{backgroundColor: '#fff',paddingHorizontal:30,paddingBottom:20,alignItems: 'center',marginTop:10}}>
                             <TouchableOpacity onPress= {this.handleSave}>
                             {/* '#00a04f' */}
-                                <View style={{backgroundColor: '#003333',padding:10,marginTop:20,width:Dimensions.get('window').width-140}}>
+                                <View style={{backgroundColor: '#7ec5c5',borderRadius:10,padding:10,marginTop:20,width:Dimensions.get('window').width-140}}>
                                     <Text style={{marginHorizontal:20,fontSize:18,fontWeight:'bold',textAlign: 'center',color:'#fff'}}>Save</Text>
                                 </View>
                             </TouchableOpacity>

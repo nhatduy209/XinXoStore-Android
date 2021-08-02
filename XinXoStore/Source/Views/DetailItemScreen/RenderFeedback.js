@@ -21,16 +21,13 @@ export default class FeedbackComponent extends React.Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
         const array = Object.values(this.props.item.Img);
-        // console.log(array);
         this.setState({Img:array})
     }
     getDate = () =>{
         var date = new Date();
         return date.getMonth() +'/'+date.getDate()+'/'+date.getFullYear();
-    }
-    like = () =>{
-        this.setState({like: !this.state.like});
     }
     render() {
         return (
@@ -51,14 +48,6 @@ export default class FeedbackComponent extends React.Component {
                             <Text style={{fontSize:12,color:'#bbb'}}>{this.props.item.Rating}/5</Text>
                         </View>
                     </View>
-                    <TouchableOpacity style={{paddingTop:20,position: 'absolute',right:50}} onPress={()=>this.like()}>
-                            <Icon
-                            size={20}
-                            name="heart"
-                            color={this.state.like ? '#f00' : '#ccc'}
-                            >
-                            </Icon>
-                    </TouchableOpacity>
                 </View>
                 <View style={{padding:20,width:Dimensions.get("window").width}}>
                         <Text style={{marginHorizontal:10,fontSize:15,justifyContent: 'center'}}>{this.props.item.Content}</Text>
