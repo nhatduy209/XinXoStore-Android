@@ -4,6 +4,8 @@ import { Status } from '../Config/dataStatus';
 import _, { map } from 'underscore';
 import { PushData } from './PushData';
 import { async } from 'rxjs';
+import {sendNotification} from '../Common/PushNotification'
+
 
 export default class ReadService {
   verifyLoginApi = async (username, password) => {
@@ -339,6 +341,22 @@ export default class ReadService {
   getItemForUser = async (idOwner) => {
     let listItem = [];
     let listItemObject = [];
+
+    let listItemBill = [];
+
+    await firebase
+      .database()
+      .ref('Bill/')
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+          //đặt ddieuf kiện
+          console.log('CHILD-------', child)
+          var myJson = child.toJSON();
+          listItemBill.push(myJson);
+        });
+      })
+
+
     await firebase
       .database()
       .ref('NewArrivals/')
@@ -367,16 +385,18 @@ export default class ReadService {
             myObject.Name = myJson.Name ;
             myObject.Category = myJson.Category ;   
             myObject.publicDate = myJson.publicDate ;   
-            myObject.ownerShop = myJson.ownerShop ; 
+            myObject.ownerShop = myBill.Username ; 
             myObject.prices = myJson.prices ;                
             myObject.sold = myJson.sold ;  
+            myObject.isShipped = myBill.isShipped;
+            myObject.customerId = myBill.UserID ;
             const toArray = _.values(myObject) ;
-           listItemObject.push(myObject);
+            listItemObject.push(myObject);
             listItem.push(toArray);
           }
         });
       }).then(res => {
-        console.log('RES', res);
+        console.log('RES', listItemObject);
       }).catch(err => {
         console.log("ERR ", err)
         return {
@@ -389,5 +409,26 @@ export default class ReadService {
         data : {listItem ,listItemObject} ,
         status : Status.SUCCESS,
     };
+  }
+
+  getUserToken = async( userID , username  ) => { 
+    console.log('ID' , userID)
+    let listToken = [];
+    await firebase
+    .database()
+    .ref('Account/' + 2 + '/' + 'Notifications/')
+    .once('value', function (snapshot) {
+      snapshot.forEach(function (child) {
+        var myJson = child.toJSON();
+        listToken.push(myJson.tokenID);
+      });
+    })
+
+    listToken.forEach(item => {
+      sendNotification('Xác nhận đơn hàng', 'Đơn hàng của bạn đã được người bán ' + username+ ' giao thành công' , item);
+    })
+
+    
+    console.log('LIST TOKEN ---------' , listToken)
   }
 }

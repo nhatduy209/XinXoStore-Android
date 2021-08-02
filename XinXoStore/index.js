@@ -1,11 +1,21 @@
 /**
  * @format
  */
-
 import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 import PushNotification from "react-native-push-notification";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+const storeData = async (value) => {
+  try {
+    await AsyncStorage.setItem('token_key', value.token)
+    console.log("TOKEN KEY SAVED")
+  } catch (e) {
+    // saving error
+  }
+}
 
 PushNotification.createChannel(
   {
@@ -30,12 +40,20 @@ PushNotification.configure({
   // (optional) Called when Token is generated (iOS and Android)
   onRegister: function (token) {
     console.log("TOKEN:", token);
+    storeData(token);
   },
 
   // (required) Called when a remote is received or opened, or local notification is opened
   onNotification: function (notification) {
     console.log("NOTIFICATION:", notification);
 
+    PushNotification.localNotification({
+      channelId : notification.channelId,
+      message: notification.message,
+      title: notification.title,
+      largeIcon: 'logo_store',
+      smallIcon : 'logo_store',
+    });
     // process the notification
 
     // (required) Called when a remote is received or opened, or local notification is opened
