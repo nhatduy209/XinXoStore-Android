@@ -4,7 +4,7 @@ import { Status } from '../Config/dataStatus';
 import _, { map } from 'underscore';
 import { PushData } from './PushData';
 import { async } from 'rxjs';
-import {sendNotification} from '../Common/PushNotification'
+import { sendNotification } from '../Common/PushNotification'
 
 
 export default class ReadService {
@@ -149,11 +149,11 @@ export default class ReadService {
           //đặt ddieuf kiện
           var myJson = child.toJSON();
           key = child.key;
-          item= myJson;
-          if(item.ShopId === ownerId){
-            listItem.push({key: key,...item});
+          item = myJson;
+          if (item.ShopId === ownerId) {
+            listItem.push({ key: key, ...item });
           }
-          
+
         });
       });
     if (listItem.length > 0) {
@@ -366,28 +366,28 @@ export default class ReadService {
           var myJson = child.toJSON();
           if (myJson.ownerId === idOwner) {
             let myObject = {
-              img : "",
-              Name : "",
+              img: "",
+              Name: "",
               Category: "",
-              publicDate : "", 
-              ownerShop : "",
-              prices : 0,      
-              sold : false ,
-              itemID : child.key,
-              isShipped : false,
-              customerId : "",
+              publicDate: "",
+              ownerShop: "",
+              prices: 0,
+              sold: false,
+              itemID: child.key,
+              isShipped: false,
+              customerId: "",
             };
-            const myBill = _.findWhere(listItemBill ,{ItemID : Number(myObject.itemID)});
+            const myBill = _.findWhere(listItemBill, { ItemID: Number(myObject.itemID) });
             myObject.img = myJson.img;
-            myObject.Name = myJson.Name ;
-            myObject.Category = myJson.Category ;   
-            myObject.publicDate = myJson.publicDate ;   
-            myObject.ownerShop = myBill.Username ; 
-            myObject.prices = myJson.prices ;                
-            myObject.sold = myJson.sold ;  
+            myObject.Name = myJson.Name;
+            myObject.Category = myJson.Category;
+            myObject.publicDate = myJson.publicDate;
+            myObject.ownerShop = myBill.Username;
+            myObject.prices = myJson.prices;
+            myObject.sold = myJson.sold;
             myObject.isShipped = myBill.isShipped;
-            myObject.customerId = myBill.UserID ;
-            const toArray = _.values(myObject) ;
+            myObject.customerId = myBill.UserID;
+            const toArray = _.values(myObject);
             listItemObject.push(myObject);
             listItem.push(toArray);
           }
@@ -402,30 +402,55 @@ export default class ReadService {
         };
       });
 
-      return {
-        data : {listItem ,listItemObject} ,
-        status : Status.SUCCESS,
+    return {
+      data: { listItem, listItemObject },
+      status: Status.SUCCESS,
     };
   }
 
-  getUserToken = async( userID , username  ) => { 
-    console.log('ID' , userID)
+  getUserToken = async (userID, username) => {
+    console.log('ID', userID)
     let listToken = [];
     await firebase
-    .database()
-    .ref('Account/' + 2 + '/' + 'Notifications/')
-    .once('value', function (snapshot) {
-      snapshot.forEach(function (child) {
-        var myJson = child.toJSON();
-        listToken.push(myJson.tokenID);
-      });
-    })
+      .database()
+      .ref('Account/' + 2 + '/' + 'Notifications/')
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+          var myJson = child.toJSON();
+          listToken.push(myJson.tokenID);
+        });
+      })
 
     listToken.forEach(item => {
-      sendNotification('Xác nhận đơn hàng', 'Đơn hàng của bạn đã được người bán ' + username+ ' giao thành công' , item);
+      sendNotification('Xác nhận đơn hàng', 'Đơn hàng của bạn đã được người bán ' + username + ' giao thành công', item);
     })
 
-    
-    console.log('LIST TOKEN ---------' , listToken)
+
+    console.log('LIST TOKEN ---------', listToken)
+  }
+
+  getListMessage = async () => {
+    let listMessage = [];
+    await firebase
+      .database()
+      .ref('Messages/' + 'id-121zvas/' )
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+          var myJson = child.toJSON();
+          listMessage.push(myJson);
+        });
+      }).catch( err => {
+        return{
+          data : {},
+          status : Status.FAIL,
+        }
+      })
+
+      console.log('MESSAGE-------------', listMessage)
+
+      return {
+        data : listMessage.reverse(),
+        status :Status.SUCCESS
+      }
   }
 }

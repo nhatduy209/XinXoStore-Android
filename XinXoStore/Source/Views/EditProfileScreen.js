@@ -8,6 +8,7 @@ import { editProfile } from '../redux/action/LoginAction/LoginAction'
 import { FilePath } from '../Config/FilePath';
 import Modal from 'react-native-modal';
 import { Status } from '../Config/dataStatus';
+import {getListMessage} from '../redux/action/MessageAction/MessageAction'
 
 class EditProfileScreen extends React.Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class EditProfileScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.props.getListMessage();
     var testApi = new TestAPI();
     testApi.myPromise(this.props.user.data.user.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
@@ -187,7 +189,7 @@ function mapStateToProps(state) {
     user: state.LoginReducer.user,
   };
 }
-export default connect(mapStateToProps, { editProfile })(EditProfileScreen);
+export default connect(mapStateToProps, { editProfile  , getListMessage})(EditProfileScreen);
 
 
 const styles = StyleSheet.create({

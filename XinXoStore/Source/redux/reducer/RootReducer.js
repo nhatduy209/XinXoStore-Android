@@ -8,6 +8,7 @@ import PublisherInfoReducer from '../reducer/PublisherInfoReducer'
 import ArrivalItemReducer from '../reducer/ArrivalItemReducer'
 import ItemsUserReducer from '../reducer/ItemsUserReducer'
 import PushNotificationReducer from './PushNotificationReducer';
+import MessageReducer from './MessageReducer'
 import {combineReducers} from 'redux';
 
 const RootReducer = combineReducers({
@@ -20,7 +21,8 @@ const RootReducer = combineReducers({
   AddressReducer,
   PublisherInfoReducer,
   ItemsUserReducer,
-  PushNotificationReducer
+  PushNotificationReducer,
+  MessageReducer,
 });
 
 export default RootReducer;
