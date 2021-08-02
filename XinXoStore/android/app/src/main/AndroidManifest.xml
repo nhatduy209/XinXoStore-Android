@@ -14,8 +14,8 @@
       android:theme="@style/AppTheme">
 
             <!-- add code here -->
-      <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
-                    android:resource="@mipmap/logo_store"/>  
+       <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
+              android:value="false"/> 
       <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
                     android:resource="@color/white"/>
       <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions" />

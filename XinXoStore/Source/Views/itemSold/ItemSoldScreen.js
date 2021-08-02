@@ -7,6 +7,8 @@ import TestAPI from '../TestAPI';
 import { connect } from 'react-redux';
 import _ from 'underscore';
 import RenderItemsSelling from './RenderItemSelling'
+import { sendNotification } from '../../Common/PushNotification';
+import {pushNotification } from '../../redux/action/PushNotificationAction/PushNotificationAction'
 
 const DATA_HEADER = [
   'Image', 'Item', 'Category', 'Date', 'Customer', 'Prices', 'Confirm deliver'
@@ -110,7 +112,7 @@ class ItemSoldScreen extends React.Component {
 
             <DataTable style={{ width: 1000 }}>
               <DataTable.Header>
-                {DATA_HEADER.map(value => {
+                {DATA_HEADER.map((value,key)  => {
                   return (
                     <DataTable.Title>
                       <Text style={{ fontSize: 17 }}>
@@ -123,9 +125,9 @@ class ItemSoldScreen extends React.Component {
               </DataTable.Header>
               <ScrollView>
                 {
-                  this.props.items.data.listItem.map(item => {
+                  this.props.items.data.listItem.map((item,key) => {
 
-                    if (item[6]) {
+                    if (item[6]) {     // check if the item is selling or is sold 
                       return (
                         <DataTable.Row style={{ height: 110 }}>
                           <DataTable.Cell>
@@ -137,7 +139,7 @@ class ItemSoldScreen extends React.Component {
                           <DataTable.Cell>{item[4]}</DataTable.Cell>
                           <DataTable.Cell>{item[5]}</DataTable.Cell>
                           <DataTable.Cell>
-                            <CheckDeliverButton item={item} />
+                            <CheckDeliverButton item={item} Username = {this.props.user.data.user.Username} pushNotification = {this.props}/>
                           </DataTable.Cell>
 
                         </DataTable.Row>
@@ -164,21 +166,27 @@ class CheckDeliverButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      iconDeliver: 'times-circle',
-      colorDeliver: 'red'
+      iconDeliver: (this.props.item[8] === true) ? 'check-circle' : 'times-circle' ,
+      colorDeliver: (this.props.item[8] === true ) ? 'green' : 'red'
     }
   }
+
   confirmDeliver = (item) => {
-    // console.log("LOG--------------", item)
+    console.log("LOG--------------", item)
+    this.props.pushNotification.pushNotification(item[9], this.props.Username);
     this.setState({ iconDeliver: 'check-circle' })
     this.setState({ colorDeliver: 'green' })
+    
+  
   }
 
 
   render() {
     return (
       <View>
-        <TouchableOpacity onPress={this.confirmDeliver.bind(this, this.props.item)}>
+        <TouchableOpacity onPress={this.confirmDeliver.bind(this, this.props.item)}
+        // item[8] : isShipped 
+        disabled = {  (this.state.colorDeliver === 'green' ) ? true : false  }>   
           <Icon
             size={24}
             name={this.state.iconDeliver}
@@ -189,6 +197,8 @@ class CheckDeliverButton extends React.Component {
       </View>
     );
   }
+
+
 }
 
 
@@ -229,7 +239,7 @@ function mapStateToProps(state) {
     items: state.ItemsUserReducer.items,
   };
 }
-export default connect(mapStateToProps, { getItemForUsers })(ItemSoldScreen);
+export default connect(mapStateToProps, { getItemForUsers ,pushNotification})(ItemSoldScreen);
 
 
 

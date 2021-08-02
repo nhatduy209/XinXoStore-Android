@@ -8,6 +8,7 @@ import ShoppingCartEpic from './ShoppingCartEpics/ShoppingCartEpic';
 import ReviewsEpic from './ReviewEpics/ReviewEpics';
 import PublisherInfoEpic from './PublserInfoEpics/PublsherInfoEpics';
 import GetItemForUserEpic from './GetItemForUserEpics/GetItemForUserEpics';
+import PushNotificationEpic from './PushNotificationEpics/PushNotificationEpics'
 
 export default combineEpics(
     DetailArrivalEpic,
@@ -19,4 +20,5 @@ export default combineEpics(
     ShoppingCartEpic,
     PublisherInfoEpic,
     GetItemForUserEpic,
+    PushNotificationEpic,
 )

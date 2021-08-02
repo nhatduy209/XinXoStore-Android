@@ -18,7 +18,7 @@ import EditProfileScreen from '../../../Views/EditProfileScreen';
 import AllReviews from '../../../Views/DetailItemScreen/AllReview';
 import ItemManagementScreenStack from './ItemManagementScreenStack'
 import ManagementScreen from '../../../Views/ManagementScreen/ManagementScreen';
-
+import AddScreen from '../../../Views/ManagementScreen/AddProductScreen'
 import SettingScreens from '../../../Views/settingScreens/SettingScreen';
 import SettingScreenStack from './SettingScreenStack';
 import PublisherProfileScreen from '../../../Views/PublisherProfileScreen';
@@ -141,7 +141,7 @@ class HomeScreenStack extends React.Component {
               />
           }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="ProfileUserStack"
           component={UserProfileStack}
           options={{
@@ -151,8 +151,19 @@ class HomeScreenStack extends React.Component {
                 navigationProps={this.props.navigation}
               />
           }}
-      />  */}
-        
+      /> 
+        <Stack.Screen
+          name="AddScreen"
+          component={AddScreen}
+          options={{
+            headerShown: false,
+            title: "",
+            headerLeft: () =>
+              <NavigationDrawerStructureLeft
+                navigationProps={this.props.navigation}
+              />
+          }}
+        />
         <Stack.Screen
           name="DetailItemScreen"
           component={DetailItem}
