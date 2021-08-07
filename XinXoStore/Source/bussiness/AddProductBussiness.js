@@ -6,7 +6,7 @@ export default class AddProductBusiness {
   addProduct = async ( data , success , failed ) => {
     var pushApi= new PushData();
 
-    const pushResult= await pushApi.addProductApi(data.Name,data.img,data.price,data.ownerId,data.ownerShop,data.PathImageDevice,data.Demension,data.Category,data.Describe);
+    const pushResult= await pushApi.addProductApi(data.Name,data.img,data.price,data.ownerId,data.ownerShop,data.PathImageDevice,data.Demension,data.Category,data.Description);
     if(pushResult.status==Status.SUCCESS){
       success(pushResult);
     }

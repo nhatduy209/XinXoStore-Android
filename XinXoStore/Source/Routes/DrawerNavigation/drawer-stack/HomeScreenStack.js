@@ -15,6 +15,10 @@ import AddScreen from '../../../Views/ManagementScreen/AddProductScreen';
 import EditScreen from '../../../Views/ManagementScreen/EditProductScreen';
 import { GetAllProduct } from '../../../redux/action/ShoppingCartAction/ShoppingCartAction';
 import AllReviews from '../../../Views/DetailItemScreen/AllReview';
+import AllReviews from '../../../Views/DetailItemScreen/AllReview';
+import ItemManagementScreenStack from './ItemManagementScreenStack'
+import ManagementScreen from '../../../Views/ManagementScreen/ManagementScreen';
+import AddScreen from '../../../Views/ManagementScreen/AddProductScreen'
 import SettingScreens from '../../../Views/settingScreens/SettingScreen';
 import SettingScreenStack from './SettingScreenStack';
 import PublisherProfileScreen from '../../../Views/PublisherProfileScreen';
@@ -132,7 +136,7 @@ class HomeScreenStack extends React.Component {
               />
           }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="ProfileUserStack"
           component={UserProfileStack}
           options={{
@@ -142,7 +146,7 @@ class HomeScreenStack extends React.Component {
                 navigationProps={this.props.navigation}
               />
           }}
-      />  */}
+      /> 
         <Stack.Screen
           name="AddScreen"
           component={AddScreen}
@@ -154,7 +158,6 @@ class HomeScreenStack extends React.Component {
                 navigationProps={this.props.navigation}
               />
           }}
-
         />
         <Stack.Screen
           name="DetailItemScreen"

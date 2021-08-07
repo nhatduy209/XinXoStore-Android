@@ -2,9 +2,10 @@
 import firebase from 'firebase';
 import { Status } from '../Config/dataStatus';
 import _, { map } from 'underscore';
-import {PushData} from './PushData';
+import { PushData } from './PushData';
 import { async } from 'rxjs';
 import { isObject } from 'formik';
+import {sendNotification} from '../Common/PushNotification'
 
 export default class ReadService {
   verifyLoginApi = async(username , password) => {
@@ -21,52 +22,52 @@ export default class ReadService {
           var myJson = child.toJSON();
           if (myJson.Username === username && myJson.Password === password) {
             canLogin = true;
-            key = child.key ;
+            key = child.key;
             user = myJson;
           }
         });
       });
     if (canLogin === true) {
       return {
-        data : {
+        data: {
           user,
           key,
         },
-        status : Status.SUCCESS
+        status: Status.SUCCESS
       };
     } else {
       return {
-        data : {
+        data: {
         },
-        status : Status.FAIL,
+        status: Status.FAIL,
       }
-  
+
     }
   }
-  signUpApi= async(email,username,password,age)=>{
-    let canSignUp=true;
+  signUpApi = async (email, username, password, age) => {
+    let canSignUp = true;
     await firebase
       .database()
       .ref('Account/')
-      .once('value',function (snapshot){
-        snapshot.forEach(function (child){
-          var myJson=child.toJSON();
-          if(myJson.Email===email ){
-              canSignUp=false;
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+          var myJson = child.toJSON();
+          if (myJson.Email === email) {
+            canSignUp = false;
           }
         });
       });
-    
-    if(canSignUp===true){
+
+    if (canSignUp === true) {
       return {
-        data:{},
+        data: {},
         status: Status.SUCCESS
       };
-    }else{
+    } else {
       return {
-        data:{
+        data: {
         },
-        status:Status.FAIL
+        status: Status.FAIL
       };
     }
   }
@@ -83,22 +84,22 @@ export default class ReadService {
         snapshot.forEach(function (child) {
           //đặt ddieuf kiện
           var myJson = child.toJSON();
-          if(myJson.Name === Name) {
+          if (myJson.Name === Name) {
             key = child.key;
-            item= myJson;
-            listItem.push({key,item});
+            item = myJson;
+            listItem.push({ key, item });
           }
         });
       });
-    if (listItem.length > 0 ) {
+    if (listItem.length > 0) {
       return {
-        data : {listItem},
-        status : Status.SUCCESS
+        data: { listItem },
+        status: Status.SUCCESS
       };
     } else {
       return {
-        data : {},
-        status : Status.FAIL,
+        data: {},
+        status: Status.FAIL,
       }
     }
   }
@@ -114,29 +115,29 @@ export default class ReadService {
           //đặt ddieuf kiện
           var myJson = child.toJSON();
           key = child.key;
-          item= myJson;
-          listItem.push({key: key,...item});
+          item = myJson;
+          listItem.push({ key: key, ...item });
         });
       });
-    if (listItem.length > 0 ) {
-      listItem =  _.sortBy(listItem,'prices')
-      if(!sortUp){
+    if (listItem.length > 0) {
+      listItem = _.sortBy(listItem, 'prices')
+      if (!sortUp) {
         listItem.reverse();
       }
       return {
-        data : {
+        data: {
           listItem
         },
-        status : Status.SUCCESS
+        status: Status.SUCCESS
       };
     } else {
       return {
-        data : {},
-        status : Status.FAIL,
+        data: {},
+        status: Status.FAIL,
       }
     }
   }
-  getListReviewsAPI = async () => {
+  getListReviewsAPI = async (ownerId,) => {
     let key = "";
     let item = {};
     var listItem = [];
@@ -149,20 +150,23 @@ export default class ReadService {
           var myJson = child.toJSON();
           key = child.key;
           item= myJson;
-          listItem.push({key: key,...item});
+          if(item.ShopId === ownerId){
+            listItem.push({key: key,...item});
+          }
+          
         });
       });
-    if (listItem.length > 0 ) {
+    if (listItem.length > 0) {
       return {
-        data : {
+        data: {
           listItem
         },
-        status : Status.SUCCESS
+        status: Status.SUCCESS
       };
     } else {
       return {
-        data : {},
-        status : Status.FAIL,
+        data: {},
+        status: Status.FAIL,
       }
     }
   }
@@ -179,9 +183,10 @@ export default class ReadService {
       });
     }).then(res=>{
       return {
-        data : {address
+        data: {
+          address
         },
-        status : Status.SUCCESS
+        status: Status.SUCCESS
       };
     }).catch(err=>{
       return {
@@ -211,7 +216,7 @@ export default class ReadService {
     if(error==false){
       return {
         status: Status.SUCCESS,
-        data:{
+        data: {
           address
         }
       }
@@ -276,13 +281,13 @@ export default class ReadService {
       })
     }).then(res=>{
       return {
-        data:listItem,
-        status:Status.SUCCESS
+        data: listItem,
+        status: Status.SUCCESS
       }
     }).catch(err=>{
       return {
-        data:{},
-        status:Status.FAIL
+        data: {},
+        status: Status.FAIL
       }
     })
     
@@ -336,23 +341,23 @@ export default class ReadService {
     }
   }
 
-  getPublisherInfo =async (ownerId) => {
+  getPublisherInfo = async (ownerId) => {
     var publisher = {}
     await firebase
-    .database()
-    .ref('Account/')
-    .once('value', function (snapshot) {
-      snapshot.forEach(function (child) {
-        if(child.key === ownerId ){
-          var myJson = child.toJSON();
+      .database()
+      .ref('Account/')
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+          if (child.key === ownerId) {
+            var myJson = child.toJSON();
             publisher = myJson;
-        }
+          }
+        });
       });
-    });
 
     return {
-      data : publisher,
-      status : Status.SUCCESS
+      data: publisher,
+      status: Status.SUCCESS
     }
   }
   checkToAddToCart= async(idAccount,itemID)=>{

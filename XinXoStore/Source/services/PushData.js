@@ -24,9 +24,9 @@ export default class  PushData{
     }
     getpublucDate = () =>{
         var date = new Date();
-        return date.getMonth() +'/'+date.getDate()+'/'+date.getYear();
+        return date.getMonth() +'/'+date.getDate()+'/'+date.getFullYear();
     }
-    addProductApi=  async(Name,img,price,ownerId,ownerShop,PathImageDevice,Demension,Category,Describe)=>{
+    addProductApi=  async(Name,img,price,ownerId,ownerShop,PathImageDevice,Demension,Category,Description)=>{
         var  fileImagePath = img;
         uploadImageToStorage(PathImageDevice , fileImagePath);
         await firebase
@@ -45,13 +45,52 @@ export default class  PushData{
             sold: false,
             Demension:Demension,
             Category:Category,
-            Description: Describe,
+            Description: Description,
         })
         .then(()=>console.log('Data added'));
         return {
             data:{},
             status: Status.SUCCESS
           };
+    }
+    addReviewApi=  async(data)=>{
+        // var  fileImagePath = img;
+        // uploadImageToStorage(PathImageDevice , fileImagePath);
+        await firebase
+        .database()
+        .ref('Reviews')
+        .push()
+        .set({
+            Content: data.Content,
+            Rating: data.Rating,
+            PublicDate: this.getpublucDate(),
+            ShopId: data.ShopId,
+            UserId: data.UserId,
+            Username:data.Username,
+            ProductId:data.ProductId,
+            Img: data.Img
+        })
+        .then(()=>console.log('Data added'));
+        return {
+            data:{},
+            status: Status.SUCCESS
+          };
+    }
+    addImageReviewAPI=async(key,PathImageDevice,Img)=>{
+        var  fileImagePath = Img;
+        uploadImageToStorage(PathImageDevice , fileImagePath);
+        await firebase
+        .database()
+        .ref('Account/'+key+"/Img")
+        .push()
+        .set({
+            ItemID:itemID
+        })
+        .then(()=>console.log('Data added============='));
+        return {
+            data:{},
+            status: Status.SUCCESS
+        };
     }
     addToShoppingCart=async(idAccount,itemID)=>{
         await firebase

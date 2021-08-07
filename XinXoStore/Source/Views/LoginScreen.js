@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -11,6 +11,20 @@ import Authentication from '../Config/Component/Authentication';
 import axios from 'axios';
 import { ServerKey } from '../Config/ServerKey';
 import { LoginInWithGoogle } from '../redux/action/LoginAction/LoginAction';
+import messaging from '@react-native-firebase/messaging';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const getData = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('token_key')
+    console.log('TOKEN KEY------ ' , jsonValue);
+    return jsonValue;
+  } catch(e) {
+    // error reading value
+    console.log('ERR GET TOKEN ' , e)
+  }
+}
+
+
 export class LoginScreen extends React.Component {
 
   constructor(props) {
@@ -31,6 +45,11 @@ export class LoginScreen extends React.Component {
 
   handleLogin = async () => {
     this.props.Login(this.state.email, this.state.password);
+  }
+
+  componentDidMount() {
+    console.log("USER : ", this.props.user);
+    getData();
   }
   _signIn = async () => {
     try {
@@ -65,6 +84,7 @@ export class LoginScreen extends React.Component {
           sound: "Tri-tone",
           color : "red",
           invokeApp : true,
+          priority : 4
       }
     }
 
@@ -77,7 +97,7 @@ export class LoginScreen extends React.Component {
         "Authorization": "key=" + ServerKey
       }
     }).then((res) => {
-      console.log('RESULT -----------------' , res)
+      console.log('NOTIFICATION SENT -----------------')
     }).catch((e) => {
       console.log("ERORR--------------------", e)
     })

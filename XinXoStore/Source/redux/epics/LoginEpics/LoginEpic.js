@@ -12,7 +12,6 @@ const resolver = (action) => {
     const loginBusiness = new LoginBusiness();
     const editProfileBusiness = new EditProfileBusiness();
     return new Promise((resolve, reject) => {
-        console.log('UserEPIC ----------------------------', action);
         switch (action.type) {
             case NAME_ACTIONS.LOGIN_SCREEN.LOGIN_SCREEN:
                 loginBusiness.verifyLogin(action.data, success => {

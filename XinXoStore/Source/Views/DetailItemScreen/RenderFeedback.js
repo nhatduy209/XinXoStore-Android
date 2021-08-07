@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Dimensions, TouchableOpacity,Image } from 'react-native';
 import TestAPI from '../TestAPI';
 import UrlComponent from './UrlRender';
-import StarRating from './StarRating';
+import StarRating from 'react-native-star-rating';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class FeedbackComponent extends React.Component {
@@ -38,7 +38,14 @@ export default class FeedbackComponent extends React.Component {
                     <View>
                         <Text style={{paddingTop:10,fontSize:14,justifyContent: 'center'}}>{this.props.item.UserName}</Text>
                         <View style={{flexDirection: 'row'}}>
-                            <StarRating item={{Rating: this.props.item.Rating}}/>
+                            {/* <StarRating item={{Rating: this.props.item.Rating}}/> */}
+                            <StarRating
+                            fullStarColor='yellow'
+                            rating={this.props.item.Rating}
+                            maxStars={5}
+                            starSize={20}
+                            starStyle={{paddingHorizontal:3}}
+                            />
                             <Text style={{fontSize:12,color:'#bbb'}}>{this.props.item.Rating}/5</Text>
                         </View>
                     </View>
@@ -52,11 +59,11 @@ export default class FeedbackComponent extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{padding:20,width:Dimensions.get("window").width}}>
-                        <Text style={{marginHorizontal:10,fontSize:18,justifyContent: 'center'}}>{this.props.item.Content}</Text>
+                        <Text style={{marginHorizontal:10,fontSize:15,justifyContent: 'center'}}>{this.props.item.Content}</Text>
                         <View style={{flexDirection:'row'}}>
                         {
                             this.state.images.map((element)=>{
-                                return <Image key={element} style={{height: 100,width:100}} source={element}></Image>
+                                return <Image key={element} style={{height: 50,width:50}} source={element}></Image>
                             })
                         }
                         </View>

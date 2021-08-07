@@ -37,11 +37,8 @@ class ManagementScreen extends React.Component {
         this.setState({list: array});
     }
     componentDidUpdate(){
-        // console.log( 'params' );
-        // console.log(this.props.route.params);
-        // console.log(this.props.newArrivalsItems.data.listItem);
         if(this.props.route.params.changed){
-            console.log('true')
+            
             const array = [];
             this.props.newArrivalsItems.data.listItem.forEach((element, index) => {
                 // console.log(this.props.userInfo.key)
@@ -77,7 +74,7 @@ class ManagementScreen extends React.Component {
     }
     renderItem=({ item}) => {
         
-        const data = {data: item,navigation: this.props.navigation};
+        const data = {data: item};
         var layoutWidthOptions = 0;
         var layoutHeightOptions = 0;
         var layoutWidth = Dimensions.get('window').width-200;
@@ -152,13 +149,15 @@ class ManagementScreen extends React.Component {
     }
     componentWillUnmount() {
         // console.log('unmounted')
-        this._isMounted = true;
+        this.setState = (state, callback) => {
+            return;
+        }
     }
     render() {
         // console.log(this.state.url);
         return(
             <View>
-                <View style={{position: 'absolute',zIndex:10,justifyContent: 'center'}}>
+                <View style={{justifyContent: 'center',elevation:6}}>
                     <TouchableOpacity style={styles.navigationIcon} onPress={() =>this.props.navigation.toggleDrawer()}>
                             <Icon
                             size={20}
@@ -166,16 +165,11 @@ class ManagementScreen extends React.Component {
                             >
                             </Icon>
                     </TouchableOpacity>
-                        <Text style={styles.textHeader}></Text>
-                        
-                        <View style={{height:60,width:Dimensions.get('window').width}}>
-                        <LinearGradient start={{x:0.0, y:0.1}} end={{x:0.0, y:1}} colors={['rgba(43,76,105,0.8)','rgba(255,255,255,0)',]} style={{height:50}}></LinearGradient>
+                        <View style={{height:80,width:Dimensions.get('window').width,justifyContent: 'center'}}>
+                        <Text style={{fontSize:36,fontWeight:'bold',alignSelf: 'center' }}>Management</Text>  
+                        {/* <LinearGradient start={{x:0.0, y:0.1}} end={{x:0.0, y:1}} colors={['rgba(43,76,105,0.8)','rgba(255,255,255,0)',]} style={{height:50}}></LinearGradient> */}
                         </View>
                 </View>
-                <ScrollView style={{backgroundColor: '#fff'}}>
-                    <View style={{height:150,backgroundColor:'#fff'}}>
-                            <Text style={{fontSize:36,fontWeight:'bold',top:80,left:20}}>Management</Text>  
-                    </View>
                     <View style={styles.AddButton}>
                         <TouchableOpacity onPress={()=> {
                             this.props.navigation.navigate('AddScreen');
@@ -185,14 +179,16 @@ class ManagementScreen extends React.Component {
                             </LinearGradient>
                         </TouchableOpacity>
                     </View>
+                    <View style={{marginBottom:260}}>
                     <FlatList
                     data={this.state.list}
                     renderItem={this.renderItem}
                     keyExtractor={item => item.Name}
                     ItemSeparatorComponent={this.itemSeparator}
                     />
-                </ScrollView>
-            </View>
+                    </View>
+                    
+                </View>
             
         )
     }

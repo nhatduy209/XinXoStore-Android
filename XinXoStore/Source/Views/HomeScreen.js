@@ -27,12 +27,12 @@ export class HomeScreen extends React.Component {
     // var  a = new TestAPI();
     // a.myPromise().then(res => this.setState({imgUrl : res})).catch(err => console.log(err));
     this.props.getListNewArrivals();
-    this.props.getListReviews();
   }
 
   renderNewArrivalsItem = ({ item }) => {
     return (
-      <NewArrivalItem item={item} navigation={this.props.navigation} />
+      
+          <NewArrivalItem item={item} navigation={this.props.navigation} />
     )
   }
 
@@ -41,7 +41,6 @@ export class HomeScreen extends React.Component {
   };
 
   handleShowAll = () => {
-    
     this.props.navigation.navigate('NewArrivalsScreen');
   }
   

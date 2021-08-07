@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import TestAPI from './TestAPI';
+import { getListReviews } from '../redux/action/ReviewAction/ReviewAction.js';
+
 class PublisherProfileScreen extends React.Component {
 
   constructor(props) {
@@ -18,7 +20,6 @@ class PublisherProfileScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.route.params)
     var testApi = new TestAPI();
     testApi.myPromise(this.props.publisher.data.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }
@@ -37,7 +38,9 @@ class PublisherProfileScreen extends React.Component {
   }
 
   navigateCommentStore= () => {
-    this.props.navigation.navigate('CommentStoreScreen',this.props.route.params)
+    console.log(this.props.publisher.Avatar)
+    this.props.getListReviews(this.props.route.params);
+    this.props.navigation.navigate('CommentStoreScreen')
   }
 
   handleGetNotification = () => {
@@ -179,9 +182,10 @@ class PublisherProfileScreen extends React.Component {
 function mapStateToProps(state) {
   return {
     publisher: state.PublisherInfoReducer.publisher,
+    listReview: state.ReviewReducer.items.data.listItem,
   };
 }
-export default connect(mapStateToProps, {})(PublisherProfileScreen);
+export default connect(mapStateToProps, {getListReviews})(PublisherProfileScreen);
 
 const styles = StyleSheet.create({
   container: {
