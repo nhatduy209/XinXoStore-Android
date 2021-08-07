@@ -12,3 +12,10 @@ export function sendMessage(messageData){
     data : {messageData}
   }
 }
+
+export function getBubbleMessage(usernameLogin ){
+  return{
+    type : NAME_ACTIONS.MESSAGE_ACTION.GET_BUBBLE_MESSAGE,
+    data : {usernameLogin}
+  }
+}

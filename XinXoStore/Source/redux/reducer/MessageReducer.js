@@ -11,6 +11,12 @@ const message = {
     status: Status.FAIL,
     data: {},
   },
+
+
+  bubbleMessage: {
+    status: Status.FAIL,
+    data: {},
+  },
 };
 
 const MessageReducer = (state = message, action) => {
@@ -38,7 +44,26 @@ const MessageReducer = (state = message, action) => {
         ...state,
         sendMessage: {
           status: Status.SUCCESS,
-          data:{},
+          data: {},
+        }
+      }
+      break;
+
+    case NAME_EPICS.GET_LIST_MESSAGE.GET_BUBBLE_MESSAGE_SUCCESS:
+      state = {
+        ...state,
+        bubbleMessage: {
+          status: Status.SUCCESS,
+          data: action.data,
+        }
+      }
+      break;
+    case NAME_EPICS.GET_LIST_MESSAGE.GET_BUBBLE_MESSAGE_FAIL:
+      state = {
+        ...state,
+        bubbleMessage: {
+          status: Status.FAIL,
+          data: {},
         }
       }
       break;

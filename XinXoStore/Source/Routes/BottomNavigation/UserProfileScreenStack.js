@@ -6,6 +6,8 @@ import MessageScreen from '../../Views/userMessage/MessageScreen'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ItemSoldScreen from '../../Views/itemSold/ItemSoldScreen';
 import ItemSoldStack from '../ItemSoldStack';
+import RenderBubbleMessage from '../../Views/userMessage/RenderBubbleMessage';
+import MessageStack from '../MessageStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +26,7 @@ export default class UserProfileStack extends React.Component {
             return <Icon name={'user'} size={22} color={color} />;
           },
         }}/>
-        <Tab.Screen name="UserMessageScreen" component={MessageScreen}
+        <Tab.Screen name="UserMessageScreen" component={MessageStack}
         options = {{
           title : 'Message',
           tabBarIcon: ({ focused, horizontal, color }) => {

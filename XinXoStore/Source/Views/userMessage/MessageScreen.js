@@ -7,60 +7,6 @@ import { connect } from 'react-redux';
 import TestAPI from '../TestAPI';
 import firebase from 'firebase';
 
-
-// export default function MessageScreen() {
-//   const [messages, setMessages] = useState([]);
-
-//   const AppMessage = ["Hello", "What your name ? "]
-//   useEffect(() => {
-//     setMessages([
-//       {
-//         _id: 1,
-//         text: AppMessage[1],
-//         createdAt: new Date(),
-//         user: {
-//           _id: 2,
-//           name: 'React Native',
-//         },
-//       },
-//       {
-//         _id: 1231,
-//         text: "Duy đẹp trai",
-//         createdAt: new Date(),
-//         user: {
-//           _id: 1,
-//         },
-//       },
-//       {
-//         _id: 2,
-//         text: AppMessage[0],
-//         createdAt: new Date(),
-//         user: {
-//           _id: 2,
-//           name: 'React Native',
-//         },
-//       },
-
-//     ])
-//   }, [])
-
-//   const onSend = useCallback((messages = []) => {
-//     console.log(messages);
-//     setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-//   }, [])
-
-//   return (
-//     <GiftedChat
-//       messages={messages}
-//       onSend={messages => onSend(messages)}
-//       user={{
-//         _id: 1,
-//       }}
-//     />
-//   )
-// }
-
-
 class MessageScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -70,26 +16,37 @@ class MessageScreen extends React.Component {
     }
   }
   onSend = (value) => {
-    console.log('aaaaaaaaa', value)
     this.setState({ messages: GiftedChat.append(this.state.messages, value) });
     this.props.sendMessage(value[0]);
-
   }
 
-  componentWillMount() {
-    firebase.database().ref('Messages/' + 'id-121zvas/').on('child_added', (value) => {
-        this.setState({ messages: GiftedChat.append(this.state.messages, value.val())  } )
-    })
-  }
+  // componentWillMount() {
+  //   firebase.database().ref('Messages/' + 'nhatduy209-thuyety').on('child_added', (value) => {
+  //     console.log('VALUE----------------', value.val());
+  //       this.setState({ messages: GiftedChat.append(this.state.messages, value.val())  } )
+  //   })
+  // }
 
   componentDidMount() {
-    var testApi = new TestAPI;
+    const messageKey = this.props.route.params.messageKey;
+     firebase.database().ref('Messages/' + messageKey).on('child_added', (value) => {
+      console.log('VALUE----------------', value.val());
+       this.setState({ messages: GiftedChat.append(this.state.messages, value.val())  } );        
+    })
+    var testApi = new TestAPI();
     testApi.myPromise(this.props.user.data.user.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
-    this.props.getListMessage();
+    //this.props.getListMessage();
+  }
+
+  componentWillUnmount() {
+    const messageKey = this.props.route.params.messageKey;
+    // stop listening to firebase 
+    firebase.database().ref('Messages/' + messageKey).off('child_added', this.setState({ messages: []  }));
   }
 
 
   render() {
+    console.log('RENDER STATE -------', this.state.messages)
     return (
       <GiftedChat
         messages={this.state.messages}

@@ -33,6 +33,18 @@ const resolver = (action) => {
                     reject(new Error(NAME_ACTIONS.MESSAGE_ACTION.SEND_MESSAGE_FAIL));
                 })
                 break;
+
+            case NAME_ACTIONS.MESSAGE_ACTION.GET_BUBBLE_MESSAGE:
+                messageBusiness.getBubbleMessage(action.data, success => {
+                    resolve({
+                        actionType: NAME_ACTIONS.MESSAGE_ACTION.GET_BUBBLE_MESSAGE_SUCCESS,
+                        data: success
+                    });
+                }, failed => {
+                    messageError = failed;
+                    reject(new Error(NAME_ACTIONS.MESSAGE_ACTION.GET_BUBBLE_MESSAGE_FAIL));
+                })
+                break;
             default:
                 console.error('Error when resolver message Epic.');
                 break;
@@ -52,6 +64,11 @@ const dispatch = (data) => {
                 type: NAME_EPICS.GET_LIST_MESSAGE.SEND_MESSAGE_SUCCESS,
                 data: data.data.data
             };
+        case NAME_ACTIONS.MESSAGE_ACTION.GET_BUBBLE_MESSAGE_SUCCESS:
+            return {
+                type: NAME_EPICS.GET_LIST_MESSAGE.GET_BUBBLE_MESSAGE_SUCCESS,
+                data: data.data.data
+            };
         default:
             console.error('Error when dispatch message   Epic.');
             return new Error('Error when dispatch   message  Epic.');
@@ -65,6 +82,11 @@ const dispatchError = (error, action) => {
                 type: NAME_EPICS.GET_LIST_MESSAGE.SEND_MESSAGE_FAIL,
                 data: messageError
             }
+        case NAME_ACTIONS.MESSAGE_ACTION.GET_BUBBLE_MESSAGE_FAIL:
+            return {
+                type: NAME_EPICS.GET_LIST_MESSAGE.GET_BUBBLE_MESSAGE_FAIL,
+                data: messageError
+            }
         default:
             console.error('Error when dispatch error   message  Epic.');
             return new Error('Error when dispatch error  message Epic.');
@@ -73,7 +95,8 @@ const dispatchError = (error, action) => {
 
 const MessageEpic = (action$) =>
     action$.pipe(
-        ofType(NAME_ACTIONS.MESSAGE_ACTION.GET_LIST_MESSAGE_ACTION,NAME_ACTIONS.MESSAGE_ACTION.SEND_MESSAGE_ACTION),
+        ofType(NAME_ACTIONS.MESSAGE_ACTION.GET_LIST_MESSAGE_ACTION, NAME_ACTIONS.MESSAGE_ACTION.SEND_MESSAGE_ACTION,
+            NAME_ACTIONS.MESSAGE_ACTION.GET_BUBBLE_MESSAGE),
         mergeMap((action) =>
             from(resolver(action)).pipe(
                 map((success) => dispatch(success)),

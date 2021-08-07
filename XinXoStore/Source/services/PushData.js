@@ -129,7 +129,7 @@ export default class PushData {
         console.log('MESSAGE SENDING HERE ' , data.messageData.createdAt)
         await firebase
             .database()
-            .ref('Messages/'  +  "id-121zvas")
+            .ref('Messages/'  +  "nhatduy209-thuyety")
             .push()
             .set({
                 createdAt: data.messageData.createdAt.toString(),

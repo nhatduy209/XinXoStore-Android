@@ -28,4 +28,16 @@ export default class MessageBusiness {
     }
       
   }
+
+  getBubbleMessage = async ( data,  success , failed ) => {
+    var readData = new ReadService();
+    const result = await readData.getBubbleMessage(data.usernameLogin);
+    if(result.status===Status.SUCCESS){
+      success(result);
+    }
+    else{
+      failed(result)
+    }
+      
+  }
 }

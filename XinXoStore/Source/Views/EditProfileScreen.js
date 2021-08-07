@@ -27,7 +27,6 @@ class EditProfileScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getListMessage();
     var testApi = new TestAPI();
     testApi.myPromise(this.props.user.data.user.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
   }

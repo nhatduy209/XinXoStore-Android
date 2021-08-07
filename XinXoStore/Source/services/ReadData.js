@@ -433,24 +433,107 @@ export default class ReadService {
     let listMessage = [];
     await firebase
       .database()
-      .ref('Messages/' + 'id-121zvas/' )
+      .ref('Messages/' + 'nhatduy209-thuyety/')
       .once('value', function (snapshot) {
         snapshot.forEach(function (child) {
           var myJson = child.toJSON();
           listMessage.push(myJson);
         });
-      }).catch( err => {
-        return{
-          data : {},
-          status : Status.FAIL,
+      }).catch(err => {
+        return {
+          data: {},
+          status: Status.FAIL,
         }
       })
 
-      console.log('MESSAGE-------------', listMessage)
+    return {
+      data: listMessage.reverse(),
+      status: Status.SUCCESS
+    }
+  }
+
+
+  getUserAvatarByName = async (username) => {
+    var publisher = {}
+    await firebase
+      .database()
+      .ref('Account/')
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+            var myJson = child.toJSON();
+            if(myJson.Username === username){
+
+            }
+        });
+      });
+
+    return {
+      data: publisher,
+      status: Status.SUCCESS
+    }
+  }
+
+
+  getBubbleMessage = async (usernameLogin) => {
+
+    let ListBubble = [];
+
+    // get avatar user chatting 
+   
+     
+
+
+    // get bubble chat
+    await firebase
+      .database()
+      .ref('Messages/')
+      .once('value', function (snapshot) {
+
+        snapshot.forEach(function (child) {
+          let lastBubble = [];
+          let BubbleObject = {
+            usernameChatting: "",
+            lastMessage: {}, 
+            keyMessage:"",
+            userChatAvatar : "",
+          };
+       
+          const countElement = child.numChildren();
+          child.forEach(function (childSnap) {
+            if (child.key.indexOf(usernameLogin) !== -1 && child.key.indexOf(usernameLogin) === 0) {
+              lastBubble.push(childSnap.toJSON());
+              BubbleObject.usernameChatting = child.key.slice(usernameLogin.length + 1);
+             
+              if(BubbleObject.usernameChatting === childSnap.toJSON().user.name){
+                BubbleObject.userChatAvatar = childSnap.toJSON().user.avatar;
+              }
+              BubbleObject.keyMessage = child.key;
+            }
+            else if (child.key.indexOf(usernameLogin) !== -1 && child.key.indexOf(usernameLogin) !== 0) {
+              lastBubble.push(childSnap.toJSON());
+              BubbleObject.usernameChatting = child.key.slice(0,child.key.length -  (usernameLogin.length+1));
+              if(BubbleObject.usernameChatting === childSnap.toJSON().user.name){
+                BubbleObject.userChatAvatar = childSnap.toJSON().user.avatar;
+              }
+              BubbleObject.keyMessage = child.key;
+            }
+          })
+          BubbleObject.lastMessage = lastBubble[countElement - 1]; 
+          if (BubbleObject.lastMessage !== undefined) {
+            ListBubble.push(BubbleObject);
+          }
+        });
+
+      }).catch(err => {
+        return {
+          data: ListBubble,
+          status: Status.FAIL,
+        }
+      })
 
       return {
-        data : listMessage.reverse(),
-        status :Status.SUCCESS
+        data : ListBubble ,
+        status : Status.SUCCESS
       }
   }
 }
