@@ -429,15 +429,17 @@ export default class ReadService {
     console.log('LIST TOKEN ---------', listToken)
   }
 
-  getListMessage = async () => {
-    let listMessage = [];
+  getListMessage = async (username , usernameChatting ) => {
+    let messageKey = username + "-" + usernameChatting;
     await firebase
       .database()
-      .ref('Messages/' + 'nhatduy209-thuyety/')
+      .ref('Messages/')
       .once('value', function (snapshot) {
         snapshot.forEach(function (child) {
           var myJson = child.toJSON();
-          listMessage.push(myJson);
+          if(child.key.indexOf(username) !== -1 && child.key.indexOf(usernameChatting) !== -1 ){
+                messageKey = child.key
+          }
         });
       }).catch(err => {
         return {
@@ -447,7 +449,7 @@ export default class ReadService {
       })
 
     return {
-      data: listMessage.reverse(),
+      data: messageKey,
       status: Status.SUCCESS
     }
   }

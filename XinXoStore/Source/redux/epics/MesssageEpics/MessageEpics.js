@@ -12,7 +12,7 @@ const resolver = (action) => {
     return new Promise((resolve, reject) => {
         switch (action.type) {
             case NAME_ACTIONS.MESSAGE_ACTION.GET_LIST_MESSAGE_ACTION:
-                messageBusiness.getListMessage(success => {
+                messageBusiness.getListMessage(action.data, success => {
                     resolve({
                         actionType: NAME_ACTIONS.MESSAGE_ACTION.GET_LIST_MESSAGE_SUCCESS,
                         data: success

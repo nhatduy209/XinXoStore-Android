@@ -3,10 +3,10 @@ import PushData from '../services/PushData';
 import ReadService from '../services/ReadData';
 
 export default class MessageBusiness {
-    getListMessage = async (  success , failed ) => {
+    getListMessage = async ( data,  success , failed ) => {
     var readData = new ReadService();
-
-    const result = await readData.getListMessage();
+    console.log('DATE-----' , data )
+    const result = await readData.getListMessage(data.username , data.usernameChatting);
     if(result.status===Status.SUCCESS){
       success(result);
     }

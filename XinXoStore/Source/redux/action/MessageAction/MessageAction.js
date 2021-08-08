@@ -1,8 +1,8 @@
 import {NAME_ACTIONS} from './ActionName'
-export function getListMessage(){
+export function getListMessage(username , usernameChatting){
   return{
     type : NAME_ACTIONS.MESSAGE_ACTION.GET_LIST_MESSAGE_ACTION,
-    data : {}
+    data : {username , usernameChatting},
   }
 }
 

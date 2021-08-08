@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 import TestAPI from './TestAPI';
 import { getListReviews } from '../redux/action/ReviewAction/ReviewAction.js';
-
+import {getListMessage} from '../redux/action/MessageAction/MessageAction'
 class PublisherProfileScreen extends React.Component {
 
   constructor(props) {
@@ -22,6 +22,11 @@ class PublisherProfileScreen extends React.Component {
   componentDidMount() {
     var testApi = new TestAPI();
     testApi.myPromise(this.props.publisher.data.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
+    this.props.getListMessage(this.props.user.data.user.Username , this.props.publisher.data.Username )
+  }
+
+  componentDidUpdate() {
+    console.log('UPDATE ----' , this.props.message.data);
   }
 
   navigateContact = () => {
@@ -37,7 +42,12 @@ class PublisherProfileScreen extends React.Component {
     Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + address);
   }
 
-  navigateCommentStore= () => {
+  navigateMessageScreen = () => {
+    console.log(' USER AND CHAT --------------' , this.props.user.data.user.Username , this.props.publisher.data.Username)
+
+  }
+
+  navigateCommentStore = () => {
     console.log(this.props.publisher.Avatar)
     this.props.getListReviews(this.props.route.params);
     this.props.navigation.navigate('CommentStoreScreen')
@@ -124,14 +134,17 @@ class PublisherProfileScreen extends React.Component {
 
         <View style={{ marginVertical: 10, flexDirection: 'row', borderColor: '#bbbbbb', borderWidth: 0.5 }}
         >
-          <ScrollView 
-          horizontal = {true}
-          showsHorizontalScrollIndicator = {false} 
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
           >
-            <View style={{ ...styles.MessageAndNotification, borderRightColor: '#bbbbbb', borderRightWidth: 0.5 }}>
-              <Icon name="comment-dots" size={23} color="#666666" />
-              <Text>Send message</Text>
-            </View>
+            <TouchableOpacity>
+              <View style={{ ...styles.MessageAndNotification, borderRightColor: '#bbbbbb', borderRightWidth: 0.5 }}>
+                <Icon name="comment-dots" size={23} color="#666666" />
+                <Text>Send message</Text>
+              </View>
+            </TouchableOpacity>
+
 
             <TouchableOpacity onPress={this.handleGetNotification}>
               <View style={styles.MessageAndNotification}>
@@ -183,9 +196,11 @@ function mapStateToProps(state) {
   return {
     publisher: state.PublisherInfoReducer.publisher,
     listReview: state.ReviewReducer.items.data.listItem,
+    user: state.LoginReducer.user,
+    message: state.MessageReducer.list_message,
   };
 }
-export default connect(mapStateToProps, {getListReviews})(PublisherProfileScreen);
+export default connect(mapStateToProps, { getListReviews  , getListMessage})(PublisherProfileScreen);
 
 const styles = StyleSheet.create({
   container: {
