@@ -44,7 +44,7 @@ class PublisherProfileScreen extends React.Component {
 
   navigateMessageScreen = () => {
     console.log(' USER AND CHAT --------------' , this.props.user.data.user.Username , this.props.publisher.data.Username)
-
+    this.props.navigation.navigate('MessageScreen', { messageKey : this.props.message.data , username : this.props.publisher.data.Username});
   }
 
   navigateCommentStore = () => {
@@ -138,7 +138,7 @@ class PublisherProfileScreen extends React.Component {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
           >
-            <TouchableOpacity>
+            <TouchableOpacity onPress = {this.navigateMessageScreen}>
               <View style={{ ...styles.MessageAndNotification, borderRightColor: '#bbbbbb', borderRightWidth: 0.5 }}>
                 <Icon name="comment-dots" size={23} color="#666666" />
                 <Text>Send message</Text>

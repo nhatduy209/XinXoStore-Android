@@ -24,6 +24,7 @@ import SettingScreenStack from './SettingScreenStack';
 import PublisherProfileScreen from '../../../Views/PublisherProfileScreen';
 import UserProfileStack from '../../BottomNavigation/UserProfileScreenStack';
 import CommentStoreScreen from '../../../Views/CommentStoreScreen';
+import MessageScreen from '../../../Views/userMessage/MessageScreen';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -149,7 +150,7 @@ class HomeScreenStack extends React.Component {
                 navigationProps={this.props.navigation}
               />
           }}
-      /> 
+        />
         <Stack.Screen
           name="AddScreen"
           component={AddScreen}
@@ -265,6 +266,11 @@ class HomeScreenStack extends React.Component {
             headerTitle: 'Profile'
           }}
 
+        />
+
+        <Stack.Screen
+          name="MessageScreen" component={MessageScreen}
+          options={({ route }) => ({ title: route.params.username })}
         />
 
 
