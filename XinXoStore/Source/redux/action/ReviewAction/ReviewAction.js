@@ -12,3 +12,10 @@ export function addReviews(data){
     data : {...data},
   }
 }
+
+export function deleteReviews(data){
+  return{
+    type : NAME_ACTIONS.DELETE_REVIEWS_ITEM.DELETE_REVIEWS_ITEM_ACTION,
+    data : {...data},
+  }
+}

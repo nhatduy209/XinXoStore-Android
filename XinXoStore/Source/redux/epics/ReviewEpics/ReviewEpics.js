@@ -4,13 +4,15 @@ import { mergeMap, filter, map, takeUntil, catchError } from 'rxjs/operators';
 import { NAME_EPICS } from './ActionName'
 import {NAME_ACTIONS}from '../../action/ReviewAction/ActionName'
 import ReviewsBussiness from '../../../bussiness/GetReviewsBussiness';
-import AddReviewBusiness from '../../../bussiness/DoReviewBusiness'
+import AddReviewBusiness from '../../../bussiness/DoReviewBusiness';
+import DeleteReviewBusiness from '../../../bussiness/DeleteReviewBusiness';
 
 let messageError = {};
 
 const resolver = (action) => {
     const reviewsBusiness = new ReviewsBussiness();
     const addReviewsBusiness = new AddReviewBusiness();
+    const deleteReviewsBusiness = new DeleteReviewBusiness();
     return new Promise((resolve, reject) => {
         switch (action.type) {
             case NAME_ACTIONS.GET_REVIEWS_ITEMS.GET_REVIEWS_ITEMS_ACTION:
@@ -35,6 +37,17 @@ const resolver = (action) => {
                         reject(new Error(NAME_ACTIONS.ADD_REVIEWS_ITEM.ADD_REVIEWS_ITEM_FAIL));
                     })
                     break;
+            case NAME_ACTIONS.DELETE_REVIEWS_ITEM.DELETE_REVIEWS_ITEM_ACTION:
+                deleteReviewsBusiness.deleteReview(action.data , success => {
+                        resolve({
+                            actionType: NAME_ACTIONS.DELETE_REVIEWS_ITEM.DELETE_REVIEWS_ITEM_SUCCESS,
+                            data: success
+                        });
+                    }, failed => {
+                        messageError = failed;
+                        reject(new Error(NAME_ACTIONS.DELETE_REVIEWS_ITEM.DELETE_REVIEWS_ITEM_FAIL));
+                    })
+                    break;
             default:
                 console.error('Error when resolver Reviews Epic.');
                 break;
@@ -52,6 +65,11 @@ const dispatch = (data) => {
         case NAME_ACTIONS.ADD_REVIEWS_ITEM.ADD_REVIEWS_ITEM_SUCCESS:
             return {
                 type: NAME_EPICS.ADD_REVIEWS_EPICS.ADD_REVIEWS_EPICS_SUCCESS,
+                data: data.data.data
+            };
+        case NAME_ACTIONS.DELETE_REVIEWS_ITEM.DELETE_REVIEWS_ITEM_SUCCESS:
+            return {
+                type: NAME_EPICS.DELETE_REVIEWS_EPICS.DELETE_REVIEWS_EPICS_SUCCESS,
                 data: data.data.data
             };
         default:
@@ -72,6 +90,11 @@ const dispatchError = (error, action) => {
                 type: NAME_EPICS.ADD_REVIEWS_EPICS.ADD_REVIEWS_EPICS_FAIL,
                 data: messageError
             }
+        case NAME_ACTIONS.DELETE_REVIEWS_ITEM.DELETE_REVIEWS_ITEM_FAIL:
+            return {
+                type: NAME_EPICS.DELETE_REVIEWS_EPICS.DELETE_REVIEWS_EPICS_FAIL,
+                data: messageError
+            }
         default:
             console.error('Error when dispatch error  reviews  Epic.');
             return new Error('Error when dispatch error  reviews  Epic.'); 
@@ -81,7 +104,8 @@ const dispatchError = (error, action) => {
 const ReviewsEpic = (action$) =>
     action$.pipe(
         ofType(NAME_ACTIONS.GET_REVIEWS_ITEMS.GET_REVIEWS_ITEMS_ACTION,
-            NAME_ACTIONS.ADD_REVIEWS_ITEM.ADD_REVIEWS_ITEM_ACTION),
+            NAME_ACTIONS.ADD_REVIEWS_ITEM.ADD_REVIEWS_ITEM_ACTION,
+            NAME_ACTIONS.DELETE_REVIEWS_ITEM.DELETE_REVIEWS_ITEM_ACTION),
         mergeMap((action) =>
             from(resolver(action)).pipe(
                 map((success) => dispatch(success)),

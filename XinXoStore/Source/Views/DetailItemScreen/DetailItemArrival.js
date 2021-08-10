@@ -218,7 +218,7 @@ class DetailItem extends React.Component {
                                             Avatar:element.Avatar,
                                             key:element.key,
                                         }
-                                    return (<FeedbackComponent key={index} item={item}/>);
+                                    return (<FeedbackComponent key={index} item={item} prevScreen={{name:"Detail"}}/>);
                                 }) : <View/>
                             }
                             </View>

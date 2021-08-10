@@ -381,7 +381,10 @@ export default class ReadService {
               isShipped : false,
               customerId : "",
             };
-            const myBill = _.findWhere(listItemBill ,{ItemID : Number(myObject.itemID)});
+            const myBill = _.findWhere(listItemBill ,{ItemID : myObject.itemID});
+            console.log('list',listItemBill);
+            console.log(myObject.itemID);
+            console.log(myBill);
             myObject.Demension = myJson.Demension;
             myObject.key = key;
             myObject.Description = myJson.Description;
@@ -389,11 +392,11 @@ export default class ReadService {
             myObject.Name = myJson.Name ;
             myObject.Category = myJson.Category ;   
             myObject.publicDate = myJson.publicDate ;   
-            myObject.ownerShop = myBill.Username ; 
+            myObject.ownerShop = myJson.ownerShop ; 
             myObject.prices = myJson.prices ;                
             myObject.sold = myJson.sold ;  
-            myObject.isShipped = myBill.isShipped;
-            myObject.customerId = myBill.UserID ;
+            myObject.isShipped = typeof(myBill) !== "undefined" ? myBill.isShipped: false;
+            myObject.customerId = typeof(myBill) !== "undefined" ? myBill.UserID:"" ;
             const toArray = _.values(myObject) ;
             listItemObject.push(myObject);
             listItem.push(toArray);

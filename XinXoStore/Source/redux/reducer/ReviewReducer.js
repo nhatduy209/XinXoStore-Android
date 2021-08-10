@@ -28,6 +28,15 @@ const ReviewReducer = (state = reviewsState, action) => {
         }
       }
       break;
+    case NAME_EPICS.DELETE_REVIEWS_EPICS.DELETE_REVIEWS_EPICS_SUCCESS:
+      state = {
+        ...state,
+        items: {
+          status: Status.SUCCESS,
+          data: action.data,
+        }
+      }
+      break;
     default:
       break;
   }

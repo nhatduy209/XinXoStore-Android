@@ -115,11 +115,13 @@ class CommentStoreScreen extends React.Component {
           {
             this.state.listReview.map((element,index)=>{
               var item = {Content: element.Content,
-                  UserName: element.UserName,
+                  UserName: element.Username,
                   Rating:element.Rating,
-                  Avatar:element.Img,
+                  Img:element.Img,
+                  Avatar:element.Avatar,
+                  key:element.key,
               }
-              return (<FeedbackComponent key={index} item={item} />);
+              return (<FeedbackComponent key={index} item={item} prevScreen={{name:"CommentStore"}} />);
             })
           }
         </ScrollView>

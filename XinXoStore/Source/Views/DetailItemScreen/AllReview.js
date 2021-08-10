@@ -4,6 +4,7 @@ import TestAPI from '../TestAPI';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FeedbackComponent from './RenderFeedback';
 import { connect } from 'react-redux';
+import { getListReviews } from '../../redux/action/ReviewAction/ReviewAction.js';
 class AllReviews extends React.Component {
     constructor(props) {
         super(props);
@@ -14,10 +15,13 @@ class AllReviews extends React.Component {
                 require("../../Images/sold2.png"),
             ],
             url: "img",
+            listReview:[]
         }
     }
 
     componentDidMount() {
+        this.props.getListReviews();
+        this.setState({listReview:this.props.listReview})
         // var testApi = new TestAPI()
         // testApi.myPromise(this.props.item.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
     }
@@ -40,7 +44,9 @@ class AllReviews extends React.Component {
                     <Text style={{alignSelf: 'center', fontSize:32,fontWeight:'bold'}}>All Review</Text>
                 </View>
                 <ScrollView style={{backgroundColor:'#fff',marginBottom:50}}>
-                    {this.props.listReview.map((element,index)=>{
+                    {
+                        this.props.listReview?
+                    this.state.listReview.map((element,index)=>{
                             var item = {Content: element.Content,
                                 UserName: element.UserName,
                                 Rating:element.Rating,
@@ -48,8 +54,9 @@ class AllReviews extends React.Component {
                                 Img:element.Img,
                                 key:element.key,
                             }
-                        return (<FeedbackComponent key={index} item={item}/>);
-                        })}
+                        return (<FeedbackComponent key={index} item={element} prevScreen={{name:"AllReview"}}/>);
+                        }) : <View/>
+                    }
                 </ScrollView>
                 
             </View>
@@ -62,7 +69,7 @@ function mapStateToProps(state) {
         listReview: state.ReviewReducer.items.data.listItem,
     };
   }
-export default connect(mapStateToProps, { })(AllReviews);
+export default connect(mapStateToProps, {getListReviews })(AllReviews);
 const styles = StyleSheet.create({
     navigationIcon: {
         left:20,

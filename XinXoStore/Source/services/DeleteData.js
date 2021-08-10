@@ -28,4 +28,31 @@ export default class  PushData{
             };
         }
     }
+    deleteReviewApi=  async(imageNamePath,key)=>{
+      console.log(imageNamePath)
+      let removed=false;
+      await firebase
+      .database()
+      .ref('Reviews/'+ key)
+      .remove()
+      .then(()=>{
+          console.log('Data removed',key);
+          removed=true;
+          });
+      if(removed){
+        imageNamePath.map(img=>{
+          console.log(img)
+          deleteImageFromStorage(img)}) 
+        return {
+          data:{},
+          status: Status.SUCCESS
+        };
+      }else{
+        return {
+          data:{
+          },
+          status:Status.FAIL
+        };
+      }
+  }
 }
