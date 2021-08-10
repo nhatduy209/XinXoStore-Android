@@ -6,21 +6,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AllNewArrivalsItem from '../../../Views/ListItemScreen/AllNewArrivalsItems';
 import DetailItem from '../../../Views/DetailItemScreen/DetailItemArrival';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ShoppingCart from '../../../Views/shoppingCart/ShoppingCart';
 import { getListNewArrivals } from '../../../redux/action/GetNewArrivalsAction/GetNewArrivalsAction';
 import { connect } from 'react-redux';
 import EditProfileScreen from '../../../Views/EditProfileScreen';
-import ManagementScreen from '../../../Views/ManagementScreen/ManagementScreen';
-import AddScreen from '../../../Views/ManagementScreen/AddProductScreen';
 import EditScreen from '../../../Views/ManagementScreen/EditProductScreen';
 import { GetAllProduct } from '../../../redux/action/ShoppingCartAction/ShoppingCartAction';
 import AllReviews from '../../../Views/DetailItemScreen/AllReview';
-import AllReviews from '../../../Views/DetailItemScreen/AllReview';
-import ItemManagementScreenStack from './ItemManagementScreenStack'
 import ManagementScreen from '../../../Views/ManagementScreen/ManagementScreen';
 import AddScreen from '../../../Views/ManagementScreen/AddProductScreen'
-import SettingScreens from '../../../Views/settingScreens/SettingScreen';
-import SettingScreenStack from './SettingScreenStack';
 import PublisherProfileScreen from '../../../Views/PublisherProfileScreen';
 import UserProfileStack from '../../BottomNavigation/UserProfileScreenStack';
 import CommentStoreScreen from '../../../Views/CommentStoreScreen';
