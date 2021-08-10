@@ -4,8 +4,7 @@ import { Status } from '../Config/dataStatus';
 import _, { map } from 'underscore';
 import { PushData } from './PushData';
 import { async } from 'rxjs';
-import { isObject } from 'formik';
-import {sendNotification} from '../Common/PushNotification'
+import { sendNotification } from '../Common/PushNotification'
 
 export default class ReadService {
   verifyLoginApi = async(username , password) => {
@@ -149,11 +148,11 @@ export default class ReadService {
           //đặt ddieuf kiện
           var myJson = child.toJSON();
           key = child.key;
-          item= myJson;
-          if(item.ShopId === ownerId){
-            listItem.push({key: key,...item});
+          item = myJson;
+          if (item.ShopId === ownerId) {
+            listItem.push({ key: key, ...item });
           }
-          
+
         });
       });
     if (listItem.length > 0) {
@@ -379,5 +378,206 @@ export default class ReadService {
         success:Status.FAIL
       }
     }
+  }
+
+    getItemForUser = async (idOwner) => {
+      let listItem = [];
+      let listItemObject = [];
+  
+      let listItemBill = [];
+  
+      await firebase
+        .database()
+        .ref('Bill/')
+        .once('value', function (snapshot) {
+          snapshot.forEach(function (child) {
+            //đặt ddieuf kiện
+            console.log('CHILD-------', child)
+            var myJson = child.toJSON();
+            listItemBill.push(myJson);
+          });
+        })
+  
+  
+      await firebase
+        .database()
+        .ref('NewArrivals/')
+        .once('value', function (snapshot) {
+          snapshot.forEach(function (child) {
+            //đặt ddieuf kiện
+            var myJson = child.toJSON();
+            if (myJson.ownerId === idOwner) {
+              let myObject = {
+                img: "",
+                Name: "",
+                Category: "",
+                publicDate: "",
+                ownerShop: "",
+                prices: 0,
+                sold: false,
+                itemID: child.key,
+                isShipped: false,
+                customerId: "",
+              };
+              const myBill = _.findWhere(listItemBill, { ItemID: Number(myObject.itemID) });
+              myObject.img = myJson.img;
+              myObject.Name = myJson.Name;
+              myObject.Category = myJson.Category;
+              myObject.publicDate = myJson.publicDate;
+              myObject.ownerShop = myBill.Username;
+              myObject.prices = myJson.prices;
+              myObject.sold = myJson.sold;
+              myObject.isShipped = myBill.isShipped;
+              myObject.customerId = myBill.UserID;
+              const toArray = _.values(myObject);
+              listItemObject.push(myObject);
+              listItem.push(toArray);
+            }
+          });
+        }).then(res => {
+          console.log('RES', listItemObject);
+        }).catch(err => {
+          console.log("ERR ", err)
+          return {
+            data: {},
+            status: Status.FAIL,
+          };
+        });
+  
+      return {
+        data: { listItem, listItemObject },
+        status: Status.SUCCESS,
+      };
+    }
+
+  getUserToken = async (userID, username) => {
+    console.log('ID', userID)
+    let listToken = [];
+    await firebase
+      .database()
+      .ref('Account/' + 2 + '/' + 'Notifications/')
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+          var myJson = child.toJSON();
+          listToken.push(myJson.tokenID);
+        });
+      })
+
+    listToken.forEach(item => {
+      sendNotification('Xác nhận đơn hàng', 'Đơn hàng của bạn đã được người bán ' + username + ' giao thành công', item);
+    })
+
+
+    console.log('LIST TOKEN ---------', listToken)
+  }
+
+  getListMessage = async (username , usernameChatting ) => {
+    let messageKey = username + "-" + usernameChatting;
+    await firebase
+      .database()
+      .ref('Messages/')
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+          var myJson = child.toJSON();
+          if(child.key.indexOf(username) !== -1 && child.key.indexOf(usernameChatting) !== -1 ){
+                messageKey = child.key
+          }
+        });
+      }).catch(err => {
+        return {
+          data: {},
+          status: Status.FAIL,
+        }
+      })
+
+    return {
+      data: messageKey,
+      status: Status.SUCCESS
+    }
+  }
+
+
+  getUserAvatarByName = async (username) => {
+    var publisher = {}
+    await firebase
+      .database()
+      .ref('Account/')
+      .once('value', function (snapshot) {
+        snapshot.forEach(function (child) {
+            var myJson = child.toJSON();
+            if(myJson.Username === username){
+
+            }
+        });
+      });
+
+    return {
+      data: publisher,
+      status: Status.SUCCESS
+    }
+  }
+
+
+  getBubbleMessage = async (usernameLogin) => {
+
+    let ListBubble = [];
+
+    // get avatar user chatting 
+   
+     
+
+
+    // get bubble chat
+    await firebase
+      .database()
+      .ref('Messages/')
+      .once('value', function (snapshot) {
+
+        snapshot.forEach(function (child) {
+          let lastBubble = [];
+          let BubbleObject = {
+            usernameChatting: "",
+            lastMessage: {}, 
+            keyMessage:"",
+            userChatAvatar : "",
+          };
+       
+          const countElement = child.numChildren();
+          child.forEach(function (childSnap) {
+            if (child.key.indexOf(usernameLogin) !== -1 && child.key.indexOf(usernameLogin) === 0) {
+              lastBubble.push(childSnap.toJSON());
+              BubbleObject.usernameChatting = child.key.slice(usernameLogin.length + 1);
+             
+              if(BubbleObject.usernameChatting === childSnap.toJSON().user.name){
+                BubbleObject.userChatAvatar = childSnap.toJSON().user.avatar;
+              }
+              BubbleObject.keyMessage = child.key;
+            }
+            else if (child.key.indexOf(usernameLogin) !== -1 && child.key.indexOf(usernameLogin) !== 0) {
+              lastBubble.push(childSnap.toJSON());
+              BubbleObject.usernameChatting = child.key.slice(0,child.key.length -  (usernameLogin.length+1));
+              if(BubbleObject.usernameChatting === childSnap.toJSON().user.name){
+                BubbleObject.userChatAvatar = childSnap.toJSON().user.avatar;
+              }
+              BubbleObject.keyMessage = child.key;
+            }
+          })
+          BubbleObject.lastMessage = lastBubble[countElement - 1]; 
+          if (BubbleObject.lastMessage !== undefined) {
+            ListBubble.push(BubbleObject);
+          }
+        });
+
+      }).catch(err => {
+        return {
+          data: ListBubble,
+          status: Status.FAIL,
+        }
+      })
+
+      return {
+        data : ListBubble ,
+        status : Status.SUCCESS
+      }
   }
 }

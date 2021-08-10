@@ -10,6 +10,7 @@ import ReviewsEpic from './ReviewEpics/ReviewEpics';
 import PublisherInfoEpic from './PublserInfoEpics/PublsherInfoEpics';
 import GetItemForUserEpic from './GetItemForUserEpics/GetItemForUserEpics';
 import PushNotificationEpic from './PushNotificationEpics/PushNotificationEpics'
+import MessageEpic from './MesssageEpics/MessageEpics';
 
 export default combineEpics(
     DetailArrivalEpic,
@@ -23,4 +24,5 @@ export default combineEpics(
     PublisherInfoEpic,
     GetItemForUserEpic,
     PushNotificationEpic,
+    MessageEpic
 )
