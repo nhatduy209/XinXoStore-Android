@@ -24,9 +24,7 @@ const getData = async () => {
   }
 }
 
-
 export class LoginScreen extends React.Component {
-
   constructor(props) {
     super(props)
     this.state = {
@@ -44,11 +42,13 @@ export class LoginScreen extends React.Component {
   }
 
   handleLogin = async () => {
-    this.props.Login(this.state.email, this.state.password);
+    await getData().then((token)=>
+      this.props.Login(this.state.email, this.state.password,token)
+    )
+    
   }
 
   componentDidMount() {
-    console.log("USER : ", this.props.user);
     getData();
   }
   _signIn = async () => {
@@ -61,6 +61,10 @@ export class LoginScreen extends React.Component {
         });
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+      await getData().then((token)=>
+        this.props.LoginInWithGoogle(userInfo.user.email,userInfo.user.givenName+' '+
+        userInfo.user.familyName,userInfo.user.id,0,token)        
+      )
       this.props.LoginInWithGoogle(userInfo.user.email,userInfo.user.givenName+' '+userInfo.user.familyName,userInfo.user.id,0);
       GoogleSignin.signOut();
     } catch (error) {

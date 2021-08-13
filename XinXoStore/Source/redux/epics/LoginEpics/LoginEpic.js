@@ -36,9 +36,14 @@ const resolver = (action) => {
                 })
                 break;
             case NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_ACTIONS:
-                resolve({
-                    actionType: NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_SUCCESS,
-                    data: {}
+                loginBusiness.removeToken(action.data, success => {
+                    resolve({
+                        actionType: NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_SUCCESS,
+                        data: success
+                    });
+                }, failed => {
+                    messageError = failed;
+                    reject(new Error(NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_FAIL));
                 })
                 break;
             case NAME_ACTIONS.LOGIN_SCREEN.LOGIN_GG_SCREEN:
@@ -104,6 +109,11 @@ const dispatchError = (error, action) => {
                 type: NAME_EPICS.LOGIN_EPICS_SCREEN.LOGIN_GG_FAIL,
                 data: messageError
             }
+        case NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_FAIL:
+            return {
+                type: NAME_EPICS.LOGIN_EPICS_SCREEN.LOGOUT_FAIL,
+                data: messageError
+            }
         default:
             console.error('Error when dispatch error User Epic.');
             return new Error('Error when dispatch error User Epic.');
@@ -115,7 +125,8 @@ const LoginEpic = (action$) =>
         ofType(NAME_ACTIONS.LOGIN_SCREEN.LOGIN_SCREEN, 
             NAME_ACTIONS.LOGIN_SCREEN.LOGIN_GG_SCREEN,
             NAME_ACTIONS.LOGIN_SCREEN.EDIT_PROFILE_ACTIONS, 
-            NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_ACTIONS),
+            NAME_ACTIONS.LOGIN_SCREEN.LOGOUT_ACTIONS,
+            ),
         mergeMap((action) =>
             from(resolver(action)).pipe(
                 map((success) => dispatch(success)),

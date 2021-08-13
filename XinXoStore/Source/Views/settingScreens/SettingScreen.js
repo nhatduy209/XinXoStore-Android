@@ -4,6 +4,17 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import DeviceInfo from 'react-native-device-info';
 import { Logout } from '../../redux/action/LoginAction/LoginAction';
 import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const getData = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('token_key')
+    console.log('TOKEN KEY------ ' , jsonValue);
+    return jsonValue;
+  } catch(e) {
+    // error reading value
+    console.log('ERR GET TOKEN ' , e)
+  }
+}
 
 class SettingScreens extends React.Component {
 
@@ -11,8 +22,10 @@ class SettingScreens extends React.Component {
     super(props);
   }
 
-  handleSignOut = () => {
-    this.props.Logout();
+  handleSignOut =async () => {
+    await getData().then((token)=>{
+     this.props.Logout(token,this.props.user.data.user.Username);
+    })
   }
 
   handleChangePassword = () => {
@@ -132,7 +145,7 @@ class SettingScreens extends React.Component {
 
 function mapStateToProps(state) {  
   return {
-    user : state.LoginReducer.user,
+    user : state.LoginReducer.user
   };
 }
 export default connect(mapStateToProps, {Logout})(SettingScreens);

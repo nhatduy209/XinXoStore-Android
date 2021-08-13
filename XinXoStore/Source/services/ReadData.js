@@ -580,4 +580,60 @@ export default class ReadService {
         status : Status.SUCCESS
       }
   }
+  checkExistToken= async(token,username)=>{
+    let exist=false;
+    let count=0
+    await firebase.database().ref('Notifications').child(token).once('value',function (snapshot){
+      snapshot.forEach(child=>{
+        if(child.toJSON().username==username){
+          exist=true
+          count+=1
+        }
+      })
+    })
+    if(exist==true){
+      return{
+        status:Status.SUCCESS,
+        data:{
+          count // use for remove Token
+        }
+      }
+    }else{
+      return{
+        status:Status.FAIL,
+        data:{}
+      }
+    }
+  }
+  getTokenKeyToRemove=async(token,username)=>{
+    let count=0
+    let key=""
+    let error=false
+    await firebase.database().ref("Notifications").child(token).once('value',function(snap){
+        snap.forEach(child=>{
+            count+=1
+            if(child.toJSON().username==username){
+                key=child.key
+            }
+        })
+    }).catch(()=>{
+      error=true
+    })
+    if(error===false){
+      return {
+          status:Status.SUCCESS,
+          data:{
+            count,
+            key
+          }
+        }
+    }
+    else{
+      return {
+        status:Status.FAIL,
+        data:{}
+      }
+    }
+  }
+
 }

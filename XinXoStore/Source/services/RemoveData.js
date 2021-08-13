@@ -35,4 +35,46 @@ export default class RemoveData{
             }
         }
     }
+    removeTokenWithRef=async(token)=>{
+        let result=await firebase.database().ref("Notifications").child(token).remove()
+        .then(()=>{
+            return true;
+        })
+        .catch(()=>{
+            return false;
+        });
+        if(result==true){
+            return {
+                data:{},
+                status:Status.SUCCESS
+            }
+        }else{
+            return {
+                data:{},
+                status:Status.FAIL
+            }
+        }
+    }
+    
+    removeTokenWithUsername=async(token,key)=>{
+        console.log("removw")
+        let result=await firebase.database().ref("Notifications").child(token).child(key).remove()
+        .then(()=>{
+            return true;
+        })
+        .catch(()=>{
+            return false;
+        });
+        if(result==true){
+            return {
+                data:{},
+                status:Status.SUCCESS
+            }
+        }else{
+            return {
+                data:{},
+                status:Status.FAIL
+            }
+        }
+    }
 }

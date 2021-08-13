@@ -179,4 +179,18 @@ export default class PushData {
             status:Status.SUCCESS
         }
     }
+    addUserToken= async(token,username)=>{
+        await firebase
+            .database()
+            .ref('Notifications/' + token)
+            .push()
+            .set({
+                username: username
+            })
+            .then(() => console.log('Data added============='));
+        return {
+            data: {},
+            status: Status.SUCCESS
+        };
+    }
 }
