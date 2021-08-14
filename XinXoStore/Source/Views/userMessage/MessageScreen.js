@@ -27,39 +27,27 @@ class MessageScreen extends React.Component {
 
 
     if(value[0].text.trim().length > 0  &&  this.state.imageSend.length  === 0 ){
-      this.props.sendMessage(value[0], messageKey);
+      value[0].imageName = "";
+      this.props.sendMessage(value, messageKey);
     }
     else if(value[0].text.trim().length === 0 && this.state.imageSend.length > 0){
       if(this.state.imageSend.length > 0 ){
         this.state.imageSend.forEach(item => {
-
-          //let arrayImage = [] 
-          //object = value[0];
           let object = { _id :  "", image : "", imageName : "", createdAt : value[0].createdAt ,user : {}}; 
           object._id =  value[0]._id + index  ; 
           object.user = value[0].user ; 
           object.image =  item.uri ;
           object.imageName = item.fileName;
+          object.text = "";
           console.log('OBJECT ITEM ---' , object)
           arrayImage.push(object) ;
           index++;
         })
       }
       this.props.sendMessage(arrayImage, messageKey);
-      //this.setState({ messages: GiftedChat.append(this.state.messages, arrayImage) });
-     // this.setState({imageSend : []})
-    }
-  
-   
-    
+    }  
   }
 
-  // componentWillMount() {
-  //   firebase.database().ref('Messages/' + 'nhatduy209-thuyety').on('child_added', (value) => {
-  //     console.log('VALUE----------------', value.val());
-  //       this.setState({ messages: GiftedChat.append(this.state.messages, value.val())  } )
-  //   })
-  // }
   handlePhotos = () => {
     const Options = { selectionLimit: 0 };
     ImagePicker.launchImageLibrary(Options, response => {

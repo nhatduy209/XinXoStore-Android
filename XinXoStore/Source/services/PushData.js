@@ -151,10 +151,12 @@ export default class PushData {
 
         console.log('DATAA-----', data);
         let image = "";
-        await uploadImageToStorageMessage(data.messageData[0].image, '/Message/' + data.messageData[0].imageName).then( async () => {
-            image = await this.getUriImage(data.messageData[0].imageName);
-        });
-               
+        if(data.messageData[0].imageName.length > 0){
+            await uploadImageToStorageMessage(data.messageData[0].image, '/Message/' + data.messageData[0].imageName).then( async () => {
+                image = await this.getUriImage(data.messageData[0].imageName);
+            });
+        }
+       
         //console.log("OKI UPLOAD")
         await firebase
             .database()
