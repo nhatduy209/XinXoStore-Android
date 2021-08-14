@@ -21,7 +21,6 @@ import { getBubbleMessage} from '../../redux/action/MessageAction/MessageAction'
 
   navigateMessage = (item) => {
    // this.props.navigation.push('MessageScreen');
-
     this.props.navigation.navigate('MessageScreen', { messageKey : item.keyMessage , username : item.usernameChatting});
   }
 

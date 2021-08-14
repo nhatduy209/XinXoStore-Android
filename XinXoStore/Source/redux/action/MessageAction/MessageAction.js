@@ -6,10 +6,10 @@ export function getListMessage(username , usernameChatting){
   }
 }
 
-export function sendMessage(messageData){
+export function sendMessage(messageData, messageKey){
   return{
     type : NAME_ACTIONS.MESSAGE_ACTION.SEND_MESSAGE_ACTION,
-    data : {messageData}
+    data : {messageData , messageKey}
   }
 }
 

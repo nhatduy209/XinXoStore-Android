@@ -2,8 +2,8 @@
 import firebase from 'firebase';
 import { async } from 'rxjs';
 import { Status } from '../Config/dataStatus';
-import { uploadImageToStorage } from '../Common/UploadImageToStorage';
-
+import { uploadImageToStorage, uploadImageToStorageMessage } from '../Common/UploadImageToStorage';
+import TestAPI from '../Views/TestAPI'
 export default class PushData {
     signUpApi = async (email, username, password, age) => {
         await firebase
@@ -125,22 +125,52 @@ export default class PushData {
         };
     }
 
+    // sendMessage = async (data) => {
+    //     await firebase
+    //         .database()
+    //         .ref('Messages/'  +  data.messageKey)
+    //         .push()
+    //         .set({
+    //             createdAt: data.messageData.createdAt.toString(),
+    //             _id: data.messageData._id,
+    //             text: data.messageData.text,   
+    //             user: data.messageData.user,
+    //         })
+    //         .catch(err => {
+    //             return{
+    //                 data : {},
+    //                 status : Status.FAIL
+    //             }
+    //         })
+    //     return {
+    //         data: {},
+    //         status: Status.SUCCESS
+    //     };
+    // }
     sendMessage = async (data) => {
-        console.log('MESSAGE SENDING HERE ' , data.messageData.createdAt)
+
+        console.log('DATAA-----', data);
+        let image = "";
+        await uploadImageToStorageMessage(data.messageData[0].image, '/Message/' + data.messageData[0].imageName).then( async () => {
+            image = await this.getUriImage(data.messageData[0].imageName);
+        });
+               
+        //console.log("OKI UPLOAD")
         await firebase
             .database()
-            .ref('Messages/'  +  "nhatduy209-thuyety")
+            .ref('Messages/' + data.messageKey)
             .push()
             .set({
-                createdAt: data.messageData.createdAt.toString(),
-                _id: data.messageData._id,
-                text: data.messageData.text,   
-                user: data.messageData.user,
+                createdAt: data.messageData[0].createdAt.toString(),
+                _id: data.messageData[0]._id,
+                text: data.messageData[0].text,
+                user: data.messageData[0].user,
+                image: image
             })
             .catch(err => {
-                return{
-                    data : {},
-                    status : Status.FAIL
+                return {
+                    data: {},
+                    status: Status.FAIL
                 }
             })
         return {
@@ -148,4 +178,10 @@ export default class PushData {
             status: Status.SUCCESS
         };
     }
+
+
+    getUriImage = async(imgName ) => new Promise((resolve , reject) => {
+        const getUri = new TestAPI();
+        getUri.myPromise('/Message/' + imgName).then(res => {console.log("RES----" ,res ); resolve(res)}).catch(err => reject(err));
+    })
 }

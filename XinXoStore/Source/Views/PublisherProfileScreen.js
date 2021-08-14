@@ -7,7 +7,6 @@ import TestAPI from './TestAPI';
 import { getListReviews } from '../redux/action/ReviewAction/ReviewAction.js';
 import {getListMessage} from '../redux/action/MessageAction/MessageAction'
 class PublisherProfileScreen extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -15,7 +14,8 @@ class PublisherProfileScreen extends React.Component {
       getNotification: 'Get notification',
       iconBellName: 'bell-slash',
       isVisible: false,
-      url: "img"
+      url: "img",
+      isVisibleChattingModal: false
     }
   }
 
@@ -23,10 +23,6 @@ class PublisherProfileScreen extends React.Component {
     var testApi = new TestAPI();
     testApi.myPromise(this.props.publisher.data.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
     this.props.getListMessage(this.props.user.data.user.Username , this.props.publisher.data.Username )
-  }
-
-  componentDidUpdate() {
-    console.log('UPDATE ----' , this.props.message.data);
   }
 
   navigateContact = () => {
@@ -44,7 +40,20 @@ class PublisherProfileScreen extends React.Component {
 
   navigateMessageScreen = () => {
     console.log(' USER AND CHAT --------------' , this.props.user.data.user.Username , this.props.publisher.data.Username)
-    this.props.navigation.navigate('MessageScreen', { messageKey : this.props.message.data , username : this.props.publisher.data.Username});
+    if( this.props.user.data.user.Username ===  this.props.publisher.data.Username ){
+      this.setState(prevState => ({
+        isVisibleChattingModal: true
+      }), () => {
+        setTimeout(() => {
+          this.setState(prevState => ({
+            isVisibleChattingModal: false
+          }));
+        }, 2500);
+      });
+    }else{
+      this.props.navigation.navigate('MessageScreen', { messageKey : this.props.message.data , username : this.props.publisher.data.Username});
+    }
+    
   }
 
   navigateCommentStore = () => {
@@ -53,26 +62,26 @@ class PublisherProfileScreen extends React.Component {
     this.props.navigation.navigate('CommentStoreScreen')
   }
 
-  handleGetNotification = () => {
-    if (!this.state.isGetNotification) {
-      this.setState({ isGetNotification: true });
-      this.setState({ getNotification: 'Already got notification' });
-      this.setState({ iconBellName: 'bell' })
-      this.setState(prevState => ({
-        isVisible: true
-      }), () => {
-        setTimeout(() => {
-          this.setState(prevState => ({
-            isVisible: false
-          }));
-        }, 2500);
-      });
-    } else {
-      this.setState({ isGetNotification: false });
-      this.setState({ getNotification: 'Get notification' });
-      this.setState({ iconBellName: 'bell-slash' })
-    }
-  }
+  // handleGetNotification = () => {
+  //   if (!this.state.isGetNotification) {
+  //     this.setState({ isGetNotification: true });
+  //     this.setState({ getNotification: 'Already got notification' });
+  //     this.setState({ iconBellName: 'bell' })
+  //     this.setState(prevState => ({
+  //       isVisible: true
+  //     }), () => {
+  //       setTimeout(() => {
+  //         this.setState(prevState => ({
+  //           isVisible: false
+  //         }));
+  //       }, 2500);
+  //     });
+  //   } else {
+  //     this.setState({ isGetNotification: false });
+  //     this.setState({ getNotification: 'Get notification' });
+  //     this.setState({ iconBellName: 'bell-slash' })
+  //   }
+  // }
   render() {
     return (
       <View style={styles.container}>
@@ -86,6 +95,18 @@ class PublisherProfileScreen extends React.Component {
             <Text style={{ fontSize: 15, color: '#ffffff', paddingHorizontal: 30, }}>Notification comes when {this.props.publisher.data.Username} public an item </Text>
           </View>
         </Modal>
+
+
+        <Modal isVisible={this.state.isVisibleChattingModal} animationOut="fadeOut" animationOutTiming={2500}>
+          <View style={styles.viewModal}>
+            <View style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 10 }}>
+              <Icon name="exclamation-triangle" color="orange" size={40} />
+            </View>
+
+            <Text style={{ fontSize: 15, color: '#ffffff', paddingHorizontal: 30, }}>Cannot chat with yourself </Text>
+          </View>
+        </Modal>
+
 
         <View style={styles.imageContent}>
 
@@ -243,7 +264,6 @@ const styles = StyleSheet.create({
   viewModal: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#269900',
     height: 150,
     borderRadius: 20,
     padding: 20
