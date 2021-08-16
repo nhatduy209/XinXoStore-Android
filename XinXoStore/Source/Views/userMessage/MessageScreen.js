@@ -22,42 +22,66 @@ class MessageScreen extends React.Component {
     const messageKey = this.props.route.params.messageKey;
     // value[0].image = "Image nè"
     //console.log('VALUE-----',value[0].text.length )
-    let arrayImage = [] ;
-    let index = 0 ; 
+    let arrayImage = [];
+    let index = 0;
 
-
-    if(value[0].text.trim().length > 0  &&  this.state.imageSend.length  === 0 ){
+    if (value[0].text.trim().length > 0 && this.state.imageSend.length === 0) {
       value[0].imageName = "";
-      this.props.sendMessage(value, messageKey);
+      this.props.sendMessage(value[0], messageKey);
     }
-    else if(value[0].text.trim().length === 0 && this.state.imageSend.length > 0){
-      if(this.state.imageSend.length > 0 ){
+    else if (value[0].text.trim().length === 0 && this.state.imageSend.length > 0) {
+      if (this.state.imageSend.length > 0) {
         this.state.imageSend.forEach(item => {
-          let object = { _id :  "", image : "", imageName : "", createdAt : value[0].createdAt ,user : {}}; 
-          object._id =  value[0]._id + index  ; 
-          object.user = value[0].user ; 
-          object.image =  item.uri ;
+          let object = { _id: "", image: "", imageName: "", createdAt: value[0].createdAt, user: {} };
+          object._id = value[0]._id + index;
+          object.user = value[0].user;
+          object.image = item.uri;
           object.imageName = item.fileName;
           object.text = "";
-          console.log('OBJECT ITEM ---' , object)
-          arrayImage.push(object) ;
+          console.log('OBJECT ITEM ---', object)
+          this.props.sendMessage(object, messageKey);
           index++;
         })
       }
       this.props.sendMessage(arrayImage, messageKey);
-    }  
+      this.setState({ imageSend: [] });
+    }
+    else if (value[0].text.trim().length > 0 && this.state.imageSend.length > 0) {
+      if (this.state.imageSend.length > 0) {
+        this.state.imageSend.forEach(item => {
+          let object = { _id: "", image: "", imageName: "", text: "", createdAt: value[0].createdAt, user: {} };
+          object._id = value[0]._id + index;
+          object.user = value[0].user;
+          object.image = item.uri;
+          object.imageName = item.fileName;
+          object.text = value[0].text;
+          console.log('OBJECT ITEM ---', object)
+          this.props.sendMessage(object, messageKey);
+          index++;
+        })
+      }
+      this.props.sendMessage(arrayImage, messageKey);
+      this.setState({ imageSend: [] });
+    }
   }
 
   handlePhotos = () => {
     const Options = { selectionLimit: 0 };
     ImagePicker.launchImageLibrary(Options, response => {
-
-      try {
-        console.log('response.assets[0].uri-----------------', response.assets)
+      if (response.didCancel) {
+        this.setState({ imageSend: [] })
+      } else {
         this.setState({ imageSend: response.assets })
       }
-      catch (err) {
-        this.setState({ imageSend: "" })
+    })
+  }
+
+  takePhoto = () => {
+    ImagePicker.launchCamera({}, response => {
+      if (response.didCancel) {
+        this.setState({ imageSend: [] })
+      } else {
+        this.setState({ imageSend: response.assets })
       }
     })
   }
@@ -93,7 +117,7 @@ class MessageScreen extends React.Component {
           </TouchableOpacity>
 
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.takePhoto}>
             <Icon
               name='camera'
               size={25}
@@ -112,14 +136,14 @@ class MessageScreen extends React.Component {
   }
 
   removeItem = (item) => {
-     let newImage =  this.state.imageSend;
-     newImage.splice(item.index,1);
-     this.setState({imageSend : newImage})
+    let newImage = this.state.imageSend;
+    newImage.splice(item.index, 1);
+    this.setState({ imageSend: newImage })
   }
 
   renderButtonSend = (props) => {
     return (
-      <Send alwaysShowSend  {...props} containerStyle={{ marginBottom: 5 }}/>
+      <Send alwaysShowSend  {...props} containerStyle={{ marginBottom: 5 }} />
     );
   }
 
@@ -132,12 +156,12 @@ class MessageScreen extends React.Component {
         </Image>
 
         <TouchableOpacity
-         style={{ position: 'absolute', color: '#ff0000' }}
-          onPress = { this.removeItem.bind(this, item )}>
+          style={{ position: 'absolute', color: '#ff0000' }}
+          onPress={this.removeItem.bind(this, item)}>
           <Icon
             name="times-circle"
             size={20}
-           >
+          >
 
           </Icon>
         </TouchableOpacity>
@@ -153,7 +177,7 @@ class MessageScreen extends React.Component {
         <View style={{ flex: 1 }}>
           <GiftedChat
             messages={this.state.messages}
-            onSend={ (messages) => {this.onSend(messages) }}
+            onSend={(messages) => { this.onSend(messages) }}
             renderInputToolbar={this.renderInputToolbar}
             placeholder="type message...."
             user={{

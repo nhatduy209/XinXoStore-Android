@@ -151,22 +151,23 @@ export default class PushData {
 
         console.log('DATAA-----', data);
         let image = "";
-        if(data.messageData[0].imageName.length > 0){
-            await uploadImageToStorageMessage(data.messageData[0].image, '/Message/' + data.messageData[0].imageName).then( async () => {
-                image = await this.getUriImage(data.messageData[0].imageName);
-            });
+        if (data.messageData.imageName.length > 0) {
+                await uploadImageToStorageMessage(data.messageData.image, '/Message/' + data.messageData.imageName)
+                    .then(async () => {
+                        image = await this.getUriImage(data.messageData.imageName);
+                    });
         }
-       
+
         //console.log("OKI UPLOAD")
         await firebase
             .database()
             .ref('Messages/' + data.messageKey)
             .push()
             .set({
-                createdAt: data.messageData[0].createdAt.toString(),
-                _id: data.messageData[0]._id,
-                text: data.messageData[0].text,
-                user: data.messageData[0].user,
+                createdAt: data.messageData.createdAt.toString(),
+                _id: data.messageData._id,
+                text: data.messageData.text,
+                user: data.messageData.user,
                 image: image
             })
             .catch(err => {
@@ -182,8 +183,8 @@ export default class PushData {
     }
 
 
-    getUriImage = async(imgName ) => new Promise((resolve , reject) => {
+    getUriImage = async (imgName) => new Promise((resolve, reject) => {
         const getUri = new TestAPI();
-        getUri.myPromise('/Message/' + imgName).then(res => {console.log("RES----" ,res ); resolve(res)}).catch(err => reject(err));
+        getUri.myPromise('/Message/' + imgName).then(res => { console.log("RES----", res); resolve(res) }).catch(err => reject(err));
     })
 }
