@@ -4,7 +4,7 @@ import ReadService from '../services/ReadData';
 export default class PushNotificationBusiness  {
   PushNotificationBusiness = async ( data , success , failed ) => {
     var readService= new ReadService();
-    var result =readService.getUserToken(data.userId , data.username ); 
+    var result =readService.getUserToken(data.userBought , data.username ); 
 
    
     if(result.status==Status.SUCCESS){

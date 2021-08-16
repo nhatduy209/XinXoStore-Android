@@ -450,16 +450,22 @@ export default class ReadService {
       };
     }
 
-  getUserToken = async (userID, username) => {
-    console.log('ID', userID)
+  getUserToken = async (userBought, username) => {
+    console.log('ID', userBought);
     let listToken = [];
     await firebase
       .database()
-      .ref('Account/' + 2 + '/' + 'Notifications/')
+      .ref('Notifications/')
       .once('value', function (snapshot) {
         snapshot.forEach(function (child) {
           var myJson = child.toJSON();
-          listToken.push(myJson.tokenID);
+         // listToken.push(myJson.tokenID);  
+         child.forEach( function(item) {
+           if( item.toJSON().username === userBought){
+            console.log('CHILD  ------' , child.key  , myJson) ; 
+            listToken.push(child.key);  
+           }
+         })
         });
       })
 

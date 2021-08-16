@@ -173,7 +173,7 @@ class CheckDeliverButton extends React.Component {
 
   confirmDeliver = (item) => {
     console.log("LOG--------------", item)
-    this.props.pushNotification.pushNotification(item[9], this.props.Username);
+    this.props.pushNotification.pushNotification(item[4], this.props.Username);
     this.setState({ iconDeliver: 'check-circle' })
     this.setState({ colorDeliver: 'green' })
     
