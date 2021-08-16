@@ -6,7 +6,7 @@ import { getListMessage, sendMessage } from '../../redux/action/MessageAction/Me
 import { connect } from 'react-redux';
 import TestAPI from '../TestAPI';
 import * as ImagePicker from "react-native-image-picker";
-
+import { getBubbleMessage} from '../../redux/action/MessageAction/MessageAction'
 import firebase from 'firebase';
 
 class MessageScreen extends React.Component {
@@ -100,6 +100,7 @@ class MessageScreen extends React.Component {
     const messageKey = this.props.route.params.messageKey;
     // stop listening to firebase 
     firebase.database().ref('Messages/' + messageKey).off('child_added', this.setState({ messages: [] }));
+    this.props.getBubbleMessage(this.props.user.data.user.Username);
   }
 
   renderInputToolbar = (props) => {
@@ -238,4 +239,4 @@ function mapStateToProps(state) {
     user: state.LoginReducer.user,
   };
 }
-export default connect(mapStateToProps, { getListMessage, sendMessage })(MessageScreen);
+export default connect(mapStateToProps, { getListMessage, sendMessage, getBubbleMessage })(MessageScreen);
