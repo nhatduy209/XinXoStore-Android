@@ -3,30 +3,37 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {View ,Text,StyleSheet,Dimensions,TouchableOpacity} from 'react-native';
 
 export class RenderItemAddress extends React.Component{
+    constructor(props){
+        super(props);
+    }
     render(){
-        console.log("propss",this.props.item);
         return(
             <TouchableOpacity style={styles.addressComponent}
                 onPress={()=>{this.props.navigation.navigate("ChooseAddressScreen")}}>
-                <View style={styles.home}>
+                    <View style={{flex:8,flexDirection:'row'}}>
+                        <View style={styles.home}>
                     <Icon name="home" size={30} color={"#2f7afb"}/>
+                    </View>
+                    <View style={{marginHorizontal:5, maxWidth:250}}>
+                        <Text style={{fontWeight:'bold'}}>
+                            {this.props.item.Number+', '+this.props.item.Street}
+                        </Text>
+                        <Text style={{color:'gray'}}>
+                        {this.props.item.District+', '+this.props.item.City}
+                        </Text>
+                    </View>
                 </View>
-                <View style={{marginHorizontal:5, maxWidth:250}}>
-                    <Text style={{fontWeight:'bold'}}>
-                        {this.props.item.Number+', '+this.props.item.Street}
-                    </Text>
-                    <Text style={{color:'gray'}}>
-                    {this.props.item.District+', '+this.props.item.City}
-                    </Text>
-                </View>
-                {this.props.item.Default===true?
+                <View style={{flex:1}}>
+                     {this.props.item.Default===true?
                     (
-                    <View style={{justifyContent:'center', marginHorizontal:10}}>
-                        <Icon name="check-circle" color={"#2f7afb"} size={20} />
+                    <View style={{justifyContent:'center', marginHorizontal:10,alignContent:'flex-end'}}>
+                        <Icon name="check-circle" color={"#2f7afb"} size={18} />
                     </View>
                     )
                     :null
-                }
+                    }
+                </View>
+               
             </TouchableOpacity>
         );
     }

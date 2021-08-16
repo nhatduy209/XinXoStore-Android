@@ -13,5 +13,6 @@ export const NAME_ACTIONS={
         UPDATE_CART : 'UPDATE_CART',
         DELETE_CART : 'DELETE_CART',
         GET_TOTAL_BILL : 'GET_TOTAL_BILL',
+        RESET_STATUS:'RESET_STATUS'
     }
 }

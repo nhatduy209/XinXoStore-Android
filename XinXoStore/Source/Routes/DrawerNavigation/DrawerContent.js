@@ -11,8 +11,6 @@ export class DrawerContent extends React.Component {
       url: "img"
     }
   }
-
-
   componentDidMount() {
     var testApi = new TestAPI()
     try{
@@ -35,7 +33,8 @@ export class DrawerContent extends React.Component {
     this.props.navigation.navigate('ItemManagementScreenStack');
   }
   onShoppingCartPress=()=>{
-    this.props.navigation.navigate('ShoppingCart');
+    this.props.navigation.push('ShoppingCart');
+    this.props.navigation.navigate('ShoppingCartScreenStack');
   }
 
   // goToEditProfile = () => {
@@ -52,7 +51,6 @@ export class DrawerContent extends React.Component {
   goToSettingScreen = () => {
     this.props.navigation.navigate('SettingsScreensStack');
   }
-
   render() {
     let username  = "" , email = "" ; 
     try {
@@ -181,7 +179,6 @@ export class DrawerContent extends React.Component {
                       </Text>
                 </View>
             </TouchableOpacity>
-
         </View>
 
       </View>

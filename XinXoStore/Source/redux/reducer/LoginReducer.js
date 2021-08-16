@@ -47,6 +47,15 @@ const LoginReducer = (state = loginState, action) => {
         }
       }
       break;
+    case NAME_EPICS.LOGIN_EPICS_SCREEN.LOGIN_GG_SUCCESS:
+      state = {
+        ...state,
+        user: {
+          status: Status.SUCCESS,
+          data: action.data,
+        }
+      }
+      break;
     default:
       break;
   }

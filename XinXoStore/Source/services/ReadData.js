@@ -6,14 +6,13 @@ import { PushData } from './PushData';
 import { async } from 'rxjs';
 import { sendNotification } from '../Common/PushNotification'
 
-
 export default class ReadService {
-  verifyLoginApi = async (username, password) => {
-    let canLogin = false;
+  verifyLoginApi = async(username , password) => {
+    
+    let canLogin = false ; 
     let Email = "";
     let key = "";
     let user = {};
-    console.log("SERVICE ", username, password);
     await firebase
       .database()
       .ref('Account/')
@@ -170,151 +169,173 @@ export default class ReadService {
       }
     }
   }
-  getListAddressApi = async (idAccount) => {
-    let address = [];
-    await firebase.database().ref('Account/' + idAccount).once('value', function (snapshot) {
-      snapshot.forEach(function (child) {
-        if (child.key == "Address") {
-          child.forEach(function (item) {
-            address.push({ key: item.key, data: item.toJSON() });
+  getListAddressApi= async(idAccount)=>{
+    console.log("get list address============",idAccount)
+    let address=[];
+    await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){
+      snapshot.forEach(function (child){
+        if(child.key=="Address"){
+          child.forEach(function(item){
+            address.push({key: item.key,data:item.toJSON()});
           });
         }
       });
-    });
-    if (address.length > 0) {
+    }).then(res=>{
       return {
         data: {
           address
         },
         status: Status.SUCCESS
       };
-    } else {
+    }).catch(err=>{
       return {
-        data: {},
-        status: Status.FAIL,
-      }
-    }
+        data : {},
+        status : Status.FAIL
+      };
+    })
+    
   }
-  getDefaultAddress = async (idAccount) => {
-    var address = new Object();
-    await firebase.database().ref('Account/' + idAccount).once('value', function (snapshot) {
-      snapshot.forEach(function (child) {
-        if (child.key == "Address") {
-          child.forEach(function (item) {
-            if (item.toJSON().Default == true) {
-              address = item.toJSON();
+  getDefaultAddress=async(idAccount)=>{
+    var address= new Object();
+    let error=false;
+    await firebase.database().ref('Account/'+idAccount).once('value',function (snapshot){
+      snapshot.forEach(function (child){
+        if(child.key=="Address"){
+          child.forEach(function(item){
+            if(item.toJSON().Default==true){
+              address=item.toJSON();
               return;
             }
           });
         }
       });
-    });
-    if (!!address) {
+    }).catch(err=>{
+      return error=true
+    })
+    if(error==false){
       return {
         status: Status.SUCCESS,
         data: {
           address
         }
       }
-    } else {
+    } else{
       return {
         status: Status.FAIL,
-        data: {}
+        data:{
+          address
+        }
       }
     }
   }
-
   getShoppingCart(idAccount) {
-    return firebase.database().ref("Account/" + idAccount).once('value').then(function (snapshot) {
-      var reads = [];
-      let totalBill = 0;
-      snapshot.forEach(function (childSnapshot) {
-        if (childSnapshot.key == "Cart") {
-          childSnapshot.forEach(function (child) {
-            var promise = firebase.database().ref('NewArrivals/' + child.toJSON().ItemID).once('value').then(function (snap) {
-              // The Promise was fulfilled.
-              var myJson = snap.toJSON();
-              var item = {
-                key: snap.key,
-                data: myJson
-              };
-              reads.push(item);
-              return item;
-            },
-              function (error) {
-                // The Promise was rejected.
-                console.error(error);
-              });
-            reads.push(promise);
-          })
-        }
-
-      });
-      return Promise.all(reads);
-    }, function (error) {
-      // The Promise was rejected.
-      console.error(error);
-    }).then(function (values) {
-      if (values.length >= 0) {
-        return {
-          data: values,
-          status: Status.SUCCESS,
-        }
+    return firebase.database().ref("Account/"+idAccount).once('value').then(function(snapshot) {
+        var reads = [];
+        let totalBill=0;
+        snapshot.forEach(function(childSnapshot) {
+            if(childSnapshot.key=="Cart"){
+              childSnapshot.forEach(function(child){
+                var promise = firebase.database().ref('NewArrivals/'+child.toJSON().ItemID).once('value').then(function(snap) {
+                  // The Promise was fulfilled.
+                  var myJson = snap.toJSON();
+                    var item= {
+                      key:snap.key,
+                      data:myJson
+                    };
+                    reads.push(item);
+                  return item;
+                },
+                 function(error) {
+                    // The Promise was rejected.
+                });
+                reads.push(promise);
+              })
+            }
+            
+        });
+        return Promise.all(reads);
+    }, function(error) {
+    }).then(function(values) { 
+      return {
+        data : values,
+        status : Status.SUCCESS,
       }
-      else {
-        return {
-          data: {},
-          status: Status.FAIL,
+    }).catch(err=>{
+      return {
+          data : {},
+          status : Status.FAIL,
         }
-      }
-    });
-  }
-  getListIDItemShoppingCart = async (idAccount) => {
-    let listItem = [];
-    await firebase.database().ref('Account/' + idAccount).once('value', function (snap) {
-      snap.forEach(function (child) {
-        if (child.key == "Cart") {
-          child.forEach(function (id) {
+    })
+}
+  getListIDItemShoppingCart=async(idAccount)=>{
+    let listItem=[];
+    await firebase.database().ref('Account/'+idAccount).once('value',function(snap){
+      snap.forEach(function(child){
+        if(child.key=="Cart"){
+          child.forEach(function(id){
             listItem.push(id.toJSON().ItemID);
           });
           return;
         }
       })
-    })
-
-    if (listItem.length > 0) {
+    }).then(res=>{
       return {
         data: listItem,
         status: Status.SUCCESS
       }
-    }
-    else {
+    }).catch(err=>{
       return {
         data: {},
         status: Status.FAIL
       }
+    })
+    
+    
+  }
+  getListItemShoppingCart = async(listItemID)=>{
+    var obj= new Object();
+    var result= await Promise.all( listItemID.map(async (id)=>{
+      await firebase.database().ref('NewArrivals/'+id.itemID).once('value',function(snap){
+        obj= {key:id,data:snap.toJSON()};
+      });
+      return obj;
+    }));
+    
+    return {
+      status:Status.SUCCESS,
+      data: result
     }
   }
-  getListItemShoppingCart = async (listItemID) => {
-    let listItem = [];
-    listItemID.forEach(async function (id) {
-      await firebase.database().ref('NewArrivals/' + id).once('value', function (snap) {
-        listItem.push({ key: id, data: snap.toJSON() });
-
+  getListIDBill=async(idAccount)=>{
+    let listID=[];
+    let noNewReview=0;
+    let canGet=true;
+    await firebase.database().ref('Bill').once('value',function(snap){
+      snap.forEach(child=>{
+        if(child.toJSON().UserID==idAccount){
+          listID.push({itemID:child.toJSON().ItemID,reviewID:child.toJSON().ReviewID});
+        }
+        if(child.toJSON().ReviewID==0){
+          noNewReview+=1;
+        }
       })
-      console.log(listItem);
+    }).then(res=>{
+      return true;
+    }).catch(err=>{
+      return false;
     })
-    console.log(listItem);
-    if (listItem.length > 0) {
-      return {
-        data: listItem,
-        status: Status.SUCCESS
+    if(canGet==true){
+      return{
+        status:Status.SUCCESS,
+        data:{
+          listID:listID,
+          noNewReview:noNewReview
+        }
       }
-    }
-    else {
-      return {
-        data: {},
-        status: Status.FAIL
+    }else{
+      return{
+        status:Status.FAIL,
+        data:{}
       }
     }
   }
@@ -338,75 +359,96 @@ export default class ReadService {
       status: Status.SUCCESS
     }
   }
-  getItemForUser = async (idOwner) => {
-    let listItem = [];
-    let listItemObject = [];
-
-    let listItemBill = [];
-
-    await firebase
-      .database()
-      .ref('Bill/')
-      .once('value', function (snapshot) {
-        snapshot.forEach(function (child) {
-          //đặt ddieuf kiện
-          console.log('CHILD-------', child)
-          var myJson = child.toJSON();
-          listItemBill.push(myJson);
-        });
+  checkToAddToCart= async(idAccount,itemID)=>{
+    let canAdd=true;
+    await firebase.database().ref('Account/'+idAccount).child('Cart').once('value',snap=>{
+      snap.forEach(child=>{
+        console.log("snap===================",child.toJSON());
+        if(child.toJSON().ItemID==itemID){
+          canAdd=false;
+        }
       })
-
-
-    await firebase
-      .database()
-      .ref('NewArrivals/')
-      .once('value', function (snapshot) {
-        snapshot.forEach(function (child) {
-          //đặt ddieuf kiện
-          var myJson = child.toJSON();
-          if (myJson.ownerId === idOwner) {
-            let myObject = {
-              img: "",
-              Name: "",
-              Category: "",
-              publicDate: "",
-              ownerShop: "",
-              prices: 0,
-              sold: false,
-              itemID: child.key,
-              isShipped: false,
-              customerId: "",
-            };
-            const myBill = _.findWhere(listItemBill, { ItemID: Number(myObject.itemID) });
-            myObject.img = myJson.img;
-            myObject.Name = myJson.Name;
-            myObject.Category = myJson.Category;
-            myObject.publicDate = myJson.publicDate;
-            myObject.ownerShop = myBill.Username;
-            myObject.prices = myJson.prices;
-            myObject.sold = myJson.sold;
-            myObject.isShipped = myBill.isShipped;
-            myObject.customerId = myBill.UserID;
-            const toArray = _.values(myObject);
-            listItemObject.push(myObject);
-            listItem.push(toArray);
-          }
-        });
-      }).then(res => {
-        console.log('RES', listItemObject);
-      }).catch(err => {
-        console.log("ERR ", err)
-        return {
-          data: {},
-          status: Status.FAIL,
-        };
-      });
-
-    return {
-      data: { listItem, listItemObject },
-      status: Status.SUCCESS,
-    };
+    });
+    if(canAdd==true){
+      return {
+        success:Status.SUCCESS
+      }
+    }else{
+      return {
+        success:Status.FAIL
+      }
+    }
   }
+
+    getItemForUser = async (idOwner) => {
+      let listItem = [];
+      let listItemObject = [];
+  
+      let listItemBill = [];
+  
+      await firebase
+        .database()
+        .ref('Bill/')
+        .once('value', function (snapshot) {
+          snapshot.forEach(function (child) {
+            //đặt ddieuf kiện
+            console.log('CHILD-------', child)
+            var myJson = child.toJSON();
+            listItemBill.push(myJson);
+          });
+        })
+  
+  
+      await firebase
+        .database()
+        .ref('NewArrivals/')
+        .once('value', function (snapshot) {
+          snapshot.forEach(function (child) {
+            //đặt ddieuf kiện
+            var myJson = child.toJSON();
+            if (myJson.ownerId === idOwner) {
+              let myObject = {
+                img: "",
+                Name: "",
+                Category: "",
+                publicDate: "",
+                ownerShop: "",
+                prices: 0,
+                sold: false,
+                itemID: child.key,
+                isShipped: false,
+                customerId: "",
+              };
+              const myBill = _.findWhere(listItemBill, { ItemID: Number(myObject.itemID) });
+              myObject.img = myJson.img;
+              myObject.Name = myJson.Name;
+              myObject.Category = myJson.Category;
+              myObject.publicDate = myJson.publicDate;
+              myObject.ownerShop = myBill.Username;
+              myObject.prices = myJson.prices;
+              myObject.sold = myJson.sold;
+              myObject.isShipped = myBill.isShipped;
+              myObject.customerId = myBill.UserID;
+              const toArray = _.values(myObject);
+              listItemObject.push(myObject);
+              listItem.push(toArray);
+            }
+          });
+        }).then(res => {
+          console.log('RES', listItemObject);
+        }).catch(err => {
+          console.log("ERR ", err)
+          return {
+            data: {},
+            status: Status.FAIL,
+          };
+        });
+  
+      return {
+        data: { listItem, listItemObject },
+        status: Status.SUCCESS,
+      };
+    }
 
   getUserToken = async (userID, username) => {
     console.log('ID', userID)
@@ -538,4 +580,60 @@ export default class ReadService {
         status : Status.SUCCESS
       }
   }
+  checkExistToken= async(token,username)=>{
+    let exist=false;
+    let count=0
+    await firebase.database().ref('Notifications').child(token).once('value',function (snapshot){
+      snapshot.forEach(child=>{
+        if(child.toJSON().username==username){
+          exist=true
+          count+=1
+        }
+      })
+    })
+    if(exist==true){
+      return{
+        status:Status.SUCCESS,
+        data:{
+          count // use for remove Token
+        }
+      }
+    }else{
+      return{
+        status:Status.FAIL,
+        data:{}
+      }
+    }
+  }
+  getTokenKeyToRemove=async(token,username)=>{
+    let count=0
+    let key=""
+    let error=false
+    await firebase.database().ref("Notifications").child(token).once('value',function(snap){
+        snap.forEach(child=>{
+            count+=1
+            if(child.toJSON().username==username){
+                key=child.key
+            }
+        })
+    }).catch(()=>{
+      error=true
+    })
+    if(error===false){
+      return {
+          status:Status.SUCCESS,
+          data:{
+            count,
+            key
+          }
+        }
+    }
+    else{
+      return {
+        status:Status.FAIL,
+        data:{}
+      }
+    }
+  }
+
 }

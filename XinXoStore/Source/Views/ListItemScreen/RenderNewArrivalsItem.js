@@ -5,12 +5,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { AddCart } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 import { GetAllProduct } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
-
+import ModelAddToShoppingCartSuccess from '../shoppingCart/ModelAddToShoppingCartSuccess';
+import ModelAddFail from '../shoppingCart/ModelAddFail';
+import { ResetStatus } from '../../redux/action/ShoppingCartAction/ShoppingCartAction';
 export  class RenderNewArrivalsItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       url: "img",
+      isVisible:false,
+      isVisibleFail:false,
     }
   }
   componentDidMount() {
@@ -19,25 +23,49 @@ export  class RenderNewArrivalsItem extends React.Component {
   }
   addItem=async()=>{
     this.props.AddCart(this.props.user.data.key,this.props.item.key)
-    this.props.GetAllProduct(this.props.user.data.key)
   }
   handleDetail = () => {
     const data = {data:this.props.item};
-    // console.log('props nè');
-    // console.log(this.props.item);
     this.props.navigation.push('DetailItemScreen',data);
   }
+  componentDidUpdate(preProps){
+
+    if(this.props.isAdded==true && this.props.numberCart.status=="FAIL"){
+      this.props.ResetStatus();
+      this.setState({
+        isVisibleFail: true
+      }, () => {
+        setTimeout(() => {
+          this.setState({
+            isVisibleFail: false
+          });
+        }, 2500);
+      });
+    }
+    else if(this.props.isAdded==true && this.props.numberCart.status=="SUCCESS"){
+      this.props.ResetStatus();
+      this.setState({
+        isVisible: true
+      }, () => {
+        setTimeout(() => {
+          this.setState({
+            isVisible: false
+          });
+        }, 2500);
+      });
+    }
+  }
   render() {
-    // console.log(this.state.url);
     return (
       <View style={styles.container}>
+        <ModelAddToShoppingCartSuccess isVisible={this.state.isVisible}/>
+        <ModelAddFail isVisible={this.state.isVisibleFail}/>
         <View>
           <Image
             style={{ height: 150, width: 120 }}
             source={{ uri: this.state.url }}>
           </Image>
         </View>
-
         <View style={styles.detailView}>
           <View style={{ flexDirection: 'row' }}>
             <View>
@@ -76,11 +104,12 @@ export  class RenderNewArrivalsItem extends React.Component {
 
 const mapStateToProps = state =>{
   return{
-    numberCart:state.ShoppingCartReducer.numberCart,
+    numberCart:state.ShoppingCartReducer.items,
     user: state.LoginReducer.user,
+    isAdded:state.ShoppingCartReducer.isAdded
   }
 }
-export default connect(mapStateToProps,{AddCart,GetAllProduct})(RenderNewArrivalsItem)
+export default connect(mapStateToProps,{AddCart,GetAllProduct,ResetStatus})(RenderNewArrivalsItem)
 
 const styles = StyleSheet.create({
   container: {

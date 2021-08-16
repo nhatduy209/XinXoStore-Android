@@ -20,7 +20,7 @@ export class ChooseAddressScreen extends React.Component{
             <TouchableOpacity style={{backgroundColor:"#fff",padding:10,flexDirection:"row"}} 
             onPress={handleClick}
             >
-                <View style={{marginHorizontal:5, maxWidth:250}}>
+                <View style={{marginHorizontal:5, maxWidth:250,flex:8}}>
                     <Text style={{fontWeight:'bold'}}>
                         {item.data.Number+', '+item.data.Street}
                     </Text>
@@ -28,14 +28,17 @@ export class ChooseAddressScreen extends React.Component{
                     {item.data.District+', '+item.data.City}
                     </Text>
                 </View>
-                {item.data.Default===true ?
+                <View style={{flex:1}}>
+                    {item.data.Default===true ?
                     (
-                    <View style={{justifyContent:'flex-end', marginHorizontal:10}}>
-                        <Icon name="check-circle" color={"#2f7afb"} size={20} />
+                    <View style={{justifyContent:'flex-end',alignItems:'flex-end',marginHorizontal:10}}>
+                        <Icon name="check-circle" color={"#2f7afb"} size={18} />
                     </View>
                     )
                     :null
                 }
+                </View>
+               
             </TouchableOpacity>
         );
     }
@@ -48,32 +51,47 @@ export class ChooseAddressScreen extends React.Component{
     );
     render(){
         return(
-            <ScrollView>
-                <TouchableOpacity style={styles.container}
-                 onPress={()=>this.props.navigation.navigate("AddressScreen")}>
-                    <Icon name="plus" size={20} color={"#2f7afb"}/>
-                    <Text>
-                         Thêm địa chỉ
-                    </Text>
-                </TouchableOpacity>
+            <View>
+                
                 {JSON.stringify(this.props.address.data)!='{}'?
                 <SwipeListView
+                    ListHeaderComponent={
+                        <TouchableOpacity style={styles.container}
+                        onPress={()=>this.props.navigation.navigate("AddressScreen")}>
+                            <Icon name="plus" size={20} color={"#2f7afb"}/>
+                            <Text>
+                                Thêm địa chỉ
+                            </Text>
+                        </TouchableOpacity>
+                    }
                     data={this.props.address.data}
                     renderItem={this.renderItem}
                     keyExtractor={data =>data.key}
-                    renderHiddenItem={this.renderHiddenItem}
-                    rightOpenValue={-Dimensions.get('window').width}
+                    // renderHiddenItem={ (data, rowMap) => (
+                    //     <View style={styles.btnDelete}>
+                    //         <Icon.Button name="trash" 
+                    //             paddingLeft={15}
+                    //             paddingVertical={15}
+                    //             borderRadius={30}
+                    //             alignItems={"center"}
+                    //             justifyContent={"center"}
+                    //             onPress={()=>this.deleteCart(data,rowMap)}
+                    //             backgroundColor={"red"}
+                    //         >
+                    //         </Icon.Button>
+                    //     </View>
+                    // )}
+                    // leftOpenValue={75}
+                    // rightOpenValue={-150}
                     previewRowKey={'0'}
                     previewOpenValue={-40}
                     previewOpenDelay={3000}
-                    onSwipeValueChange={this.onSwipeValueChange}
-                    useNativeDriver={false}
                     nestedScrollEnabled
-                        />
+                    />
                 : null
                 }
                 
-            </ScrollView>
+            </View>
         )
     }
 }

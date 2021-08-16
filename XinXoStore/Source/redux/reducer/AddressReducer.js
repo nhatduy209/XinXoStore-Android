@@ -43,6 +43,7 @@ const AddressReducer = (state = addressState, action) => {
       }
       break;
     case NAME_EPICS.CHECKOUT_EPICS_SCREEN.GET_DEFAULT_EPIC_SUCCESS:
+      console.log("NAME_EPICS.CHECKOUT_EPICS_SCREEN.GET_DEFAULT_EPIC_SUCCESS")
       state = {
         ...state,
         default: {

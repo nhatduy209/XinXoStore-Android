@@ -4,6 +4,7 @@ import NewArrivalsReducer from '../reducer/NewArrivalsReducer'
 import ShoppingCartReducer from '../reducer/ShoppingCartReducer';
 import ReviewReducer from '../reducer/ReviewReducer';
 import AddressReducer from '../reducer/AddressReducer';
+import BillReducer from './BillReducer';
 import PublisherInfoReducer from '../reducer/PublisherInfoReducer'
 import ArrivalItemReducer from '../reducer/ArrivalItemReducer'
 import ItemsUserReducer from '../reducer/ItemsUserReducer'
@@ -17,8 +18,9 @@ const RootReducer = combineReducers({
   SignUpReducer,
   NewArrivalsReducer,
   ShoppingCartReducer,
-  ReviewReducer,
   AddressReducer,
+  BillReducer,
+  ReviewReducer,
   PublisherInfoReducer,
   ItemsUserReducer,
   PushNotificationReducer,

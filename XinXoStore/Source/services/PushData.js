@@ -18,7 +18,7 @@ export default class PushData {
             })
             .then(() => console.log('Data added'));
         return {
-            data: {},
+            data:{username},
             status: Status.SUCCESS
         };
     }
@@ -187,4 +187,49 @@ export default class PushData {
         const getUri = new TestAPI();
         getUri.myPromise('/Message/' + imgName).then(res => { console.log("RES----", res); resolve(res) }).catch(err => reject(err));
     })
+    createBill=async(data)=>{
+        var canAdd=true;
+        var result=await Promise.all(data.listItem.map( async (element) => {
+            await firebase.database()
+            .ref('Bill')
+            .push()
+            .set({
+                ItemID:element.key,
+                ReviewID:0,
+                ShopID:element.data.ownerId,
+                UserID:data.user.data.key,
+                Username:data.user.data.user.Username,
+                isShipped:false,
+                Address:data.address.data
+            }).then(res=> {canAdd=true})
+            .catch(()=> {canAdd =false});
+            return canAdd;
+        }));
+        for(let i=0;i<result.length;i++){
+            if(result[i]==false){
+                return {
+                    data:{},
+                    status:Status.FAIL
+                };
+            }
+        };
+        return {
+            data:{},
+            status:Status.SUCCESS
+        }
+    }
+    addUserToken= async(token,username)=>{
+        await firebase
+            .database()
+            .ref('Notifications/' + token)
+            .push()
+            .set({
+                username: username
+            })
+            .then(() => console.log('Data added============='));
+        return {
+            data: {},
+            status: Status.SUCCESS
+        };
+    }
 }

@@ -51,6 +51,7 @@ export function updateAddress(){
     }
 }
 export function getDefaultAddress(idAccount){
+  console.log("get list default address============")
   return{
     type: NAME_ACTIONS.CHECKOUT_SCREEN.GET_DEFAULT_SCREEN,
     data:{idAccount}

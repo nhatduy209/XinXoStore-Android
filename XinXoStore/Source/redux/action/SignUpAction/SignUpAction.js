@@ -10,3 +10,4 @@ export function SignUp(email, username, password, age){
         }
     }
 }
+

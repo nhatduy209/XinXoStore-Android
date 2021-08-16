@@ -31,7 +31,6 @@ export class ShoppingCart extends React.Component {
   deleteCart=async( data,rowMap)=>{
     this.closeRow(rowMap, data.item.key)
     this.props.DeleteItem(this.props.user.data.key,data.item.key);
-    this.props.GetAllProduct(this.props.user.data.key);
 
   }
   componentDidMount(){
@@ -57,18 +56,19 @@ export class ShoppingCart extends React.Component {
                     </View>
                     :
                     <View  style={{ flex: 1 }}>
-                        <ScrollView 
-                          nestedScrollEnabled>
-                            <Text style={{color:"gray", paddingHorizontal:10}}>Swipe left to remove items</Text>                     
+                            <SwipeListView
+                        ListHeaderComponent={
+                          <View>
+                          <Text style={{color:"gray", paddingHorizontal:10}}>Swipe left to remove items</Text>                     
                             <Text style={{color:"gray", paddingHorizontal:10}}>{this.props._products.data.length} items</Text>                     
-                        <SwipeListView
+                          </View>
+                        }
                         disableRightSwipe
                         data={this.props._products.data}
                         renderItem={this.renderItem}
                         keyExtractor={(rowData) => {
                           return rowData.key.toString();
                         }}
-                        renderHiddenItem={this.renderHiddenItem}
                         renderHiddenItem={ (data, rowMap) => (
                           <View style={styles.btnDelete}>
                               <Icon.Button name="trash" 
@@ -90,7 +90,6 @@ export class ShoppingCart extends React.Component {
                         previewOpenDelay={3000}
                         nestedScrollEnabled
                       />
-                      </ScrollView>
                       <View style={styles.containerToTal}>
                         <View style={styles.itemTotal}>
                             <Text>Shipping fee</Text>
@@ -102,11 +101,13 @@ export class ShoppingCart extends React.Component {
                         </View>
                         <View style={styles.itemTotal}>
                             <Text style={{fontWeight: "bold"}}>Total</Text>
-                            <Text style={{fontWeight: "bold"}}>{this.props.totalBill}</Text>
+                            <Text style={{fontWeight: "bold"}}>
+                              {this.props.totalBill}
+                              </Text>
                         </View>
                         <TouchableOpacity style={styles.btnCheckout} onPress={this.handleCheckout}>
-                            <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>CHECKOUT</Text>
-                        </TouchableOpacity>
+                          <Text style={{color:"#fff",alignSelf:"center",fontWeight:"bold"}}>CHECKOUT</Text>
+                      </TouchableOpacity>
                       </View>
                     </View>
                   }

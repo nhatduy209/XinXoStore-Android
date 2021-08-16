@@ -40,3 +40,9 @@ export function DeleteItem(idAccount,id){
           }
     }
 }
+export function ResetStatus(){
+    return {
+        type: NAME_ACTIONS.SHOPPING_CART_ACTIONS.RESET_STATUS,
+        data: {}
+    }
+}
