@@ -16,6 +16,16 @@ const getData = async () => {
   }
 }
 
+const removeData  = async (key) => {
+  try {
+      await AsyncStorage.removeItem(key);
+      return true;
+  }
+  catch(exception) {
+      return false;
+  }
+}
+
 class SettingScreens extends React.Component {
 
   constructor(props){
@@ -23,9 +33,12 @@ class SettingScreens extends React.Component {
   }
 
   handleSignOut =async () => {
+    await removeData('userLogin');
     await getData().then((token)=>{
      this.props.Logout(token,this.props.user.data.user.Username);
     })
+
+ 
   }
 
   handleChangePassword = () => {

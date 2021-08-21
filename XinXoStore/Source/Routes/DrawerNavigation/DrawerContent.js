@@ -3,18 +3,63 @@ import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TestAPI from '../../Views/TestAPI'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Login } from '../../redux/action/LoginAction/LoginAction'
+const storeData = async (value) => {
+  try {
+    await AsyncStorage.setItem('userLogin',  JSON.stringify(value))
+  } catch (e) {
+    // saving error
+  }
+}
+
+
+const getData = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('token_key')
+    console.log('TOKEN KEY------ ' , jsonValue);
+    return jsonValue;
+  } catch(e) {
+    // error reading value
+    console.log('ERR GET TOKEN ' , e)
+  }
+}
+
+
+
+const getDataUserLogin = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('userLogin')
+    return jsonValue;
+  } catch (e) {
+    // error reading value
+    console.log('ERR GET TOKEN ', e)
+  }
+}
+
+let user = {} ; 
 export class DrawerContent extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      url: "img"
+      url: "img",
     }
   }
-  componentDidMount() {
+  async componentDidMount() {
+    let data=  await  getDataUserLogin();
+    const token =  await getData();
+    if(!data){
+      user = this.props.user.data.user;
+    }else{
+       user = JSON.parse(data) ; 
+      this.props.Login(user.Username, user.Password,token)
+     
+    }
+
     var testApi = new TestAPI()
     try{
-      testApi.myPromise(this.props.user.data.user.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
+      testApi.myPromise(user.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
     }
     catch(err){
       console.log(err);
@@ -51,11 +96,16 @@ export class DrawerContent extends React.Component {
   goToSettingScreen = () => {
     this.props.navigation.navigate('SettingsScreensStack');
   }
+
+  componentDidUpdate(){
+   storeData(this.props.user.data.user);
+  }
+
   render() {
     let username  = "" , email = "" ; 
     try {
-      username = this.props.user.data.user.Username ; 
-      email = this.props.user.data.user.Email ; 
+      username = user.Username ; 
+      email = user.Email ; 
     }catch(err) {
         username = "" ;
         email = "";
@@ -215,4 +265,4 @@ function mapStateToProps(state) {
     user: state.LoginReducer.user,
   };
 }
-export default connect(mapStateToProps, {})(DrawerContent);
+export default connect(mapStateToProps, {Login})(DrawerContent);

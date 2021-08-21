@@ -22,6 +22,7 @@ class PublisherProfileScreen extends React.Component {
   componentDidMount() {
     var testApi = new TestAPI();
     testApi.myPromise(this.props.publisher.data.Avatar).then(res => this.setState({ url: res })).catch(err => console.log(err));
+    console.log("ALO ALO DIS MOUNT " , this.props.publisher.data.Username);
     this.props.getListMessage(this.props.user.data.user.Username , this.props.publisher.data.Username )
   }
 
@@ -117,9 +118,9 @@ class PublisherProfileScreen extends React.Component {
             <Text style={styles.textUsername}>
               {this.props.publisher.data.Username}
             </Text>
-            <Text style={styles.textFullName}>
+            {/* <Text style={styles.textFullName}>
               Trần Nhất Duy
-            </Text>
+            </Text> */}
           </View>
         </View>
 

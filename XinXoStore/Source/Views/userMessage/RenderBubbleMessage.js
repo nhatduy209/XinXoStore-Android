@@ -10,7 +10,8 @@ import { getBubbleMessage} from '../../redux/action/MessageAction/MessageAction'
   constructor(props) {
     super(props);
     this.state = {
-      iconVisible: false
+      iconVisible: false,
+      bubble: [],
     }
   }
 
@@ -25,7 +26,7 @@ import { getBubbleMessage} from '../../redux/action/MessageAction/MessageAction'
   }
 
   renderBubble = ({ item }) => {
-    
+
     return (
       <View style={{ flex: 1 }}>
         <TouchableOpacity onPress = {this.navigateMessage.bind(this,  item)}>
@@ -54,7 +55,26 @@ import { getBubbleMessage} from '../../redux/action/MessageAction/MessageAction'
       </View>
     )
   }
+
+  handleText = (value) => {
+    let arrayBubble = [];
+    console.log('USER TYPE  : ' , value)
+    this.props.bubbleMessage.data.forEach( item => {
+      if(item.usernameChatting.indexOf(value) !== -1 ){
+        arrayBubble.push(item);
+      }
+    })
+  
+
+    if(value.length === 0) {
+      this.setState({bubble : this.props.bubbleMessage.data });
+    }else {
+      this.setState({bubble : arrayBubble });
+    }
+  }
+
   render() {
+    const data = (this.state.bubble.length === 0 ? this.props.bubbleMessage.data : this.state.bubble ) ;
     return (
       <View style={styles.container} >
         <View style={styles.header}>
@@ -71,14 +91,15 @@ import { getBubbleMessage} from '../../redux/action/MessageAction/MessageAction'
             </Icon>
             <TextInput
               style={{ fontSize: 15, height: 37, textAlign: 'center', marginTop: 8 }}
-              placeholder="Search for name , shop...">
+              placeholder="Search for name , shop..."
+              onChangeText = {value => this.handleText(value)}>
             </TextInput>
           </View>
 
 
         </View>
         <FlatList
-          data={this.props.bubbleMessage.data}
+          data={data}
           keyExtractor={item => item.keyMessage}
           renderItem={this.renderBubble}>
         </FlatList>

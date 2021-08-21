@@ -47,10 +47,6 @@ export class LoginScreen extends React.Component {
     )
     
   }
-
-  componentDidMount() {
-    getData();
-  }
   _signIn = async () => {
     try {
       GoogleSignin.configure(

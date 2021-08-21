@@ -34,6 +34,7 @@ class DetailItem extends React.Component {
     }
     componentDidMount() {
         this.props.getListReviews(this.props.route.params.data.ownerId)
+        this.props.getPublisherInfo(this.props.route.params.data.ownerId);
         var testApi = new TestAPI()
         testApi.myPromise(this.props.route.params.data.img).then(res => this.setState({ url: res })).catch(err => console.log(err));
     }
@@ -113,8 +114,7 @@ class DetailItem extends React.Component {
         return date.getMonth() +'/'+date.getDate()+'/'+date.getFullYear();
     }
 
-    goToPublisherScreen = () => {
-        this.props.getPublisherInfo(this.props.route.params.data.ownerId);
+    goToPublisherScreen =() => {
         this.props.navigation.navigate('PublisherProfileScreen',this.props.route.params.data.ownerId);
     }
     handleShoppingCart=()=>{
