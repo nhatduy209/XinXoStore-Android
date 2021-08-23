@@ -46,9 +46,6 @@ export class HomeScreen extends React.Component {
   
 
   render() {
-    if(this.props.newArrivalsItems.data.listItem){
-      var arrayItems  = [this.props.newArrivalsItems.data.listItem[1],this.props.newArrivalsItems.data.listItem[2] ,this.props.newArrivalsItems.data.listItem[3] , this.props.newArrivalsItems.data.listItem[4] , this.props.newArrivalsItems.data.listItem[5]]
-    }
     return (
       <View style={styles.container}>
         {/* header  */}
@@ -96,7 +93,7 @@ export class HomeScreen extends React.Component {
 
             {/* flatlist item  */}
             <FlatList
-              data={arrayItems}
+              data={this.props.newArrivalsItems.data.listItem}
               renderItem={this.renderNewArrivalsItem}
               keyExtractor={item => item.Name}
               horizontal
@@ -122,7 +119,7 @@ export class HomeScreen extends React.Component {
 
             {/* flatlist item  */}
             <FlatList
-              data={arrayItems}
+              data={this.props.newArrivalsItems.data.listItem}
               renderItem={this.renderNewArrivalsItem}
               keyExtractor={item => item.Name}
               horizontal

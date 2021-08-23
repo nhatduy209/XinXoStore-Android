@@ -7,7 +7,7 @@ export default class NewArrivalsBusiness {
       var readDataService = new ReadService();
       var testApi = new TestAPI();
 
-      let result  = await readDataService.getListArrivalsAPI(data.sortUp);
+      let result  = await readDataService.getListArrivalsAPI(data.sortUp, data.limit);
       
       if( result.status  == Status.SUCCESS){
         success(result);

@@ -102,13 +102,15 @@ export default class ReadService {
       }
     }
   }
-  getListArrivalsAPI = async (sortUp) => {
+  getListArrivalsAPI = async (sortUp, limit) => {
     let key = "";
     let item = {};
     var listItem = [];
+    console.log("LIMIT-----"  , limit )
     await firebase
       .database()
       .ref('NewArrivals/')
+      .limitToFirst(limit)
       .once('value', function (snapshot) {
         snapshot.forEach(function (child) {
           //đặt ddieuf kiện
@@ -641,5 +643,4 @@ export default class ReadService {
       }
     }
   }
-
 }
